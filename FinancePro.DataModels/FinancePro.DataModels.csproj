@@ -41,7 +41,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Class1.cs" />
+    <Compile Include="MemberCapitalDetailModel.cs" />
+    <Compile Include="MemberCapitalLogModel.cs" />
+    <Compile Include="MemberInfoModel.cs" />
+    <Compile Include="MemberIterationInfoModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ReMemberRelationModel.cs" />
     <Compile Include="UploadFileModel.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

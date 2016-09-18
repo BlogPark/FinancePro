@@ -5,7 +5,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
-namespace FinancePro.Common
+namespace System
 {
     public static class SystemExtendClass
     {
