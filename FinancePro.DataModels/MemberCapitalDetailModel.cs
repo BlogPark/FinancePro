@@ -14,6 +14,7 @@ namespace FinancePro.DataModels
     [DataContract]
     public class MemberCapitalDetailModel
     {
+        #region 原始字段
         private int _id;
         /// <summary>
         /// 自增标识
@@ -54,56 +55,60 @@ namespace FinancePro.DataModels
             get { return _membercode; }
             set { _membercode = value; }
         }
-        private int _gamecurrency;
+        private decimal _gamecurrency;
         /// <summary>
         /// 游戏币
         /// </summary>		
         [DataMember]
-        public int GameCurrency
+        public decimal GameCurrency
         {
             get { return _gamecurrency; }
             set { _gamecurrency = value; }
         }
-        private int _sharescurrency;
+        private decimal _sharescurrency;
         /// <summary>
         /// 股权币
         /// </summary>		
         [DataMember]
-        public int SharesCurrency
+        public decimal SharesCurrency
         {
             get { return _sharescurrency; }
             set { _sharescurrency = value; }
         }
-        private int _shoppingcurrency;
+        private decimal _shoppingcurrency;
         /// <summary>
         /// 购物币
         /// </summary>		
         [DataMember]
-        public int ShoppingCurrency
+        public decimal ShoppingCurrency
         {
             get { return _shoppingcurrency; }
             set { _shoppingcurrency = value; }
         }
-        private int _memberpoints;
+        private decimal _memberpoints;
         /// <summary>
         /// 会员积分
         /// </summary>		
         [DataMember]
-        public int MemberPoints
+        public decimal MemberPoints
         {
             get { return _memberpoints; }
             set { _memberpoints = value; }
         }
-        private int _compoundcurrency;
+        private decimal _compoundcurrency;
         /// <summary>
         /// 复利币(报单币)
         /// </summary>		
         [DataMember]
-        public int CompoundCurrency
+        public decimal CompoundCurrency
         {
             get { return _compoundcurrency; }
             set { _compoundcurrency = value; }
-        }
+        } 
+        #endregion
 
+        #region 扩展字段
+        
+        #endregion
     }
 }

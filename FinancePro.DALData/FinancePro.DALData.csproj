@@ -44,8 +44,14 @@
     <Compile Include="AdminConfigs.cs" />
     <Compile Include="Class1.cs" />
     <Compile Include="DbHelperSQL.cs" />
+    <Compile Include="MemberCapitalDetailDAL.cs" />
     <Compile Include="MemberDAL.cs" />
+    <Compile Include="MemberIterationInfoDAL.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="PublicHelperDAL.cs" />
+    <Compile Include="ReMemberRelationDAL.cs" />
+    <Compile Include="SysMenuAndUserDAL.cs" />
+    <Compile Include="SystemConfigsDAL.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\FinancePro.Common\FinancePro.Common.csproj">

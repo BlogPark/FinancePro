@@ -14,6 +14,7 @@ namespace FinancePro.DataModels
     [DataContract]
     public class MemberCapitalLogModel
     {
+        #region 原始字段
         private int _id;
         /// <summary>
         /// 自增标识
@@ -173,7 +174,11 @@ namespace FinancePro.DataModels
         {
             get { return _addtime; }
             set { _addtime = value; }
-        }
+        } 
+        #endregion
+        #region 扩展字段
+
+        #endregion
 
     }
 }

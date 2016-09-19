@@ -14,6 +14,7 @@ namespace FinancePro.DataModels
     [DataContract]
     public class ReMemberRelationModel
     {
+        #region 原始字段
         private int _id;
         /// <summary>
         /// 自增标识
@@ -104,6 +105,9 @@ namespace FinancePro.DataModels
             get { return _recommendstatus; }
             set { _recommendstatus = value; }
         }
+        #endregion
+        #region 扩展字段
 
+        #endregion
     }
 }

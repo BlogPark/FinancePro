@@ -9,11 +9,14 @@ using FinancePro.DataModels;
 
 namespace FinancePro.DALData
 {
+    /// <summary>
+    /// 会员操作类
+    /// </summary>
     public class MemberDAL
     {
         public static DbHelperSQL helper = new DbHelperSQL();
         /// <summary>
-        /// 根据读取单个会员信息
+        /// 根据读取单个会员信息（全部字段）
         /// </summary>
         /// <param name="ID"></param>
         /// <returns></returns>
@@ -65,7 +68,7 @@ namespace FinancePro.DALData
             }
         }
         /// <summary>
-        /// 根据读取单个会员信息
+        /// 根据读取单个会员信息(简要字段)
         /// </summary>
         /// <param name="ID"></param>
         /// <returns></returns>
@@ -106,9 +109,9 @@ namespace FinancePro.DALData
             }
         }
         /// <summary>
-        /// 根据读取单个会员信息
+        /// 根据读取单个会员信息(简要字段)
         /// </summary>
-        /// <param name="ID"></param>
+        /// <param name="membercode">会员编号</param>
         /// <returns></returns>
         public static MemberInfoModel GetBriefSingleMemberModel(string membercode)
         {
@@ -145,6 +148,177 @@ namespace FinancePro.DALData
             {
                 return null;
             }
+        }
+        /// <summary>
+        /// 添加会员
+        /// </summary>
+        /// <param name="model">会员模型</param>
+        /// <returns></returns>
+        public static int AddNewMember(MemberInfoModel model)
+        {
+            StringBuilder strSql = new StringBuilder();
+            strSql.Append("insert into MemberInfo(");
+            strSql.Append("MemberAddress,MemberBankName,MemberBankCode,MemberLogPwd,MemberStatus,MemberType,IsFinalMember,IsDerivativeMember,IsSpecialMember,IsReportMember,MemberName,AddTime,MemberCode,MemberSex,MemberPhone,MemberEmail,MemberProvince,MemberCity,MemberArea");
+            strSql.Append(") values (");
+            strSql.Append("@MemberAddress,@MemberBankName,@MemberBankCode,@MemberLogPwd,@MemberStatus,@MemberType,@IsFinalMember,@IsDerivativeMember,@IsSpecialMember,@IsReportMember,@MemberName,GETDATE(),@MemberCode,@MemberSex,@MemberPhone,@MemberEmail,@MemberProvince,@MemberCity,@MemberArea");
+            strSql.Append(") ");
+            strSql.Append(";select @@IDENTITY");
+            SqlParameter[] parameters = {
+			            new SqlParameter("@MemberAddress", SqlDbType.NVarChar) ,            
+                        new SqlParameter("@MemberBankName", SqlDbType.NVarChar) ,            
+                        new SqlParameter("@MemberBankCode", SqlDbType.NVarChar) ,            
+                        new SqlParameter("@MemberLogPwd", SqlDbType.NVarChar) ,            
+                        new SqlParameter("@MemberStatus", SqlDbType.Int) ,            
+                        new SqlParameter("@MemberType", SqlDbType.Int) ,            
+                        new SqlParameter("@IsFinalMember", SqlDbType.Int) ,            
+                        new SqlParameter("@IsDerivativeMember", SqlDbType.Int) ,            
+                        new SqlParameter("@IsSpecialMember", SqlDbType.Int) ,            
+                        new SqlParameter("@IsReportMember", SqlDbType.Int) ,            
+                        new SqlParameter("@MemberName", SqlDbType.NVarChar) ,         
+                        new SqlParameter("@MemberCode", SqlDbType.NVarChar) ,            
+                        new SqlParameter("@MemberSex", SqlDbType.Int) ,            
+                        new SqlParameter("@MemberPhone", SqlDbType.NVarChar) ,            
+                        new SqlParameter("@MemberEmail", SqlDbType.NVarChar) ,            
+                        new SqlParameter("@MemberProvince", SqlDbType.NVarChar) ,            
+                        new SqlParameter("@MemberCity", SqlDbType.NVarChar) ,            
+                        new SqlParameter("@MemberArea", SqlDbType.NVarChar)
+            };
+            parameters[0].Value = model.MemberAddress;
+            parameters[1].Value = model.MemberBankName;
+            parameters[2].Value = model.MemberBankCode;
+            parameters[3].Value = model.MemberLogPwd;
+            parameters[4].Value = model.MemberStatus;
+            parameters[5].Value = model.MemberType;
+            parameters[6].Value = model.IsFinalMember;
+            parameters[7].Value = model.IsDerivativeMember;
+            parameters[8].Value = model.IsSpecialMember;
+            parameters[9].Value = model.IsReportMember;
+            parameters[10].Value = model.MemberName;
+            parameters[11].Value = model.MemberCode;
+            parameters[12].Value = model.MemberSex;
+            parameters[13].Value = model.MemberPhone;
+            parameters[14].Value = model.MemberEmail;
+            parameters[15].Value = model.MemberProvince;
+            parameters[16].Value = model.MemberCity;
+            parameters[17].Value = model.MemberArea;
+            object obj = helper.GetSingle(strSql.ToString(), parameters);
+            if (obj == null)
+            {
+                return 0;
+            }
+            else
+            {
+                return Convert.ToInt32(obj);
+            }
+        }
+        /// <summary>
+        /// 更新会员的状态值
+        /// </summary>
+        /// <param name="memberid">会员ID</param>
+        /// <param name="status">状态值</param>
+        /// <returns></returns>
+        public static int UpdateMemberStatus(int memberid, int status)
+        {
+            StringBuilder strSql = new StringBuilder();
+            strSql.Append("update MemberInfo set ");
+            strSql.Append(" MemberStatus = @MemberStatus  ");
+            strSql.Append(" where ID=@ID ");
+            SqlParameter[] parameters = {
+			            new SqlParameter("@ID", SqlDbType.Int) ,            
+                        new SqlParameter("@MemberStatus", SqlDbType.Int)
+            };
+            parameters[0].Value = memberid;
+            parameters[1].Value = status;
+            return helper.ExecuteSql(strSql.ToString(), parameters);
+        }
+        /// <summary>
+        /// 更新会员是否报单中心
+        /// </summary>
+        /// <param name="memberid">会员ID</param>
+        /// <param name="status">是否报单中心</param>
+        /// <returns></returns>
+        public static int UpdateMemberIsReportMember(int memberid, int isreportmember)
+        {
+            StringBuilder strSql = new StringBuilder();
+            strSql.Append("update MemberInfo set ");
+            strSql.Append(" IsReportMember = @IsReportMember ");
+            strSql.Append(" where ID=@ID ");
+            SqlParameter[] parameters = {
+			            new SqlParameter("@ID", SqlDbType.Int) ,           
+                        new SqlParameter("@IsReportMember", SqlDbType.Int) 
+            };
+            parameters[0].Value = memberid;
+            parameters[1].Value = isreportmember;
+            return helper.ExecuteSql(strSql.ToString(), parameters);
+        }
+        /// <summary>
+        /// 更新会员的信息
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        public static int UpdateMemberInfo(MemberInfoModel model)
+        {
+            StringBuilder strSql = new StringBuilder();
+            strSql.Append("update MemberInfo set ");
+            strSql.Append(" MemberAddress = @MemberAddress , ");
+            strSql.Append(" MemberBankName = @MemberBankName , ");
+            strSql.Append(" MemberBankCode = @MemberBankCode , ");
+            strSql.Append(" MemberName = @MemberName , ");
+            strSql.Append(" MemberCode = @MemberCode , ");
+            strSql.Append(" MemberSex = @MemberSex , ");
+            strSql.Append(" MemberPhone = @MemberPhone , ");
+            strSql.Append(" MemberEmail = @MemberEmail , ");
+            strSql.Append(" MemberProvince = @MemberProvince , ");
+            strSql.Append(" MemberCity = @MemberCity , ");
+            strSql.Append(" MemberArea = @MemberArea  ");
+            strSql.Append(" where ID=@ID ");
+            SqlParameter[] parameters = {
+			            new SqlParameter("@ID", SqlDbType.Int) ,            
+                        new SqlParameter("@MemberAddress", SqlDbType.NVarChar) ,            
+                        new SqlParameter("@MemberBankName", SqlDbType.NVarChar) ,            
+                        new SqlParameter("@MemberBankCode", SqlDbType.NVarChar) , 
+                        new SqlParameter("@MemberName", SqlDbType.NVarChar) ,        
+                        new SqlParameter("@MemberCode", SqlDbType.NVarChar) ,            
+                        new SqlParameter("@MemberSex", SqlDbType.Int) ,            
+                        new SqlParameter("@MemberPhone", SqlDbType.NVarChar) ,            
+                        new SqlParameter("@MemberEmail", SqlDbType.NVarChar) ,            
+                        new SqlParameter("@MemberProvince", SqlDbType.NVarChar) ,            
+                        new SqlParameter("@MemberCity", SqlDbType.NVarChar) ,            
+                        new SqlParameter("@MemberArea", SqlDbType.NVarChar)   
+            };
+            parameters[0].Value = model.ID;
+            parameters[1].Value = model.MemberAddress;
+            parameters[2].Value = model.MemberBankName;
+            parameters[3].Value = model.MemberBankCode;
+            parameters[4].Value = model.MemberName;
+            parameters[5].Value = model.MemberCode;
+            parameters[6].Value = model.MemberSex;
+            parameters[7].Value = model.MemberPhone;
+            parameters[8].Value = model.MemberEmail;
+            parameters[9].Value = model.MemberProvince;
+            parameters[10].Value = model.MemberCity;
+            parameters[11].Value = model.MemberArea;
+            return helper.ExecuteSql(strSql.ToString(), parameters);
+        }
+        /// <summary>
+        /// 更新会员的登录密码
+        /// </summary>
+        /// <param name="memberid"></param>
+        /// <param name="logpwd"></param>
+        /// <returns></returns>
+        public static int UpdateMemberLogpwd(int memberid, string logpwd)
+        {
+            StringBuilder strSql = new StringBuilder();
+            strSql.Append("update MemberInfo set ");
+            strSql.Append(" MemberLogPwd = @MemberLogPwd  ");
+            strSql.Append(" where ID=@ID ");
+            SqlParameter[] parameters = {
+			            new SqlParameter("@ID", SqlDbType.Int) ,          
+                        new SqlParameter("@MemberLogPwd", SqlDbType.NVarChar)  
+            };
+            parameters[0].Value = memberid;
+            parameters[1].Value = logpwd;
+            return helper.ExecuteSql(strSql.ToString(), parameters);
         }
     }
 }

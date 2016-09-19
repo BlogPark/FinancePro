@@ -14,6 +14,7 @@ namespace FinancePro.DataModels
     [DataContract]
     public class MemberIterationInfoModel
     {
+        #region 扩展字段
         private int _id;
         /// <summary>
         /// 自增标识
@@ -114,6 +115,9 @@ namespace FinancePro.DataModels
             get { return _raddtime; }
             set { _raddtime = value; }
         }
+        #endregion
+        #region 扩展字段
 
+        #endregion
     }
 }
