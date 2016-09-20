@@ -42,6 +42,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AdminConfigs.cs" />
+    <Compile Include="AdminSiteNewsDAL.cs" />
     <Compile Include="Class1.cs" />
     <Compile Include="DbHelperSQL.cs" />
     <Compile Include="MemberCapitalDetailDAL.cs" />
@@ -52,6 +53,7 @@
     <Compile Include="ReMemberRelationDAL.cs" />
     <Compile Include="SysMenuAndUserDAL.cs" />
     <Compile Include="SystemConfigsDAL.cs" />
+    <Compile Include="WebSettingsDAL.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\FinancePro.Common\FinancePro.Common.csproj">

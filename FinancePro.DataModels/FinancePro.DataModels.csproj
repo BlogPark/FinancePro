@@ -40,6 +40,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AdminSiteNewsModel.cs" />
     <Compile Include="Class1.cs" />
     <Compile Include="MemberCapitalDetailModel.cs" />
     <Compile Include="MemberCapitalLogModel.cs" />
@@ -54,6 +55,8 @@
     <Compile Include="SysAdminUserModel.cs" />
     <Compile Include="SystemConfigsModel.cs" />
     <Compile Include="UploadFileModel.cs" />
+    <Compile Include="WebContactMessageModel.cs" />
+    <Compile Include="WebSettingsModel.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
