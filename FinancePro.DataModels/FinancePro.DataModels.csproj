@@ -42,6 +42,7 @@
   <ItemGroup>
     <Compile Include="AdminSiteNewsModel.cs" />
     <Compile Include="Class1.cs" />
+    <Compile Include="DynamicRewardModel.cs" />
     <Compile Include="FormCurreyLogModel.cs" />
     <Compile Include="MemberCapitalDetailModel.cs" />
     <Compile Include="MemberCapitalLogModel.cs" />
