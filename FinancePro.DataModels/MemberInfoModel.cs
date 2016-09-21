@@ -75,6 +75,16 @@ namespace FinancePro.DataModels
             get { return _memberemail; }
             set { _memberemail = value; }
         }
+        private string _memberidnumber;
+        /// <summary>
+        /// 身份证号
+        /// </summary>		
+        [DataMember]
+        public string MemberIDNumber
+        {
+            get { return _memberidnumber; }
+            set { _memberidnumber = value; }
+        }      
         private string _memberprovince;
         /// <summary>
         /// 省份
@@ -147,7 +157,7 @@ namespace FinancePro.DataModels
         }
         private int _memberstatus;
         /// <summary>
-        /// 会员状态(1 待激活 2 已激活 3 已冻结)
+        /// 会员状态(1 待激活 2 已激活 3 已冻结 4 已完结)
         /// </summary>		
         [DataMember]
         public int MemberStatus
@@ -157,7 +167,7 @@ namespace FinancePro.DataModels
         }
         private int _membertype;
         /// <summary>
-        /// 会员类型(1 常规会员  2 衍生会员 3衍生会员  4超级会员)
+        /// 会员类型(1 常规会员  2 衍生会员 3终极会员  4超级会员)
         /// </summary>		
         [DataMember]
         public int MemberType
@@ -214,8 +224,19 @@ namespace FinancePro.DataModels
         {
             get { return _addtime; }
             set { _addtime = value; }
-        } 
+        }
+        private string _sourcemembercode;
+        /// <summary>
+        /// 来源会员编号
+        /// </summary>		
+        [DataMember]
+        public string SourceMemberCode
+        {
+            get { return _sourcemembercode; }
+            set { _sourcemembercode = value; }
+        }        
         #endregion
+
         #region 扩展字段
 
         #endregion

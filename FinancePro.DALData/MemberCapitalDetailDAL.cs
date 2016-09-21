@@ -73,7 +73,7 @@ namespace FinancePro.DALData
         /// </summary>
         /// <param name="gamecurrency">游戏币数量</param>
         /// <param name="compoundcurrency">复利币数量</param>
-        /// <param name="remark">变动日志</param>
+        /// <param name="remark">变动日志描述</param>
         /// <param name="memberid">会员ID</param>
         /// <returns></returns>
         public static int UpdateCompoundCurrencyAndGameCurrency(decimal gamecurrency, decimal compoundcurrency, string remark, int memberid)
@@ -106,8 +106,8 @@ WHERE   MemberID = @memberid";
         /// <summary>
         /// 更改会员的积分数量
         /// </summary>
-        /// <param name="compoundcurrency">积分数量</param>
-        /// <param name="remark">变动日志</param>
+        /// <param name="memberpoints">积分数量</param>
+        /// <param name="remark">变动日志描述</param>
         /// <param name="memberid">会员ID</param>
         /// <returns></returns>
         public static int UpdateMemberPoints(decimal memberpoints, string remark, int memberid)
@@ -133,6 +133,122 @@ WHERE   MemberID = @memberid";
             return helper.ExecuteSql(sqltxt, paramter);
         }
         /// <summary>
+        /// 更改会员的游戏币数量
+        /// </summary>
+        /// <param name="gamecurrency">游戏币数量</param>
+        /// <param name="remark">变动日志描述</param>
+        /// <param name="memberid">会员ID</param>
+        /// <returns></returns>
+        public static int UpdateGameCurrency(decimal gamecurrency, string remark, int memberid)
+        {
+            string sqltxt = @"UPDATE  MemberCapitalDetail
+SET     GameCurrency = GameCurrency + @GameCurrency
+OUTPUT  DELETED.MemberID ,
+        DELETED.MemberName ,
+        DELETED.MemberCode ,
+        DELETED.GameCurrency ,
+        INSERTED.GameCurrency ,
+        @remark ,
+        GETDATE()
+        INTO MemberCapitalLog ( MemberID, MemberName, MemberCode,
+                                BGameCurrency, NGameCurrency,
+                                LogRemark, AddTime )
+WHERE   MemberID = @memberid";
+            SqlParameter[] paramter = { 
+                                          new SqlParameter("@GameCurrency",gamecurrency),
+                                          new SqlParameter("@remark",remark),
+                                          new SqlParameter("@memberid",memberid)
+                                    };
+            return helper.ExecuteSql(sqltxt, paramter);
+        }
+        /// <summary>
+        /// 更改会员的股权币数量
+        /// </summary>
+        /// <param name="sharescurrency">股权币数量</param>
+        /// <param name="remark">变动日志描述</param>
+        /// <param name="memberid">会员ID</param>
+        /// <returns></returns>
+        public static int UpdateSharesCurrency(decimal sharescurrency, string remark, int memberid)
+        {
+            string sqltxt = @"UPDATE  MemberCapitalDetail
+SET     SharesCurrency = SharesCurrency + @SharesCurrency
+OUTPUT  DELETED.MemberID ,
+        DELETED.MemberName ,
+        DELETED.MemberCode ,
+        DELETED.SharesCurrency ,
+        INSERTED.SharesCurrency ,
+        @remark ,
+        GETDATE()
+        INTO MemberCapitalLog ( MemberID, MemberName, MemberCode,
+                                BSharesCurrency, NSharesCurrency,
+                                LogRemark, AddTime )
+WHERE   MemberID = @memberid";
+            SqlParameter[] paramter = { 
+                                          new SqlParameter("@SharesCurrency",sharescurrency),
+                                          new SqlParameter("@remark",remark),
+                                          new SqlParameter("@memberid",memberid)
+                                    };
+            return helper.ExecuteSql(sqltxt, paramter);
+        }
+        /// <summary>
+        /// 更改会员的购物币数量
+        /// </summary>
+        /// <param name="shoppingcurrency">购物币数量</param>
+        /// <param name="remark">变动日志描述</param>
+        /// <param name="memberid">会员ID</param>
+        /// <returns></returns>
+        public static int UpdateShoppingCurrency(decimal shoppingcurrency, string remark, int memberid)
+        {
+            string sqltxt = @"UPDATE  MemberCapitalDetail
+SET     ShoppingCurrency = ShoppingCurrency + @ShoppingCurrency
+OUTPUT  DELETED.MemberID ,
+        DELETED.MemberName ,
+        DELETED.MemberCode ,
+        DELETED.ShoppingCurrency ,
+        INSERTED.ShoppingCurrency ,
+        @remark ,
+        GETDATE()
+        INTO MemberCapitalLog ( MemberID, MemberName, MemberCode,
+                                BShoppingCurrency, NShoppingCurrency,
+                                LogRemark, AddTime )
+WHERE   MemberID = @memberid";
+            SqlParameter[] paramter = { 
+                                          new SqlParameter("@ShoppingCurrency",shoppingcurrency),
+                                          new SqlParameter("@remark",remark),
+                                          new SqlParameter("@memberid",memberid)
+                                    };
+            return helper.ExecuteSql(sqltxt, paramter);
+        }
+        /// <summary>
+        /// 更改会员的复利币数量
+        /// </summary>
+        /// <param name="compoundcurrency">复利币数量</param>
+        /// <param name="remark">变动日志描述</param>
+        /// <param name="memberid">会员ID</param>
+        /// <returns></returns>
+        public static int UpdateCompoundCurrency(decimal compoundcurrency, string remark, int memberid)
+        {
+            string sqltxt = @"UPDATE  MemberCapitalDetail
+SET     CompoundCurrency = CompoundCurrency + @CompoundCurrency
+OUTPUT  DELETED.MemberID ,
+        DELETED.MemberName ,
+        DELETED.MemberCode ,
+        DELETED.CompoundCurrency ,
+        INSERTED.CompoundCurrency ,
+        @remark ,
+        GETDATE()
+        INTO MemberCapitalLog ( MemberID, MemberName, MemberCode,
+                                BCompoundCurrency, NCompoundCurrency,
+                                LogRemark, AddTime )
+WHERE   MemberID = @memberid";
+            SqlParameter[] paramter = { 
+                                          new SqlParameter("@CompoundCurrency",compoundcurrency),
+                                          new SqlParameter("@remark",remark),
+                                          new SqlParameter("@memberid",memberid)
+                                    };
+            return helper.ExecuteSql(sqltxt, paramter);
+        }
+        /// <summary>
         /// 修改会员各项资产信息
         /// </summary>
         /// <param name="SharesCurrency">股权币</param>
@@ -140,7 +256,7 @@ WHERE   MemberID = @memberid";
         /// <param name="CompoundCurrency">复利币</param>
         /// <param name="GameCurrency">游戏币</param>
         /// <param name="MemberPoints">会员积分</param>
-        /// <param name="remark">操作备注</param>
+        /// <param name="remark">变动日志描述</param>
         /// <param name="memberid">会员ID</param>
         /// <returns></returns>
         public static int UpdateAllCapitalDetail(decimal sharescurrency, decimal shoppingcurrency, decimal compoundcurrency, decimal gamecurrency, decimal memberpoints, string remark, int memberid)

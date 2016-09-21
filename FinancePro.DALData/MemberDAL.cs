@@ -23,7 +23,7 @@ namespace FinancePro.DALData
         public static MemberInfoModel GetSingleMemberModel(int ID)
         {
             StringBuilder strSql = new StringBuilder();
-            strSql.Append(@"select ID, MemberAddress, MemberBankName, MemberBankCode, MemberLogPwd, MemberStatus, MemberType, IsFinalMember, IsDerivativeMember, IsSpecialMember, IsReportMember, MemberName, AddTime, MemberCode, MemberSex, MemberPhone, MemberEmail, MemberProvince, MemberCity, MemberArea  ");
+            strSql.Append(@"select ID, MemberAddress, MemberBankName, MemberBankCode, MemberLogPwd, MemberStatus, MemberType, IsFinalMember, IsDerivativeMember, IsSpecialMember, IsReportMember, MemberName, AddTime, MemberCode, MemberSex, MemberPhone, MemberEmail, MemberProvince, MemberCity, MemberArea,MemberIDNumber,SourceMemberCode  ");
             strSql.Append("  from MemberInfo ");
             strSql.Append(" where ID=@ID");
             SqlParameter[] parameters = {
@@ -60,6 +60,8 @@ namespace FinancePro.DALData
                 model.MemberProvince = ds.Tables[0].Rows[0]["MemberProvince"].ToString();
                 model.MemberCity = ds.Tables[0].Rows[0]["MemberCity"].ToString();
                 model.MemberArea = ds.Tables[0].Rows[0]["MemberArea"].ToString();
+                model.MemberIDNumber = ds.Tables[0].Rows[0]["MemberIDNumber"].ToString();
+                model.SourceMemberCode = ds.Tables[0].Rows[0]["SourceMemberCode"].ToString();
                 return model;
             }
             else
@@ -75,7 +77,7 @@ namespace FinancePro.DALData
         public static MemberInfoModel GetBriefSingleMemberModel(int ID)
         {
             StringBuilder strSql = new StringBuilder();
-            strSql.Append(@"select ID, MemberBankName, MemberBankCode, MemberStatus, MemberType, IsFinalMember, IsDerivativeMember, IsSpecialMember, IsReportMember, MemberName, MemberCode, MemberPhone  ");
+            strSql.Append(@"select ID, MemberBankName, MemberBankCode, MemberStatus, MemberType, IsFinalMember, IsDerivativeMember, IsSpecialMember, IsReportMember, MemberName, MemberCode, MemberPhone,MemberIDNumber,SourceMemberCode  ");
             strSql.Append("  from MemberInfo ");
             strSql.Append(" where ID=@ID");
             SqlParameter[] parameters = {
@@ -101,6 +103,8 @@ namespace FinancePro.DALData
                 model.MemberName = ds.Tables[0].Rows[0]["MemberName"].ToString();
                 model.MemberCode = ds.Tables[0].Rows[0]["MemberCode"].ToString();
                 model.MemberPhone = ds.Tables[0].Rows[0]["MemberPhone"].ToString();
+                model.MemberIDNumber = ds.Tables[0].Rows[0]["MemberIDNumber"].ToString();
+                model.SourceMemberCode = ds.Tables[0].Rows[0]["SourceMemberCode"].ToString();
                 return model;
             }
             else
@@ -116,7 +120,7 @@ namespace FinancePro.DALData
         public static MemberInfoModel GetBriefSingleMemberModel(string membercode)
         {
             StringBuilder strSql = new StringBuilder();
-            strSql.Append(@"select ID, MemberBankName, MemberBankCode, MemberStatus, MemberType, IsFinalMember, IsDerivativeMember, IsSpecialMember, IsReportMember, MemberName, MemberCode, MemberPhone  ");
+            strSql.Append(@"select ID, MemberBankName, MemberBankCode, MemberStatus, MemberType, IsFinalMember, IsDerivativeMember, IsSpecialMember, IsReportMember, MemberName, MemberCode, MemberPhone,MemberIDNumber,SourceMemberCode  ");
             strSql.Append("  from MemberInfo ");
             strSql.Append(" where MemberCode=@MemberCode");
             SqlParameter[] parameters = {
@@ -142,6 +146,8 @@ namespace FinancePro.DALData
                 model.MemberName = ds.Tables[0].Rows[0]["MemberName"].ToString();
                 model.MemberCode = ds.Tables[0].Rows[0]["MemberCode"].ToString();
                 model.MemberPhone = ds.Tables[0].Rows[0]["MemberPhone"].ToString();
+                model.MemberIDNumber = ds.Tables[0].Rows[0]["MemberIDNumber"].ToString();
+                model.SourceMemberCode = ds.Tables[0].Rows[0]["SourceMemberCode"].ToString();
                 return model;
             }
             else
@@ -158,17 +164,16 @@ namespace FinancePro.DALData
         {
             StringBuilder strSql = new StringBuilder();
             strSql.Append("insert into MemberInfo(");
-            strSql.Append("MemberAddress,MemberBankName,MemberBankCode,MemberLogPwd,MemberStatus,MemberType,IsFinalMember,IsDerivativeMember,IsSpecialMember,IsReportMember,MemberName,AddTime,MemberCode,MemberSex,MemberPhone,MemberEmail,MemberProvince,MemberCity,MemberArea");
+            strSql.Append("MemberAddress,MemberBankName,MemberBankCode,MemberLogPwd,MemberStatus,MemberType,IsFinalMember,IsDerivativeMember,IsSpecialMember,IsReportMember,MemberName,AddTime,MemberCode,MemberSex,MemberPhone,MemberEmail,MemberProvince,MemberCity,MemberArea,MemberIDNumber,SourceMemberCode");
             strSql.Append(") values (");
-            strSql.Append("@MemberAddress,@MemberBankName,@MemberBankCode,@MemberLogPwd,@MemberStatus,@MemberType,@IsFinalMember,@IsDerivativeMember,@IsSpecialMember,@IsReportMember,@MemberName,GETDATE(),@MemberCode,@MemberSex,@MemberPhone,@MemberEmail,@MemberProvince,@MemberCity,@MemberArea");
+            strSql.Append("@MemberAddress,@MemberBankName,@MemberBankCode,@MemberLogPwd,1,@MemberType,@IsFinalMember,@IsDerivativeMember,@IsSpecialMember,@IsReportMember,@MemberName,GETDATE(),@MemberCode,@MemberSex,@MemberPhone,@MemberEmail,@MemberProvince,@MemberCity,@MemberArea,@MemberIDNumber,@SourceMemberCode");
             strSql.Append(") ");
             strSql.Append(";select @@IDENTITY");
             SqlParameter[] parameters = {
 			            new SqlParameter("@MemberAddress", SqlDbType.NVarChar) ,            
                         new SqlParameter("@MemberBankName", SqlDbType.NVarChar) ,            
                         new SqlParameter("@MemberBankCode", SqlDbType.NVarChar) ,            
-                        new SqlParameter("@MemberLogPwd", SqlDbType.NVarChar) ,            
-                        new SqlParameter("@MemberStatus", SqlDbType.Int) ,            
+                        new SqlParameter("@MemberLogPwd", SqlDbType.NVarChar) ,          
                         new SqlParameter("@MemberType", SqlDbType.Int) ,            
                         new SqlParameter("@IsFinalMember", SqlDbType.Int) ,            
                         new SqlParameter("@IsDerivativeMember", SqlDbType.Int) ,            
@@ -181,26 +186,29 @@ namespace FinancePro.DALData
                         new SqlParameter("@MemberEmail", SqlDbType.NVarChar) ,            
                         new SqlParameter("@MemberProvince", SqlDbType.NVarChar) ,            
                         new SqlParameter("@MemberCity", SqlDbType.NVarChar) ,            
-                        new SqlParameter("@MemberArea", SqlDbType.NVarChar)
+                        new SqlParameter("@MemberArea", SqlDbType.NVarChar),
+                        new SqlParameter("@MemberIDNumber",SqlDbType.NVarChar),
+                        new SqlParameter("@SourceMemberCode",SqlDbType.NVarChar)
             };
             parameters[0].Value = model.MemberAddress;
             parameters[1].Value = model.MemberBankName;
             parameters[2].Value = model.MemberBankCode;
             parameters[3].Value = model.MemberLogPwd;
-            parameters[4].Value = model.MemberStatus;
-            parameters[5].Value = model.MemberType;
-            parameters[6].Value = model.IsFinalMember;
-            parameters[7].Value = model.IsDerivativeMember;
-            parameters[8].Value = model.IsSpecialMember;
-            parameters[9].Value = model.IsReportMember;
-            parameters[10].Value = model.MemberName;
-            parameters[11].Value = model.MemberCode;
-            parameters[12].Value = model.MemberSex;
-            parameters[13].Value = model.MemberPhone;
-            parameters[14].Value = model.MemberEmail;
-            parameters[15].Value = model.MemberProvince;
-            parameters[16].Value = model.MemberCity;
-            parameters[17].Value = model.MemberArea;
+            parameters[4].Value = model.MemberType;
+            parameters[5].Value = model.IsFinalMember;
+            parameters[6].Value = model.IsDerivativeMember;
+            parameters[7].Value = model.IsSpecialMember;
+            parameters[8].Value = model.IsReportMember;
+            parameters[9].Value = model.MemberName;
+            parameters[10].Value = model.MemberCode;
+            parameters[11].Value = model.MemberSex;
+            parameters[12].Value = model.MemberPhone;
+            parameters[13].Value = model.MemberEmail;
+            parameters[14].Value = model.MemberProvince;
+            parameters[15].Value = model.MemberCity;
+            parameters[16].Value = model.MemberArea;
+            parameters[17].Value=model.MemberIDNumber;
+            parameters[18].Value = model.SourceMemberCode;
             object obj = helper.GetSingle(strSql.ToString(), parameters);
             if (obj == null)
             {
@@ -319,6 +327,39 @@ namespace FinancePro.DALData
             parameters[0].Value = memberid;
             parameters[1].Value = logpwd;
             return helper.ExecuteSql(strSql.ToString(), parameters);
+        }
+        /// <summary>
+        /// 查询会员是否报单中心
+        /// </summary>
+        /// <param name="memberid"></param>
+        /// <returns></returns>
+        public static bool GetMemberIsReportMember(int memberid)
+        {
+            string sqltxt = @"  SELECT    ISNULL(IsReportMember, 0) AS IsReportMember
+  FROM      MemberInfo
+  WHERE     ID = @id
+            AND MemberStatus = 2";
+            SqlParameter[] paramter = { new SqlParameter("@id",memberid)};
+            object obj = helper.GetSingle(sqltxt,paramter);
+            if (obj.ToString().ParseToInt(0) == 0)
+                return false;
+            else
+                return true;
+        }
+        /// <summary>
+        /// 根据身份证编号查询注册会员个数
+        /// </summary>
+        /// <param name="memberidnumber"></param>
+        /// <returns></returns>
+        public static int GetMemberCountByMemberIDNumber(string memberidnumber)
+        {
+            string sqltxt = @"SELECT  COUNT(ID)
+FROM    MemberInfo
+WHERE   MemberIDNumber = @MemberIDNumber
+        AND MemberStatus <> 3
+        AND MemberType = 1";
+            SqlParameter[] paramter = { new SqlParameter("@MemberIDNumber",memberidnumber) };
+            return helper.GetSingle(sqltxt, paramter).ToString().ParseToInt(0);
         }
     }
 }

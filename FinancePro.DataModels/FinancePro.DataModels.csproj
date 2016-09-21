@@ -42,8 +42,12 @@
   <ItemGroup>
     <Compile Include="AdminSiteNewsModel.cs" />
     <Compile Include="Class1.cs" />
+    <Compile Include="FormCurreyLogModel.cs" />
     <Compile Include="MemberCapitalDetailModel.cs" />
     <Compile Include="MemberCapitalLogModel.cs" />
+    <Compile Include="MemberCashOrderModel.cs" />
+    <Compile Include="MemberExtendInfoModel.cs" />
+    <Compile Include="MemberFormCurreyLogModel.cs" />
     <Compile Include="MemberInfoModel.cs" />
     <Compile Include="MemberIterationInfoModel.cs" />
     <Compile Include="PageProModel.cs" />

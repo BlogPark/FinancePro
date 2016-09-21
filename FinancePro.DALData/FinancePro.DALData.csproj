@@ -45,7 +45,9 @@
     <Compile Include="AdminSiteNewsDAL.cs" />
     <Compile Include="Class1.cs" />
     <Compile Include="DbHelperSQL.cs" />
+    <Compile Include="FormCurreyDAL.cs" />
     <Compile Include="MemberCapitalDetailDAL.cs" />
+    <Compile Include="MemberCashOrderDAL.cs" />
     <Compile Include="MemberDAL.cs" />
     <Compile Include="MemberIterationInfoDAL.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

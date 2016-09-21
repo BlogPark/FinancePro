@@ -106,13 +106,13 @@ namespace FinancePro.DALData
                     new SqlParameter("@GenerationNum",SqlDbType.Int)
 			};
             parameters[0].Value = memberid;
-            parameters[1].Value = iterationnum;
-            MemberIterationInfoModel model = new MemberIterationInfoModel();
+            parameters[1].Value = iterationnum;            
             DataTable dt = helper.Query(strSql.ToString(), parameters).Tables[0];
             if (dt.Rows.Count > 0)
             {
                 foreach (DataRow item in dt.Rows)
                 {
+                    MemberIterationInfoModel model = new MemberIterationInfoModel();
                     if (item["ID"].ToString() != "")
                     {
                         model.ID = int.Parse(item["ID"].ToString());
@@ -141,6 +141,57 @@ namespace FinancePro.DALData
                     {
                         model.RStatus = int.Parse(item["RStatus"].ToString());
                     }
+                    list.Add(model);
+                }
+                return list;
+            }
+            else
+            {
+                return null;
+            }
+        }
+        /// <summary>
+        /// 查询该会员的所有上级
+        /// </summary>
+        /// <param name="memberid"></param>
+        /// <returns></returns>
+        public static List<MemberIterationInfoModel> GetMemberIterationInfoByMemberId(int memberid)
+        {
+            List<MemberIterationInfoModel> list = new List<MemberIterationInfoModel>();
+            string sqltxt = @"SELECT  MemberID ,
+        MemberName ,
+        MemberCode ,
+        SuperiorMemberID ,
+        SuperiorMemberName ,
+        SuperiorMemberCode ,
+        GenerationNum
+FROM    FinanceProData.dbo.MemberIterationInfo
+WHERE   MemberID = @memberid
+        AND RStatus = 1
+ORDER BY GenerationNum ASC";
+            SqlParameter[] paramter = { new SqlParameter("@memberid",memberid)};
+            DataTable dt = helper.Query(sqltxt,paramter).Tables[0];
+            if (dt.Rows.Count > 0)
+            {
+                foreach (DataRow item in dt.Rows)
+                {
+                    MemberIterationInfoModel model = new MemberIterationInfoModel();                    
+                    if (item["MemberID"].ToString() != "")
+                    {
+                        model.MemberID = int.Parse(item["MemberID"].ToString());
+                    }
+                    model.MemberName = item["MemberName"].ToString();
+                    model.MemberCode = item["MemberCode"].ToString();
+                    if (item["SuperiorMemberID"].ToString() != "")
+                    {
+                        model.SuperiorMemberID = int.Parse(item["SuperiorMemberID"].ToString());
+                    }
+                    model.SuperiorMemberName = item["SuperiorMemberName"].ToString();
+                    model.SuperiorMemberCode = item["SuperiorMemberCode"].ToString();
+                    if (item["GenerationNum"].ToString() != "")
+                    {
+                        model.GenerationNum = int.Parse(item["GenerationNum"].ToString());
+                    }                    
                     list.Add(model);
                 }
                 return list;
