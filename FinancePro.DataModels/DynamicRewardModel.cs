@@ -10,7 +10,7 @@ namespace FinancePro.DataModels
     [Serializable]
     [DataContract]
     public class DynamicRewardModel
-    {
+    { 
 
         #region 原始字段
         private int _id;
