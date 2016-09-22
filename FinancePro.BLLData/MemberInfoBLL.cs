@@ -78,6 +78,7 @@ namespace FinancePro.BLLData
             #endregion
             using (TransactionScope scope = new TransactionScope())
             {
+                //扣减会员激活用的
                 //插入会员表
                 int memberid = MemberDAL.AddNewMember(model);
                 if (memberid < 1)
