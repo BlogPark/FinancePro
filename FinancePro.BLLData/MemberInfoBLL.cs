@@ -16,7 +16,7 @@ namespace FinancePro.BLLData
         /// 注册新会员
         /// </summary>
         /// <param name="model"></param>
-        /// <param name="type">正常注册会员  </param>
+        /// <param name="type">正常注册会员</param>
         /// <returns></returns>
         public string AddNewMemberInfo(MemberInfoModel model, int type)
         {
@@ -84,6 +84,23 @@ namespace FinancePro.BLLData
                 {
                     return "操作失败";
                 }
+                //初始化关联新表
+                MemberExtendInfoModel extendmodel = new MemberExtendInfoModel();
+                extendmodel.FormCurreyNum = 0;
+                extendmodel.MemberCode = model.MemberCode;
+                extendmodel.MemberID = memberid;
+                extendmodel.MemberName = model.MemberName;
+                MemberExtendInfoDAL.AddNewMemberExtendInfo(extendmodel);
+                MemberCapitalDetailModel capitalmodel = new MemberCapitalDetailModel();
+                capitalmodel.CompoundCurrency = 0;
+                capitalmodel.GameCurrency = 0;
+                capitalmodel.MemberCode = model.MemberCode;
+                capitalmodel.MemberID = memberid;
+                capitalmodel.MemberName = model.MemberName;
+                capitalmodel.MemberPoints = 0;
+                capitalmodel.SharesCurrency = 0;
+                capitalmodel.ShoppingCurrency = 0;
+                MemberCapitalDetailDAL.AddNewMemberCapitalDetail(capitalmodel);
                 if (type == 1)
                 {
                     //插入推荐表
@@ -166,6 +183,7 @@ namespace FinancePro.BLLData
                     if (report && isreport)
                     {
                         totalnum += baseProportion * reportProportion / 100;
+                        isreport = false;
                     }
                     if (totalnum > 0)
                     {
@@ -186,9 +204,14 @@ namespace FinancePro.BLLData
                         dynamicmodel.SourceMemberID = memberid;
                         dynamicmodel.SourceMemberName = model.MemberName;
                         //加入待充值表
+                        int drows = DynamicRewardDAL.AddNewDynamicReward(dynamicmodel);
+                        if (drows < 1)
+                        {
+                            return "操作失败";
+                        }
                     }
                 }
-                scope.Complete(); 
+                scope.Complete();
             }
             return result;
         }
@@ -200,10 +223,44 @@ namespace FinancePro.BLLData
         public string ActiveMenber(int memberid)
         {
             string result = "";
-            //更改会员状态
-            //释放动态奖金
-            //计算静态资金
-            //检查上级会员是否需要创建新账户
+            #region 读取系统配置信息
+            int pointProportion = SystemConfigsBLL.GetConfigsValueByID(18).ParseToInt(0);//静态分配积分占比(%)
+            int gameProportion = SystemConfigsBLL.GetConfigsValueByID(19).ParseToInt(0);//静态分配游戏币占比(%)
+            int baseProportion = SystemConfigsBLL.GetConfigsValueByID(17).ParseToInt(300);//一期网站计算基数
+            #endregion
+            #region 读取会员信息
+            MemberInfoModel member = MemberDAL.GetBriefSingleMemberModel(memberid);//该会员信息
+            ReMemberRelationModel relationmember = null;
+            if (member.MemberType == 1)
+            {
+                relationmember = ReMemberRelationDAL.GetReMemberRelationByBeRecommMemberID(memberid);//上级推荐人信息
+            }
+            #endregion
+            using (TransactionScope scope = new TransactionScope())
+            {
+                //更改会员状态
+                int rowcount = MemberDAL.UpdateMemberStatus(memberid, 2);
+                if (rowcount < 1)
+                {
+                    return "操作失败";
+                }
+                //释放动态奖金
+                rowcount = DynamicRewardDAL.ReleaseDynamicReward(memberid, "得到来自会员的注册动态奖励");
+                if (rowcount < 1)
+                {
+                    return "操作失败";
+                }
+                rowcount = DynamicRewardDAL.UpdateDynamicRewardStatus(memberid);
+                if (rowcount < 1)
+                {
+                    return "操作失败";
+                }
+                //计算静态资金
+                decimal gamecurrey = baseProportion * pointProportion / 100;
+                decimal commingProportion = baseProportion * gameProportion / 100;
+                rowcount = MemberCapitalDetailDAL.UpdateCompoundCurrencyAndGameCurrency(gamecurrey, commingProportion, "注册返还静态奖励金额", memberid);
+                scope.Complete();
+            }
             return result;
         }
         /// <summary>
