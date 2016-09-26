@@ -300,5 +300,40 @@ WHERE   MemberID = @memberid";
                                     };
             return helper.ExecuteSql(sqltxt, paramter);
         }
+        /// <summary>
+        /// 根据会员ID查询会员的资产信息
+        /// </summary>
+        /// <param name="memberID"></param>
+        /// <returns></returns>
+        public static MemberCapitalDetailModel GetMemberCapitalDetailByMemberID(int memberID)
+        {
+            StringBuilder strSql = new StringBuilder();
+            strSql.Append("select  MemberID, MemberName, MemberCode, GameCurrency, SharesCurrency, ShoppingCurrency, MemberPoints, CompoundCurrency  ");
+            strSql.Append("  from MemberCapitalDetail ");
+            strSql.Append(" where MemberID=@MemberID");
+            SqlParameter[] parameters = {
+					new SqlParameter("@MemberID", SqlDbType.Int)
+			};
+            parameters[0].Value = memberID;
+            MemberCapitalDetailModel model = new MemberCapitalDetailModel();
+            DataSet ds = helper.Query(strSql.ToString(), parameters);
+            if (ds.Tables[0].Rows.Count > 0)
+            {
+                model.ID = ds.Tables[0].Rows[0]["ID"].ToString().ParseToInt(0);
+                model.MemberID = ds.Tables[0].Rows[0]["MemberID"].ToString().ParseToInt(0);
+                model.MemberName = ds.Tables[0].Rows[0]["MemberName"].ToString();
+                model.MemberCode = ds.Tables[0].Rows[0]["MemberCode"].ToString();
+                model.GameCurrency = ds.Tables[0].Rows[0]["GameCurrency"].ToString().ParseToDecimal(0);
+                model.SharesCurrency = ds.Tables[0].Rows[0]["SharesCurrency"].ToString().ParseToDecimal(0);
+                model.ShoppingCurrency = ds.Tables[0].Rows[0]["ShoppingCurrency"].ToString().ParseToDecimal(0);
+                model.MemberPoints = ds.Tables[0].Rows[0]["MemberPoints"].ToString().ParseToDecimal(0);
+                model.CompoundCurrency = ds.Tables[0].Rows[0]["CompoundCurrency"].ToString().ParseToDecimal(0);
+                return model;
+            }
+            else
+            {
+                return null;
+            }
+        }
     }
 }

@@ -231,10 +231,24 @@ namespace FinancePro.BLLData
             #endregion
             #region 读取会员信息
             MemberInfoModel member = MemberDAL.GetBriefSingleMemberModel(memberid);//该会员信息
-            ReMemberRelationModel relationmember = null;
+            ReMemberRelationModel relationmember = null;//推荐人信息
+            MemberInfoModel SourceMemberInfo = null;//来源会员信息
             if (member.MemberType == 1)
             {
                 relationmember = ReMemberRelationDAL.GetReMemberRelationByBeRecommMemberID(memberid);//上级推荐人信息
+            }
+            if (member.MemberType == 2)
+            {
+                SourceMemberInfo = MemberDAL.GetBriefSingleMemberModel(member.SourceMemberCode);
+            }
+            MemberCapitalDetailModel memberCapital = null;//查询会员的资产信息
+            if (relationmember != null)
+            {
+                memberCapital = MemberCapitalDetailDAL.GetMemberCapitalDetailByMemberID(relationmember.RecommendMemberID);
+            }
+            if (SourceMemberInfo != null)
+            {
+                memberCapital = MemberCapitalDetailDAL.GetMemberCapitalDetailByMemberID(SourceMemberInfo.ID);
             }
             #endregion
             using (TransactionScope scope = new TransactionScope())
@@ -244,6 +258,15 @@ namespace FinancePro.BLLData
                 if (rowcount < 1)
                 {
                     return "操作失败";
+                }
+                if (member.MemberType == 2)//如果为衍生账户
+                {
+                    //激活来源账户的附属账户
+                    //扣除来源账户的游戏币和复利币
+                }
+                else if (member.MemberType == 1)//扣减推荐人的报单币 复利币和游戏币
+                {
+                    //扣减推荐人的报单币 复利币和游戏币
                 }
                 //释放动态奖金
                 rowcount = DynamicRewardDAL.ReleaseDynamicReward(memberid, "得到来自会员的注册动态奖励");
@@ -256,7 +279,7 @@ namespace FinancePro.BLLData
                 {
                     return "操作失败";
                 }
-                //计算静态资金
+                //计算静态资金并返还
                 decimal gamecurrey = baseProportion * pointProportion / 100;
                 decimal commingProportion = baseProportion * gameProportion / 100;
                 rowcount = MemberCapitalDetailDAL.UpdateCompoundCurrencyAndGameCurrency(gamecurrey, commingProportion, "注册返还静态奖励金额", memberid);
