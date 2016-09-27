@@ -8,6 +8,9 @@ using FinancePro.DataModels;
 
 namespace FinancePro.BLLData
 {
+    /// <summary>
+    /// 系统配置结构类
+    /// </summary>
     public class SystemConfigsBLL
     {
         /// <summary>

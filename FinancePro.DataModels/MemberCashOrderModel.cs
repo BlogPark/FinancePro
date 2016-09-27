@@ -73,6 +73,16 @@ namespace FinancePro.DataModels
             get { return _cashnum; }
             set { _cashnum = value; }
         }
+        private decimal _commissionnum;
+        /// <summary>
+        /// 手续费用
+        /// </summary>		
+        [DataMember]
+        public decimal CommissionNum
+        {
+            get { return _commissionnum; }
+            set { _commissionnum = value; }
+        }     
         private decimal _finishcashnum;
         /// <summary>
         /// 完成金额
@@ -140,6 +150,11 @@ namespace FinancePro.DataModels
         /// </summary>
         [DataMember]
         public int PageIndex { get; set; }
+        /// <summary>
+        /// 相差天数
+        /// </summary>
+        [DataMember]
+        public int DiffDay { get; set; }
         #endregion
     }
 }

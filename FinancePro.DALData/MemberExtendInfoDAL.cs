@@ -9,6 +9,9 @@ using FinancePro.DataModels;
 
 namespace FinancePro.DALData
 {
+    /// <summary>
+    ///会员扩展信息操作结构类
+    /// </summary>
     public class MemberExtendInfoDAL
     {
         public static DbHelperSQL helper = new DbHelperSQL();
@@ -46,6 +49,64 @@ namespace FinancePro.DALData
                 return Convert.ToInt32(obj);
             }
 
+        }
+        /// <summary>
+        /// 读取会员的扩展信息
+        /// </summary>
+        /// <param name="memberid"></param>
+        /// <returns></returns>
+        public static MemberExtendInfoModel GetMemberExtendInfoByMemberID(int memberid)
+        {
+            StringBuilder strSql = new StringBuilder();
+            strSql.Append("select *  ");
+            strSql.Append("  from MemberExtendInfo ");
+            strSql.Append(" where MemberID=@MemberID");
+            SqlParameter[] parameters = {
+					new SqlParameter("@MemberID", SqlDbType.Int)
+			};
+            parameters[0].Value = memberid;
+            MemberExtendInfoModel model = new MemberExtendInfoModel();
+            DataSet ds = helper.Query(strSql.ToString(), parameters);
+            if (ds.Tables[0].Rows.Count > 0)
+            {
+                model.ID = ds.Tables[0].Rows[0]["ID"].ToString().ParseToInt(0);
+                model.MemberID = ds.Tables[0].Rows[0]["MemberID"].ToString().ParseToInt(0);
+                model.MemberName = ds.Tables[0].Rows[0]["MemberName"].ToString();
+                model.MemberCode = ds.Tables[0].Rows[0]["MemberCode"].ToString();
+                model.FormCurreyNum = ds.Tables[0].Rows[0]["FormCurreyNum"].ToString().ParseToInt(0);
+                return model;
+            }
+            else
+            {
+                return null;
+            }
+        }
+        /// <summary>
+        /// 更改会员的报单币数量
+        /// </summary>
+        /// <param name="formcurrey"></param>
+        /// <param name="memberid"></param>
+        /// <returns></returns>
+        public static int UpdateMemberFormCurrey(int formcurrey,int memberid,string remark)
+        {
+            string sqltxt = @"UPDATE  A
+SET     FormCurreyNum = FormCurreyNum + @FormCurreyNum
+OUTPUT  DELETED.MemberID ,
+        DELETED.MemberName ,
+        DELETED.MemberCode ,
+        DELETED.FormCurreyNum ,
+        INSERTED.FormCurreyNum ,
+        @remark ,
+        GETDATE()
+        INTO dbo.MemberFormCurreyLog
+FROM    dbo.MemberExtendInfo A
+WHERE   MemberID = @memberid";
+            SqlParameter[] paramter = {
+                                          new SqlParameter("@FormCurreyNum",formcurrey),
+                                          new SqlParameter("@remark",remark),
+                                          new SqlParameter("@memberid",memberid)
+                                    };
+            return helper.ExecuteSql(sqltxt, paramter);
         }
     }
 }

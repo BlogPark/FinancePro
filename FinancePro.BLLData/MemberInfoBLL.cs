@@ -10,6 +10,9 @@ using FinancePro.DataModels;
 
 namespace FinancePro.BLLData
 {
+    /// <summary>
+    /// 系统会员的操作结构类
+    /// </summary>
     public class MemberInfoBLL
     {
         /// <summary>
@@ -233,22 +236,27 @@ namespace FinancePro.BLLData
             MemberInfoModel member = MemberDAL.GetBriefSingleMemberModel(memberid);//该会员信息
             ReMemberRelationModel relationmember = null;//推荐人信息
             MemberInfoModel SourceMemberInfo = null;//来源会员信息
+            MemberInfoModel ChildMemberInfo = null;//子账户信息
+            MemberExtendInfoModel memberextendinfo = null;//会员扩展信息
+            MemberCapitalDetailModel memberCapital = null;//查询会员的资产信息
             if (member.MemberType == 1)
             {
                 relationmember = ReMemberRelationDAL.GetReMemberRelationByBeRecommMemberID(memberid);//上级推荐人信息
+                if (relationmember != null)
+                {
+                    memberextendinfo = MemberExtendInfoDAL.GetMemberExtendInfoByMemberID(relationmember.ID);
+                    memberCapital = MemberCapitalDetailDAL.GetMemberCapitalDetailByMemberID(relationmember.RecommendMemberID);
+                }
             }
             if (member.MemberType == 2)
             {
-                SourceMemberInfo = MemberDAL.GetBriefSingleMemberModel(member.SourceMemberCode);
-            }
-            MemberCapitalDetailModel memberCapital = null;//查询会员的资产信息
-            if (relationmember != null)
-            {
-                memberCapital = MemberCapitalDetailDAL.GetMemberCapitalDetailByMemberID(relationmember.RecommendMemberID);
-            }
-            if (SourceMemberInfo != null)
-            {
-                memberCapital = MemberCapitalDetailDAL.GetMemberCapitalDetailByMemberID(SourceMemberInfo.ID);
+                SourceMemberInfo = MemberDAL.GetBriefSingleMemberModel(member.SourceMemberCode);//来源会员信息
+                ChildMemberInfo = MemberDAL.GetBriefSingleMemberModelBySourceMemberCode(member.SourceMemberCode);
+                if (SourceMemberInfo != null)
+                {
+                    memberextendinfo = MemberExtendInfoDAL.GetMemberExtendInfoByMemberID(SourceMemberInfo.ID);
+                    memberCapital = MemberCapitalDetailDAL.GetMemberCapitalDetailByMemberID(SourceMemberInfo.ID);
+                }
             }
             #endregion
             using (TransactionScope scope = new TransactionScope())
@@ -261,13 +269,71 @@ namespace FinancePro.BLLData
                 }
                 if (member.MemberType == 2)//如果为衍生账户
                 {
-                    //激活来源账户的附属账户
-                    //扣除来源账户的游戏币和复利币
+                    if (ChildMemberInfo != null)
+                    {
+                        //激活来源账户的附属账户
+                        rowcount = MemberDAL.UpdateMemberStatus(ChildMemberInfo.ID, 2);
+                        if (rowcount < 1)
+                        {
+                            return "操作失败";
+                        }
+                    }
                 }
-                else if (member.MemberType == 1)//扣减推荐人的报单币 复利币和游戏币
+                //扣除来源账户的游戏币和报单币(激活账户需要扣除200游戏币100报单币或者积分)
+                #region 计算信息
+                if (memberextendinfo.FormCurreyNum > 100 && memberCapital.GameCurrency > 200)//当会员的相关信息足够时
                 {
-                    //扣减推荐人的报单币 复利币和游戏币
+                    //扣减报单币
+                    rowcount = MemberExtendInfoDAL.UpdateMemberFormCurrey(0 - 100, memberextendinfo.MemberID, "激活会员消耗100报单币");
+                    if (rowcount < 1)
+                    {
+                        return "操作失败";
+                    }
+                    //扣减游戏币
+                    rowcount = MemberCapitalDetailDAL.UpdateGameCurrency(0 - 200, "激活会员消耗", memberextendinfo.MemberID);
+                    if (rowcount < 1)
+                    {
+                        return "操作失败";
+                    }
                 }
+                else if (memberextendinfo.FormCurreyNum < 100 || memberCapital.GameCurrency < 200)
+                {
+                    decimal Surplus = 0;
+                    if (memberextendinfo.FormCurreyNum < 100)
+                    {
+                        Surplus += 100 - memberextendinfo.FormCurreyNum;
+                    }
+                    if (memberCapital.GameCurrency < 200)
+                    {
+                        Surplus += 200 - memberCapital.GameCurrency;
+                    }
+                    if (memberCapital.MemberPoints < Surplus)
+                    {
+                        return "操作失败";
+                    }
+                    if (memberextendinfo.FormCurreyNum > 0)
+                    {
+                        rowcount = MemberExtendInfoDAL.UpdateMemberFormCurrey(0 - 100, memberextendinfo.MemberID, "激活会员消耗100报单币");
+                        if (rowcount < 1)
+                        {
+                            return "操作失败";
+                        }
+                    }
+                    if (memberCapital.GameCurrency > 0)
+                    {
+                        rowcount = MemberCapitalDetailDAL.UpdateGameCurrency(0 - 200, "激活会员消耗", memberextendinfo.MemberID);
+                        if (rowcount < 1)
+                        {
+                            return "操作失败";
+                        }
+                    }
+                    rowcount = MemberCapitalDetailDAL.UpdateMemberPoints(0 - Surplus, "激活会员消耗", memberextendinfo.MemberID);
+                    if (rowcount < 1)
+                    {
+                        return "操作失败";
+                    }
+                }
+                #endregion
                 //释放动态奖金
                 rowcount = DynamicRewardDAL.ReleaseDynamicReward(memberid, "得到来自会员的注册动态奖励");
                 if (rowcount < 1)
