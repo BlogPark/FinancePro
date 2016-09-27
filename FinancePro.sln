@@ -1,7 +1,13 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2012
+# Visual Studio 2013
+VisualStudioVersion = 12.0.40629.0
+MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FinancePro", "FinancePro\FinancePro.csproj", "{794A7528-8922-478E-BCB8-C065443ABA61}"
+	ProjectSection(ProjectDependencies) = postProject
+		{8EEC363D-D425-4868-A422-6D0A62890FE7} = {8EEC363D-D425-4868-A422-6D0A62890FE7}
+		{9F1E8ADE-94B0-47D7-BB01-D5D6408A5265} = {9F1E8ADE-94B0-47D7-BB01-D5D6408A5265}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FinancePro.DALData", "FinancePro.DALData\FinancePro.DALData.csproj", "{8EEC363D-D425-4868-A422-6D0A62890FE7}"
 EndProject
