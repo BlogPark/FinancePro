@@ -156,6 +156,49 @@ namespace FinancePro.DALData
             }
         }
         /// <summary>
+        /// 根据会员编号读取单个会员信息(简要字段)
+        /// </summary>
+        /// <param name="membercode">会员编号</param>
+        /// <returns></returns>
+        public static MemberInfoModel GetBriefSingleMemberModelByMemberName(string membername)
+        {
+            StringBuilder strSql = new StringBuilder();
+            strSql.Append(@"select ID, MemberBankName, MemberBankCode, MemberStatus, MemberType, IsFinalMember, IsDerivativeMember, IsSpecialMember, IsReportMember, MemberName, MemberCode, MemberPhone,MemberIDNumber,SourceMemberCode  ");
+            strSql.Append("  from MemberInfo ");
+            strSql.Append(" where MemberName=@MemberName");
+            SqlParameter[] parameters = {
+					new SqlParameter("@MemberName", SqlDbType.NVarChar)
+			};
+            parameters[0].Value = membername;
+            MemberInfoModel model = new MemberInfoModel();
+            DataSet ds = helper.Query(strSql.ToString(), parameters);
+            if (ds.Tables[0].Rows.Count > 0)
+            {
+                if (ds.Tables[0].Rows[0]["ID"].ToString() != "")
+                {
+                    model.ID = int.Parse(ds.Tables[0].Rows[0]["ID"].ToString());
+                }
+                model.MemberBankName = ds.Tables[0].Rows[0]["MemberBankName"].ToString();
+                model.MemberBankCode = ds.Tables[0].Rows[0]["MemberBankCode"].ToString();
+                model.MemberStatus = ds.Tables[0].Rows[0]["MemberStatus"].ToString().ParseToInt(1);
+                model.MemberType = ds.Tables[0].Rows[0]["MemberType"].ToString().ParseToInt(1);
+                model.IsFinalMember = ds.Tables[0].Rows[0]["IsFinalMember"].ToString().ParseToInt(0);
+                model.IsDerivativeMember = ds.Tables[0].Rows[0]["IsDerivativeMember"].ToString().ParseToInt(0);
+                model.IsSpecialMember = ds.Tables[0].Rows[0]["IsSpecialMember"].ToString().ParseToInt(0);
+                model.IsReportMember = ds.Tables[0].Rows[0]["IsReportMember"].ToString().ParseToInt(0);
+                model.MemberName = ds.Tables[0].Rows[0]["MemberName"].ToString();
+                model.MemberCode = ds.Tables[0].Rows[0]["MemberCode"].ToString();
+                model.MemberPhone = ds.Tables[0].Rows[0]["MemberPhone"].ToString();
+                model.MemberIDNumber = ds.Tables[0].Rows[0]["MemberIDNumber"].ToString();
+                model.SourceMemberCode = ds.Tables[0].Rows[0]["SourceMemberCode"].ToString();
+                return model;
+            }
+            else
+            {
+                return null;
+            }
+        }
+        /// <summary>
         /// 根据来源会员编号读取单个终极会员信息(简要字段)
         /// </summary>
         /// <param name="ID"></param>

@@ -16,6 +16,40 @@ namespace FinancePro.BLLData
     public class MemberInfoBLL
     {
         /// <summary>
+        /// 会员登陆入口
+        /// </summary>
+        /// <param name="membercode"></param>
+        /// <param name="loginpwd"></param>
+        /// <param name="loginresult"></param>
+        /// <returns></returns>
+        public MemberInfoModel MemberLogin(string membercode,string loginpwd,out string loginresult)
+        {           
+            MemberInfoModel member = MemberDAL.GetBriefSingleMemberModel(membercode);
+            if (member == null)
+            {
+                loginresult = "无此会员";
+                return null;//查无此会员
+            }
+            if (member.MemberStatus == 1)
+            {
+                loginresult = "该账户没有激活";
+                return null;
+            }
+            if (member.MemberStatus == 3)
+            {
+                loginresult = "该账户已被冻结";
+                return null;
+            }
+            if (member.MemberLogPwd != loginpwd)
+            {
+                loginresult = "登录密码不正确";
+                return null;
+            }
+            loginresult = "1";
+            return member;
+        }
+
+        /// <summary>
         /// 注册新会员
         /// </summary>
         /// <param name="model"></param>
@@ -24,6 +58,7 @@ namespace FinancePro.BLLData
         public string AddNewMemberInfo(MemberInfoModel model, int type)
         {
             string result = "1";
+            int newmemberid = 0;
             #region 读取系统配置信息
             int maxsamemembercount = SystemConfigsBLL.GetConfigsValueByID(9).ParseToInt(10);//同一身份允许最多出现账户数
             string secrectstr = SystemConfigsBLL.GetConfigsValueByID(16);//网站加密字符串
@@ -33,6 +68,7 @@ namespace FinancePro.BLLData
             int reportProportion = SystemConfigsBLL.GetConfigsValueByID(4).ParseToInt(0);//报单奖比例(%)
             int baseProportion = SystemConfigsBLL.GetConfigsValueByID(17).ParseToInt(300);//一期网站计算基数
             string distributionList = SystemConfigsBLL.GetConfigsValueByID(7);//动态分配比例值(%)
+            int isAutoActive = SystemConfigsBLL.GetConfigsValueByID(22).ParseToInt(1);//是否自动激活衍生账户
             #endregion
             #region 注册前验证
             //验证会员信息
@@ -88,6 +124,7 @@ namespace FinancePro.BLLData
                 {
                     return "操作失败";
                 }
+                newmemberid = memberid;//赋值新的会员ID
                 //初始化关联新表
                 MemberExtendInfoModel extendmodel = new MemberExtendInfoModel();
                 extendmodel.FormCurreyNum = 0;
@@ -217,6 +254,14 @@ namespace FinancePro.BLLData
                 }
                 scope.Complete();
             }
+            if (type == 2 && isAutoActive == 1)
+            {
+                string activeresult = ActiveMenber(newmemberid);
+                if (activeresult != "1")
+                {
+                    return "会员注册成功，但激活失败，请手动激活";
+                }
+            }
             return result;
         }
         /// <summary>
@@ -226,7 +271,7 @@ namespace FinancePro.BLLData
         /// <returns></returns>
         public string ActiveMenber(int memberid)
         {
-            string result = "";
+            string result = "1";
             #region 读取系统配置信息
             int pointProportion = SystemConfigsBLL.GetConfigsValueByID(18).ParseToInt(0);//静态分配积分占比(%)
             int gameProportion = SystemConfigsBLL.GetConfigsValueByID(19).ParseToInt(0);//静态分配游戏币占比(%)
@@ -273,6 +318,14 @@ namespace FinancePro.BLLData
                     {
                         //激活来源账户的附属账户
                         rowcount = MemberDAL.UpdateMemberStatus(ChildMemberInfo.ID, 2);
+                        if (rowcount < 1)
+                        {
+                            return "操作失败";
+                        }
+                        //计算子账户的返还信息(游戏币和复利币)
+                        decimal Cgamecurrey = baseProportion * pointProportion / 100;
+                        decimal CcommingProportion = baseProportion * gameProportion / 100;
+                        rowcount = MemberCapitalDetailDAL.UpdateCompoundCurrencyAndGameCurrency(Cgamecurrey, CcommingProportion, "注册返还静态奖励金额", ChildMemberInfo.ID);
                         if (rowcount < 1)
                         {
                             return "操作失败";
@@ -335,7 +388,7 @@ namespace FinancePro.BLLData
                 }
                 #endregion
                 //释放动态奖金
-                rowcount = DynamicRewardDAL.ReleaseDynamicReward(memberid, "得到来自会员的注册动态奖励");
+                rowcount = DynamicRewardDAL.ReleaseDynamicReward(memberid, "得到来自会员的注册激活动态奖励");
                 if (rowcount < 1)
                 {
                     return "操作失败";
@@ -349,6 +402,11 @@ namespace FinancePro.BLLData
                 decimal gamecurrey = baseProportion * pointProportion / 100;
                 decimal commingProportion = baseProportion * gameProportion / 100;
                 rowcount = MemberCapitalDetailDAL.UpdateCompoundCurrencyAndGameCurrency(gamecurrey, commingProportion, "注册返还静态奖励金额", memberid);
+                if (rowcount < 1)
+                {
+                    return "操作失败";
+                }
+                
                 scope.Complete();
             }
             return result;

@@ -61,6 +61,7 @@
     <Compile Include="SystemConfigsModel.cs" />
     <Compile Include="UploadFileModel.cs" />
     <Compile Include="WebContactMessageModel.cs" />
+    <Compile Include="WebHomeDataModel.cs" />
     <Compile Include="WebSettingsModel.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
