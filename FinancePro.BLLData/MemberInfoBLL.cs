@@ -48,7 +48,6 @@ namespace FinancePro.BLLData
             loginresult = "1";
             return member;
         }
-
         /// <summary>
         /// 注册新会员
         /// </summary>
