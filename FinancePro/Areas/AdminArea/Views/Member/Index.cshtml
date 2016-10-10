@@ -87,8 +87,10 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach (var item in Model.memberlist)
+                                @if (Model.memberlist != null)
                                 {
+                                    foreach (var item in Model.memberlist)
+                                    {
                                     <tr id="tr@(item.ID)" class="text-center">
                                         <td>
                                             <input type="checkbox" name="proList" value="@item.ID" /></td>
@@ -120,6 +122,7 @@
                                             </p>
                                         </td>
                                     </tr>
+                                    }
                                 }
                             </tbody>
                         </table>
