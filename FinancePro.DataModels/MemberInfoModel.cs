@@ -84,7 +84,7 @@ namespace FinancePro.DataModels
         {
             get { return _memberidnumber; }
             set { _memberidnumber = value; }
-        }      
+        }
         private string _memberprovince;
         /// <summary>
         /// 省份
@@ -155,7 +155,7 @@ namespace FinancePro.DataModels
             get { return _memberlogpwd; }
             set { _memberlogpwd = value; }
         }
-        private int _memberstatus;
+        private int _memberstatus = 0;
         /// <summary>
         /// 会员状态(1 待激活 2 已激活 3 已冻结 4 已完结)
         /// </summary>		
@@ -234,11 +234,26 @@ namespace FinancePro.DataModels
         {
             get { return _sourcemembercode; }
             set { _sourcemembercode = value; }
-        }        
+        }
         #endregion
 
         #region 扩展字段
-
+        /// <summary>
+        /// 页索引
+        /// </summary>
+        public int PageIndex { get; set; }
+        /// <summary>
+        /// 页容量
+        /// </summary>
+        public int PageSize { get; set; }
+        /// <summary>
+        /// 状态名称
+        /// </summary>
+        public string MemberStatusName { get; set; }
+        /// <summary>
+        /// 类型名称
+        /// </summary>
+        public string MemberTypeName { get; set; }
         #endregion
 
     }

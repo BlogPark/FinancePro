@@ -293,7 +293,7 @@ namespace FinancePro.DALData
             parameters[14].Value = model.MemberProvince;
             parameters[15].Value = model.MemberCity;
             parameters[16].Value = model.MemberArea;
-            parameters[17].Value=model.MemberIDNumber;
+            parameters[17].Value = model.MemberIDNumber;
             parameters[18].Value = model.SourceMemberCode;
             object obj = helper.GetSingle(strSql.ToString(), parameters);
             if (obj == null)
@@ -425,8 +425,8 @@ namespace FinancePro.DALData
   FROM      MemberInfo
   WHERE     ID = @id
             AND MemberStatus = 2";
-            SqlParameter[] paramter = { new SqlParameter("@id",memberid)};
-            object obj = helper.GetSingle(sqltxt,paramter);
+            SqlParameter[] paramter = { new SqlParameter("@id", memberid) };
+            object obj = helper.GetSingle(sqltxt, paramter);
             if (obj.ToString().ParseToInt(0) == 0)
                 return false;
             else
@@ -444,8 +444,121 @@ FROM    MemberInfo
 WHERE   MemberIDNumber = @MemberIDNumber
         AND MemberStatus <> 3
         AND MemberType = 1";
-            SqlParameter[] paramter = { new SqlParameter("@MemberIDNumber",memberidnumber) };
+            SqlParameter[] paramter = { new SqlParameter("@MemberIDNumber", memberidnumber) };
             return helper.GetSingle(sqltxt, paramter).ToString().ParseToInt(0);
+        }
+        /// <summary>
+        /// 分页查询会员信息
+        /// </summary>
+        /// <param name="searchmodel">查询条件</param>
+        /// <param name="totalrowcount">总记录数</param>
+        /// <returns></returns>
+        public static List<MemberInfoModel> GetMemberListForPage(MemberInfoModel searchmodel, out int totalrowcount)
+        {
+            List<MemberInfoModel> list = new List<MemberInfoModel>();
+            string columms = @"ID,MemberName,MemberCode,MemberPhone,MemberEmail,MemberIDNumber,MemberProvince,MemberCity,MemberArea,MemberAddress,MemberBankName,MemberBankCode, MemberStatus,CASE MemberStatus WHEN 1 THEN '待激活' WHEN 2 THEN '已激活' WHEN 3 THEN '已禁用' WHEN 4 THEN '已出局'END AS MemberStatusName,MemberType,CASE MemberType WHEN 1 THEN '常规账户' WHEN 2 THEN '衍生账户' WHEN 3 THEN '终端账户' WHEN 4 THEN '超级会员'END AS MemberTypeName,IsFinalMember,IsDerivativeMember,IsSpecialMember,IsReportMember,AddTime,SourceMemberCode";
+            string where = "";
+            if (searchmodel != null)
+            {
+                if (searchmodel.MemberStatus >0)
+                {
+                    where += @" MemberStatus=" + searchmodel.MemberStatus;
+                }
+                //名字
+                if (!string.IsNullOrWhiteSpace(searchmodel.MemberName) && string.IsNullOrWhiteSpace(where))
+                {
+                    where += @" MemberName Like '%" + searchmodel.MemberName + "%'";
+                }
+                else if (!string.IsNullOrWhiteSpace(searchmodel.MemberName) && !string.IsNullOrWhiteSpace(where))
+                {
+                    where += @" AND MemberName Like '%" + searchmodel.MemberName + "%'";
+                }
+                //编号
+                if (!string.IsNullOrWhiteSpace(searchmodel.MemberCode) && string.IsNullOrWhiteSpace(where))
+                {
+                    where += @" MemberCode ='" + searchmodel.MemberCode + "'";
+                }
+                else if (!string.IsNullOrWhiteSpace(searchmodel.MemberCode) && !string.IsNullOrWhiteSpace(where))
+                {
+                    where += @" AND MemberCode ='" + searchmodel.MemberCode + "'";
+                }
+                //手机
+                if (!string.IsNullOrWhiteSpace(searchmodel.MemberPhone) && string.IsNullOrWhiteSpace(where))
+                {
+                    where += @" MemberPhone ='" + searchmodel.MemberPhone + "'";
+                }
+                else if (!string.IsNullOrWhiteSpace(searchmodel.MemberPhone) && !string.IsNullOrWhiteSpace(where))
+                {
+                    where += @" AND MemberPhone ='" + searchmodel.MemberPhone + "'";
+                }
+            }
+            PageProModel page = new PageProModel();
+            page.colums = columms;
+            page.orderby = "AddTime";
+            page.pageindex = searchmodel.PageIndex;
+            page.pagesize = searchmodel.PageSize;
+            page.tablename = @"dbo.MemberInfo";
+            page.where = where;
+            DataTable dt = PublicHelperDAL.GetTable(page, out totalrowcount);
+            if (dt.Rows.Count > 0)
+            {
+                foreach (DataRow item in dt.Rows)
+                {
+                    MemberInfoModel model = new MemberInfoModel();
+                    if (item["ID"].ToString() != "")
+                    {
+                        model.ID = int.Parse(item["ID"].ToString());
+                    }
+                    model.MemberArea = item["MemberArea"].ToString();
+                    model.MemberAddress = item["MemberAddress"].ToString();
+                    model.MemberBankName = item["MemberBankName"].ToString();
+                    model.MemberBankCode = item["MemberBankCode"].ToString();
+                    if (item["MemberStatus"].ToString() != "")
+                    {
+                        model.MemberStatus = int.Parse(item["MemberStatus"].ToString());
+                    }
+                    if (item["MemberType"].ToString() != "")
+                    {
+                        model.MemberType = int.Parse(item["MemberType"].ToString());
+                    }
+                    if (item["IsFinalMember"].ToString() != "")
+                    {
+                        model.IsFinalMember = int.Parse(item["IsFinalMember"].ToString());
+                    }
+                    if (item["IsDerivativeMember"].ToString() != "")
+                    {
+                        model.IsDerivativeMember = int.Parse(item["IsDerivativeMember"].ToString());
+                    }
+                    if (item["IsSpecialMember"].ToString() != "")
+                    {
+                        model.IsSpecialMember = int.Parse(item["IsSpecialMember"].ToString());
+                    }
+                    model.MemberName = item["MemberName"].ToString();
+                    if (item["IsReportMember"].ToString() != "")
+                    {
+                        model.IsReportMember = int.Parse(item["IsReportMember"].ToString());
+                    }
+                    if (item["AddTime"].ToString() != "")
+                    {
+                        model.AddTime = DateTime.Parse(item["AddTime"].ToString());
+                    }
+                    model.SourceMemberCode = item["SourceMemberCode"].ToString();
+                    model.MemberCode = item["MemberCode"].ToString();
+                    model.MemberPhone = item["MemberPhone"].ToString();
+                    model.MemberEmail = item["MemberEmail"].ToString();
+                    model.MemberIDNumber = item["MemberIDNumber"].ToString();
+                    model.MemberProvince = item["MemberProvince"].ToString();
+                    model.MemberCity = item["MemberCity"].ToString();
+                    model.MemberStatusName = item["MemberStatusName"].ToString();
+                    model.MemberTypeName = item["MemberTypeName"].ToString();
+                    list.Add(model);
+                }
+                return list;
+            }
+            else
+            {
+                return null;
+            }
         }
     }
 }

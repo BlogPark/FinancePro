@@ -33,10 +33,10 @@ namespace FinancePro.Controllers
         /// <summary>
         /// 网站加密字符串
         /// </summary>
-        public static string SecrectStr = SystemConfigsBLL.GetConfigsValueByID(10);
+        public static string SecrectStr = SystemConfigsBLL.GetConfigsValueByID(24);
         /// <summary>
         /// 网站使用模板名称
         /// </summary>
-        public static string TempleteName = string.IsNullOrWhiteSpace(SystemConfigsBLL.GetConfigsValueByID(23)) ? "WebFrontArea" : SystemConfigsBLL.GetConfigsValueByID(23);
+        public static string TempleteName =  "WebFrontArea";
     }
 }

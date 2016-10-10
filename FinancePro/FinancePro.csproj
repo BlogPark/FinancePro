@@ -40,6 +40,9 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="MvcPager">
+      <HintPath>..\FinancePro.Common\lib\MvcPager.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
@@ -111,11 +114,15 @@
   <ItemGroup>
     <Compile Include="Areas\AdminArea\AdminAreaAreaRegistration.cs" />
     <Compile Include="Areas\AdminArea\Controllers\DefaultController.cs" />
+    <Compile Include="Areas\AdminArea\Controllers\MemberController.cs" />
     <Compile Include="Areas\AdminArea\Controllers\SysSettingsController.cs" />
+    <Compile Include="Areas\AdminArea\Models\AddMemberViewModel.cs" />
     <Compile Include="Areas\AdminArea\Models\AddPermissionsViewModel.cs" />
     <Compile Include="Areas\AdminArea\Models\AdminUserViewModel.cs" />
     <Compile Include="Areas\AdminArea\Models\DefaultViewModel.cs" />
+    <Compile Include="Areas\AdminArea\Models\EditMemberViewModel.cs" />
     <Compile Include="Areas\AdminArea\Models\LoginViewModel.cs" />
+    <Compile Include="Areas\AdminArea\Models\MemberIndexViewModel.cs" />
     <Compile Include="Areas\AdminArea\Models\SysAdminGroupViewModel.cs" />
     <Compile Include="Areas\AdminArea\Models\SysConfigsViewModel.cs" />
     <Compile Include="Areas\AdminArea\Models\SysMenuIndexViewModel.cs" />
@@ -583,6 +590,33 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Areas\AdminArea\Views\SysSettings\AddPermissions.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Areas\AdminArea\Views\Default\Index.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\IndexPub\Notification.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\IndexPub\AdminTask.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\IndexPub\Menu.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\IndexPub\Message.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\IndexPub\UserInfo.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Areas\AdminArea\Views\Member\Index.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Areas\AdminArea\Views\Member\AddMember.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Areas\AdminArea\Views\Member\EditMember.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

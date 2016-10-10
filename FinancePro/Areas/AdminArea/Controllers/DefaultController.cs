@@ -41,8 +41,8 @@ namespace FinancePro.Areas.AdminArea.Controllers
         {
             LoginViewModel model = new LoginViewModel();
             model.returnurl = returnurl;
-            this.ViewBag.Title = SystemConfigsBLL.GetConfigsValueByID(1);
-            this.ViewBag.Description = SystemConfigsBLL.GetConfigsValueByID(2);
+            this.ViewBag.Title = SystemConfigsBLL.GetConfigsValueByID(23);
+            this.ViewBag.Description = SystemConfigsBLL.GetConfigsValueByID(23);
             return View(model);
         }
         [HttpPost]
@@ -80,8 +80,8 @@ namespace FinancePro.Areas.AdminArea.Controllers
                     return RedirectToAction("Index", "Default", new { area = "AdminArea" });
                 }
             }
-            this.ViewBag.Title = SystemConfigsBLL.GetConfigsValueByID(1);
-            this.ViewBag.Description = SystemConfigsBLL.GetConfigsValueByID(2);
+            this.ViewBag.Title = SystemConfigsBLL.GetConfigsValueByID(23);
+            this.ViewBag.Description = SystemConfigsBLL.GetConfigsValueByID(23);
             return View(model);
         }
         /// <summary>

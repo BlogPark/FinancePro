@@ -1,0 +1,195 @@
+﻿@model FinancePro.Areas.AdminArea.Models.EditMemberViewModel
+@{
+    Layout = "~/Views/_AdminLayout.cshtml";
+}
+<div class="container">
+    <div class="row">
+        <div id="content" class="col-lg-12">
+            <!-- PAGE HEADER-->
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="page-header">
+                        <!-- BREADCRUMBS -->
+                        <ul class="breadcrumb">
+                            <li>
+                                <i class="fa fa-home"></i>
+                                <a href="index.html">Home</a>
+                            </li>
+                            <li>
+                                <a href="#">会员管理</a>
+                            </li>
+                            <li>编辑会员</li>
+                        </ul>
+                        <!-- /BREADCRUMBS -->
+                        <div class="clearfix">
+                            <h3 class="content-title pull-left">编辑会员</h3>
+                        </div>
+                        <div class="description"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    @using (Html.BeginForm("EditMember", "MemberOpera", new { area = "AdminArea" }, FormMethod.Post, new { @id = "wizForm", @class = "form-horizontal", @role = "form" }))
+                    {
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">真实姓名<span style="color: red">*</span></label>
+                            <div class="col-sm-7">
+                                @Html.TextBoxFor(m => m.member.MemberName, new { @placeholder = "真实姓名", @class = "form-control" })
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">性&nbsp;&nbsp;&nbsp;别</label>
+                            <div class="col-sm-7">
+                                <label class="radio-inline">
+                                    <input type="radio" class="uniform" name="optionsRadios1" value="1" @(Model.member.MemberSex == 1 ? "checked" : "")>
+                                    男
+                                </label>
+                                <label class="radio-inline">
+                                    <input type="radio" class="uniform" name="optionsRadios1" value="2"  @(Model.member.MemberSex == 2 ? "checked" : "")>
+                                    女
+                                </label>
+                                @Html.HiddenFor(m => m.member.MemberSex)
+                                @Html.HiddenFor(m => m.member.ID)
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">手机号码<span style="color: red">*</span></label>
+                            <div class="col-sm-7">
+                                @Html.TextBoxFor(m => m.member.MemberPhone, new { @placeholder = "手机号码", @class = "form-control" })
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">会员邮箱<span style="color: red">*</span></label>
+                            <div class="col-sm-7">
+                                @Html.TextBoxFor(m => m.member.MemberEmail, new { @placeholder = "会员邮箱", @class = "form-control" })
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">身份证号</label>
+                            <div class="col-sm-7">
+                                @Html.TextBoxFor(m => m.member.MemberIDNumber, new { @placeholder = "身份证号", @class = "form-control" })
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">所属地<span style="color: red">*</span></label>
+                            <div class="col-sm-2">
+                                @{
+                                    <select class="form-control" id="drpprovince" name="drpprovince">
+                                        <option value="0"></option>
+                                        @foreach (var item in Model.regintable)
+                                        {
+                                            <option value="@item.REGION_ID" @(Model.member.MemberProvince == item.REGION_NAME ? "selected" : "")>@item.REGION_NAME</option>
+                                        }
+                                    </select>
+                                }
+                            </div>
+                            <div class="col-sm-2">
+                                <select class="form-control" id="drpcity" name="drpcity">
+                                    <option value="0" selected>@Model.member.MemberCity</option>
+                                </select>
+                            </div>
+                            <div class="col-sm-2">
+                                <select class="form-control" id="drparea" name="drparea">
+                                    <option value="0" selected>@Model.member.MemberArea</option>
+                                </select>
+                            </div>
+                            @Html.HiddenFor(m => m.member.MemberProvince)
+                            @Html.HiddenFor(m => m.member.MemberCity)
+                            @Html.HiddenFor(m => m.member.MemberArea)
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">详细地址</label>
+                            <div class="col-sm-7">
+                                @Html.TextBoxFor(m => m.member.MemberAddress, new { @placeholder = "详细地址", @class = "form-control" })
+                            </div>
+                        </div>                        
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">开户行名称<span style="color: red">*</span></label>
+                            <div class="col-sm-7">
+                                @Html.TextBoxFor(m => m.member.MemberBankName, new { @placeholder = "开户行名称", @class = "form-control" })
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">银行卡账户<span style="color: red">*</span></label>
+                            <div class="col-sm-7">
+                                @Html.TextBoxFor(m => m.member.MemberBankCode, new { @placeholder = "银行卡账户", @class = "form-control" })
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">推荐人编号<span style="color: red">*</span></label>
+                            <div class="col-sm-7">
+                                @Html.TextBoxFor(m => m.member.SourceMemberCode, new { @placeholder = "推荐人编号", @class = "form-control" })
+                            </div>
+                        </div>
+                        <div class="modal-footer center">
+                            <a class="btn btn-lg btn-default" href="#">取 消</a>
+                            <button type="submit" class="btn btn-lg btn-primary" onclick="checkform()">保  存</button>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@section mycss{
+    <link rel="stylesheet" type="text/css" href="@Url.Content("/js/bootstrap-wizard/wizard.css")" />
+}
+@section scriptfiles{
+    <script src="@Url.Content("/js/bootstrap-wizard/jquery.bootstrap.wizard.min.js")"></script>
+    <script src="@Url.Content("/js/jquery-validate/jquery.validate.min.js")"></script>
+    <script src="@Url.Content("/js/jquery-validate/additional-methods.min.js")"></script>
+}
+@section myscript{
+    <script type="text/javascript" charset="gb2312" src="@Url.Content("/js/bootstrap-wizard/form-wizard.min.js")"></script>
+    <script type="text/javascript">
+        $(function () {
+            App.init(); //Initialise plugins and elements
+            FormWizard.init();
+            $("#member_Sex").val($("input:radio[name=optionsRadios1]:checked").val());
+            $("input:radio[name=optionsRadios1]").change(function () {
+                var id = $(this).val();
+                $("#member_Sex").val(id);
+            });
+            $("#drpprovince").change(function () {
+                var provincename = $("#drpprovince").find("option:selected").text();
+                var provinceid = $("#drpprovince").val();
+                pchang(provinceid, 'drpcity');
+                $("#member_Province").val(provincename);
+            });
+            $("#drpcity").change(function () {
+                var cityname = $("#drpcity").find("option:selected").text();
+                var cityid = $("#drpcity").val();
+                pchang(cityid, 'drparea');
+                $("#member_MemberCity").val(cityname);
+            });
+            $("#drparea").change(function () {
+                var areaname = $("#drparea").find("option:selected").text();
+                var areaid = $("#drparea").val();
+                $("#member_MemberArea").val(areaname);
+            });
+            $('#wizForm').reset();
+        })
+        function pchang(id, control) {
+            $.ajax({
+                url: '@Url.Action("obtainreagin", "Member", new { area = "AdminArea" })',
+                dataType: 'Json',
+                data: { 'id': id },
+                type: 'POST',
+                success: function (data) {
+                    var optionstr = '<option value="0"></option>';
+                    $.each(data, function (i, item) {
+                        optionstr = optionstr + '<option value="' + item.REGION_ID + '">' + item.REGION_NAME + '</option>';
+                    });
+                    $("#" + control).html('');
+                    $("#" + control).html(optionstr);
+                    if (control == 'drpcity') {
+                        $("#member_MemberCity").val('');
+                        $("#drparea").html('<option value="0"></option>');
+                        $("#member_MemberArea").val('');
+                    }
+                }
+            });
+        }
+    </script>
+}

@@ -27,7 +27,7 @@ namespace FinancePro.BLLData
             int maxCashProportion = SystemConfigsBLL.GetConfigsValueByID(13).ParseToInt(50);//提现最高比例
             int baseNum = SystemConfigsBLL.GetConfigsValueByID(20).ParseToInt(30);//提现的基数信息
             int commission = SystemConfigsBLL.GetConfigsValueByID(10).ParseToInt(20);//提现的手续费用
-            int mincashmoney = SystemConfigsBLL.GetConfigsValueByID(21).ParseToInt(0);//限制最低体现额度
+            int mincashmoney = SystemConfigsBLL.GetConfigsValueByID(21).ParseToInt(0);//限制最低提现额度
             #endregion
             #region 读取相关数据项
             MemberCashOrderModel LastCashorder = MemberCashOrderDAL.GetLastMemberCashOrderByMemberId(Ordermodel.MemberID);//上次提现信息

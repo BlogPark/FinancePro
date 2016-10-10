@@ -22,8 +22,8 @@ namespace FinancePro.BLLData
         /// <param name="loginpwd"></param>
         /// <param name="loginresult"></param>
         /// <returns></returns>
-        public MemberInfoModel MemberLogin(string membercode,string loginpwd,out string loginresult)
-        {           
+        public MemberInfoModel MemberLogin(string membercode, string loginpwd, out string loginresult)
+        {
             MemberInfoModel member = MemberDAL.GetBriefSingleMemberModel(membercode);
             if (member == null)
             {
@@ -405,7 +405,7 @@ namespace FinancePro.BLLData
                 {
                     return "操作失败";
                 }
-                
+
                 scope.Complete();
             }
             return result;
@@ -458,6 +458,54 @@ namespace FinancePro.BLLData
                 int num = (oldnumber.Replace(oldnum, "")).ParseToInt(0);
                 return oldnum + (num + 1).ToString();
             }
+        }
+        /// <summary>
+        /// 分页查询会员列表
+        /// </summary>
+        /// <param name="searchmodel">查询条件</param>
+        /// <param name="totalrowcount">总记录数</param>
+        /// <returns></returns>
+        public List<MemberInfoModel> GetMemberListForPage(MemberInfoModel searchmodel, out int totalrowcount)
+        {
+            return MemberDAL.GetMemberListForPage(searchmodel, out totalrowcount);
+        }
+        /// <summary>
+        /// 更改会员的登陆面膜
+        /// </summary>
+        /// <param name="memberid">会员ID</param>
+        /// <param name="logpwd">登陆密码</param>
+        /// <returns></returns>
+        public int UpdateMemberLogpwd(int memberid, string logpwd)
+        {
+            return MemberDAL.UpdateMemberLogpwd(memberid, logpwd);
+        }
+        /// <summary>
+        /// 更改会员的状态信息
+        /// </summary>
+        /// <param name="memberid"></param>
+        /// <param name="status"></param>
+        /// <returns></returns>
+        public int UpdateMemberStatus(int memberid, int status)
+        {
+            return MemberDAL.UpdateMemberStatus(memberid, status);
+        }
+        /// <summary>
+        /// 得到会员的基本信息
+        /// </summary>
+        /// <param name="memberid"></param>
+        /// <returns></returns>
+        public MemberInfoModel GetSingleMemberModel(int memberid)
+        {
+            return MemberDAL.GetSingleMemberModel(memberid);
+        }
+        /// <summary>
+        /// 更改会员的信息
+        /// </summary>
+        /// <param name="updatemodel"></param>
+        /// <returns></returns>
+        public int UpdateMemberInfoByMemberID(MemberInfoModel updatemodel)
+        {
+            return MemberDAL.UpdateMemberInfo(updatemodel);
         }
     }
 }

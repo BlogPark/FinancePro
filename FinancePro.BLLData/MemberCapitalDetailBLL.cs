@@ -35,13 +35,13 @@ namespace FinancePro.BLLData
             #endregion
             using (TransactionScope scope = new TransactionScope())
             {
-                int rowcount=MemberExtendInfoDAL.UpdateMemberFormCurrey(0-count,sourcememberid,"转账支出"+count+"个报单币");
-                if(rowcount<1)
+                int rowcount = MemberExtendInfoDAL.UpdateMemberFormCurrey(0 - count, sourcememberid, "转账支出" + count + "个报单币");
+                if (rowcount < 1)
                 {
                     return "操作失败";
                 }
-                rowcount=MemberExtendInfoDAL.UpdateMemberFormCurrey(count,sourcememberid,"接收转入"+count+"个报单币");
-                if(rowcount<1)
+                rowcount = MemberExtendInfoDAL.UpdateMemberFormCurrey(count, sourcememberid, "接收转入" + count + "个报单币");
+                if (rowcount < 1)
                 {
                     return "操作失败";
                 }
@@ -85,18 +85,18 @@ namespace FinancePro.BLLData
             #endregion
             using (TransactionScope scope = new TransactionScope())
             {
-                int rowcount = MemberCapitalDetailDAL.UpdateGameCurrency(0 - count, "转账支出"+count+"个游戏币", sourcememberid);
+                int rowcount = MemberCapitalDetailDAL.UpdateGameCurrency(0 - count, "转账支出" + count + "个游戏币", sourcememberid);
                 if (rowcount < 1)
                 {
                     return "操作失败";
                 }
-                rowcount = MemberCapitalDetailDAL.UpdateGameCurrency(count, "接收转入"+count+"个游戏币", acceptmemberid);
+                rowcount = MemberCapitalDetailDAL.UpdateGameCurrency(count, "接收转入" + count + "个游戏币", acceptmemberid);
                 if (rowcount < 1)
                 {
                     return "操作失败";
                 }
                 scope.Complete();
-            }            
+            }
             return result;
         }
         /// <summary>
@@ -206,7 +206,7 @@ namespace FinancePro.BLLData
         /// <param name="acceptmemberid"></param>
         /// <param name="count"></param>
         /// <returns></returns>
-        public string MemberTransferCompoundCurrency(int sourcememberid,  int count, int acceptmemberid = 0, string acceptmembercode = "")
+        public string MemberTransferCompoundCurrency(int sourcememberid, int count, int acceptmemberid = 0, string acceptmembercode = "")
         {
             string result = "1";
             #region 检验会员信息
@@ -256,7 +256,7 @@ namespace FinancePro.BLLData
         /// <param name="acceptmemberid"></param>
         /// <param name="count"></param>
         /// <returns></returns>
-        public string MemberTransferMemberPoints(int sourcememberid, int count, int acceptmemberid=0,string acceptmembercode="")
+        public string MemberTransferMemberPoints(int sourcememberid, int count, int acceptmemberid = 0, string acceptmembercode = "")
         {
             string result = "1";
             #region 检验会员信息
@@ -291,6 +291,58 @@ namespace FinancePro.BLLData
                     return "操作失败";
                 }
                 rowcount = MemberExtendInfoDAL.UpdateMemberFormCurrey(count, acceptmemberid, "接收转入" + count + "个报单币");
+                if (rowcount < 1)
+                {
+                    return "操作失败";
+                }
+                scope.Complete();
+            }
+            return result;
+        }
+        /// <summary>
+        /// 系统派发报单币
+        /// </summary>
+        /// <param name="membercode"></param>
+        /// <param name="count"></param>
+        /// <returns></returns>
+        public string SystemDistributeFormCurrey(string membercode, int count)
+        {
+            string result = "1";
+            #region 查询会员信息
+            MemberInfoModel member = MemberDAL.GetBriefSingleMemberModel(membercode.Trim());
+            if (member == null)
+            {
+                return "没有查询到此会员信息";
+            }
+            if (member.MemberStatus != 2)
+            {
+                return "会员状态不正确，无法为其派发";
+            }
+            #endregion
+            #region 判断逻辑
+            if (count < 1)
+            {
+                return "转增数量不正确";
+            }
+            #endregion
+            using (TransactionScope scope = new TransactionScope())
+            {
+                FormCurreyLogModel formcurreylogmodel = new FormCurreyLogModel();
+                formcurreylogmodel.FormCurreyNum = count;
+                formcurreylogmodel.MemberID = member.ID;
+                formcurreylogmodel.MemberName = member.MemberName;
+                formcurreylogmodel.MemberCode = member.MemberCode;
+                formcurreylogmodel.Remark = "为会员" + member.MemberName + ":" + member.MemberCode + "派发" + count + "个报单币";
+                int rowcount = FormCurreyDAL.UpdateDeductionFormCurrey(formcurreylogmodel);
+                if (rowcount < 1)
+                {
+                    return "操作失败";
+                }
+                MemberFormCurreyLogModel memberformcurreylogmodel = new MemberFormCurreyLogModel();
+                memberformcurreylogmodel.NFormCurreyNum = count;
+                memberformcurreylogmodel.Remark = "得到系统派发" + count + "个报单币";
+                memberformcurreylogmodel.MemberID = member.ID;
+                rowcount = FormCurreyDAL.AddNewMemberFormCurrey(memberformcurreylogmodel);
                 if (rowcount < 1)
                 {
                     return "操作失败";

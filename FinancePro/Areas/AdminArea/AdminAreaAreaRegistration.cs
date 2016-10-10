@@ -15,6 +15,11 @@ namespace FinancePro.Areas.AdminArea
         public override void RegisterArea(AreaRegistrationContext context)
         {
             context.MapRoute(
+              "admin_login",
+              "ad/login.html",
+              new { controller = "Default", action = "Login", id = UrlParameter.Optional }
+          );
+            context.MapRoute(
                 "AdminArea_default",
                 "AdminArea/{controller}/{action}/{id}",
                 new { action = "Index", id = UrlParameter.Optional }
