@@ -1,0 +1,272 @@
+﻿@using Webdiyer.WebControls.Mvc
+@model FinancePro.Areas.AdminArea.Models.MemberCapitalIndexViewModel
+@{
+    Layout = "~/Views/_AdminLayout.cshtml";
+}
+<!-- SAMPLE BOX CONFIGURATION MODAL FORM-->
+<div class="bootbox modal fade in" id="box-config" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content modal-form">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">奖励会员</h4>
+            </div>
+            <div class="modal-body">
+                <div class="bootbox-body">
+                    <form role="form" class="form-horizontal">
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">奖励类型：</label>
+                            <div class="col-sm-7">
+                                <select class="form-control" id="rewardtype" name="rewardtype">
+                                    <option value="1">游戏币</option>
+                                    <option value="2">股权币</option>
+                                    <option value="3">购物币</option>
+                                    <option value="4">会员积分</option>
+                                    <option value="5">复利币</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">奖励金额：</label>
+                            <div class="col-sm-7">
+                                <input type="text" class="form-control" id="rewardmoney" name="rewardmoney" placeholder="奖励金额" />
+                                <input type="hidden" value="0" id="rewardmemid" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">奖励备注：</label>
+                            <div class="col-sm-7">
+                                <textarea rows="3" class="form-control" id="rewardreason"></textarea>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">取 消</button>
+                <button type="button" class="btn btn-primary" onclick="rewardmoney()">确 定</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- /SAMPLE BOX CONFIGURATION MODAL FORM-->
+<!-- SAMPLE BOX CONFIGURATION MODAL FORM-->
+<div class="bootbox modal fade in" id="box-config1" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content modal-form">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">惩罚会员</h4>
+            </div>
+            <div class="modal-body">
+                <div class="bootbox-body">
+                    <form role="form" class="form-horizontal">
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">惩罚金额：</label>
+                            <div class="col-sm-7">
+                                <input type="text" class="form-control" id="punishmentmoney" name="punishmentmoney" placeholder="惩罚金额" />
+                                <input type="hidden" value="0" id="punishmentmemid" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">惩罚类型：</label>
+                            <div class="col-sm-7">
+                                <select class="form-control" id="punishmenttype" name="punishmenttype">
+                                    <option value="1">游戏币</option>
+                                    <option value="2">股权币</option>
+                                    <option value="3">购物币</option>
+                                    <option value="4">会员积分</option>
+                                    <option value="5">复利币</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">惩罚原因：</label>
+                            <div class="col-sm-7">
+                                <textarea rows="3" class="form-control" id="punishmentreason"></textarea>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">取 消</button>
+                <button type="button" class="btn btn-primary" onclick="punishmentmoney()">确 定</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- /SAMPLE BOX CONFIGURATION MODAL FORM-->
+<div class="container">
+    <div class="row">
+        <div id="content" class="col-lg-12">
+            <!-- PAGE HEADER-->
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="page-header">
+                        <!-- BREADCRUMBS -->
+                        <ul class="breadcrumb">
+                            <li>
+                                <i class="fa fa-home"></i>
+                                <a href="index.html">Home</a>
+                            </li>
+                            <li>
+                                <a href="#">会员资产管理</a>
+                            </li>
+                            <li>会员资产列表</li>
+                        </ul>
+                        <!-- /BREADCRUMBS -->
+                        <div class="clearfix">
+                            <h3 class="content-title pull-left">会员资产列表</h3>
+                        </div>
+                        <div class="description"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="well well-sm">
+                <div class="row">
+                    <div class="col-sm-12">
+                        @using (Html.BeginForm("Index", "MemberCapital", FormMethod.Get, new { @id = "form1" }))
+                        {
+                            <div class="form-group">
+                                <label class="pull-left control-label">会员编号</label>
+                                <div class="col-sm-2">
+                                    @Html.TextBoxFor(m => m.membercapital.MemberCode, new { @class = "form-control" })
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="pull-left control-label">真实姓名</label>
+                                <div class="col-sm-2">
+                                    @Html.TextBoxFor(m => m.membercapital.MemberName, new { @class = "form-control" })
+                                </div>
+                            </div>
+                            <div class="btn-group pull-right invoice-btn-group">
+                                <p class="btn-toolbar">
+                                    <button class="btn btn-primary" type="submit"><i class="fa fa-search"></i>&nbsp;搜&nbsp;索</button>
+                                </p>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <div class="row" id="tabdiv">
+                        <table class="table table-striped table-bordered" id="menutab">
+                            <thead>
+                                <tr>
+                                    <th class="text-center">
+                                        <input type="checkbox" id="chk_all" /></th>
+                                    <th class="text-center">会员编号</th>
+                                    <th class="text-center">真实姓名</th>
+                                    <th class="text-center">游戏币</th>
+                                    <th class="text-center">股权币</th>
+                                    <th class="text-center">购物币</th>
+                                    <th class="text-center">会员积分</th>
+                                    <th class="text-center">复利币</th>
+                                    <th class="text-center">操        作</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @if (Model.membercapitallist != null)
+                                {
+                                    foreach (var item in Model.membercapitallist)
+                                    {
+                                    <tr id="tr@(item.MemberID)" class="text-center">
+                                        <td>
+                                            <input type="checkbox" name="proList" value="@item.MemberID" /></td>
+                                        <td>@item.MemberCode</td>
+                                        <td>@item.MemberName</td>
+                                        <td>@item.GameCurrency</td>
+                                        <td>@item.SharesCurrency</td>
+                                        <td>@item.ShoppingCurrency</td>
+                                        <td>@item.MemberPoints</td>
+                                        <td>@item.CompoundCurrency</td>
+                                        <td>
+                                            <p class="btn-toolbar">
+                                                <a class="btn btn-success" data-toggle="modal"  href="#box-config" onclick="bclick(@item.MemberID)"><i class="fa fa-times-circle"></i>&nbsp; 奖&nbsp;&nbsp;励</a>
+                                                <a class="btn btn-danger" data-toggle="modal"  href="#box-config1" onclick="aclick(@item.MemberID)"><i class="fa fa-times-circle"></i>&nbsp; 惩&nbsp;&nbsp;罚</a>
+                                            </p>
+                                        </td>
+                                    </tr>
+                                    }
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="row center col-xs-12 mycss">
+                        @Html.Pager(Model.membercapitallist, new PagerOptions { PageIndexParameterName = "page", ShowPageIndexBox = false, PageIndexBoxType = PageIndexBoxType.DropDownList, ShowGoButton = false })
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@section scriptfiles{
+    <script src="@Url.Content("/js/bootbox/bootbox.min.js")"></script>
+}
+@section myscript{
+    <script type="text/javascript">
+        $(function () {
+            App.init(); //Initialise plugins and elements
+            //全选
+            $("#chk_all").click(function () {
+                if ($("#chk_all").is(":checked")) {
+                    $("input[type='checkbox'][name='proList']").prop("checked", true);
+                }
+                else {
+                    $("input[type='checkbox'][name='proList']").prop("checked", false);
+                }
+            });
+        });
+        function aclick(id) {
+            $("#punishmentmemid").val(id);
+        }
+        function bclick(id) {
+            $("#rewardmemid").val(id);
+        }
+        function rewardmoney() {
+            var memberid = $("#rewardmemid").val();
+            var count = $("#rewardmoney").val();
+            var type = $("#rewardtype").val();
+            var remark = $("#rewardreason").val();
+            //奖励
+            $.ajax({
+                url: '@Url.Action("rewardmember", "MemberCapital", new { area = "AdminArea" })',
+                dataType: 'Json',
+                data: { 'memberid': memberid, 'type': type, 'count': count, 'remark': remark },
+                type: 'POST',
+                success: function (data) {
+                    if (data == "1") {
+                        location.reload();
+                    }
+                    else {
+                        bootbox.alert("操作失败");
+                    }
+                }
+            });
+        }
+        function punishmentmoney() {
+            var memberid = $("#punishmentmemid").val();
+            var count = $("#punishmentmoney").val();
+            var type = $("#punishmenttype").val();
+            var remark = $("#punishmentreason").val();
+            //惩罚
+            $.ajax({
+                url: '@Url.Action("punishmentmember", "MemberCapital", new { area = "AdminArea" })',
+                dataType: 'Json',
+                data: { 'memberid': memberid, 'type': type, 'count': count, 'remark': remark },
+                type: 'POST',
+                success: function (data) {
+                    if (data == "1") {
+                        location.reload();
+                    }
+                    else {
+                        bootbox.alert("操作失败");
+                    }
+                }
+            });
+        }
+    </script>
+}

@@ -75,44 +75,52 @@ namespace FinancePro.BLLData
             {
                 return "会员信息不完整！";
             }
-            MemberInfoModel recommendmember = MemberDAL.GetBriefSingleMemberModel(model.SourceMemberCode);
-            if (type == 1)//若注册为标准用户
+            MemberInfoModel recommendmember = null;
+            if (!string.IsNullOrWhiteSpace(model.SourceMemberCode))
             {
-                //验证身份证编号是否已经超过限制
-                if (MemberDAL.GetMemberCountByMemberIDNumber(model.MemberIDNumber) > maxsamemembercount)
+                recommendmember = MemberDAL.GetBriefSingleMemberModel(model.SourceMemberCode);
+                if (type == 1)//若注册为标准用户
                 {
-                    return "此会员身份信息已经注册过多次";
-                }
-                if (recommendmember == null)
-                {
-                    return "推荐会员编号无效";
-                }
-                if (recommendmember.MemberStatus == 3)
-                {
-                    return "推荐账户已被注销";
+                    //验证身份证编号是否已经超过限制
+                    if (MemberDAL.GetMemberCountByMemberIDNumber(model.MemberIDNumber) > maxsamemembercount)
+                    {
+                        return "此会员身份信息已经注册过多次";
+                    }
+                    if (recommendmember == null)
+                    {
+                        return "推荐会员编号无效";
+                    }
+                    if (recommendmember.MemberStatus == 3)
+                    {
+                        return "推荐账户已被注销";
+                    }
                 }
             }
             #endregion
             #region 插入之前处理会员信息
             model.MemberLogPwd = DESEncrypt.Encrypt("666666", secrectstr);//加密网站登陆密码
+            model.MemberSecondPwd = DESEncrypt.Encrypt("888888", secrectstr);//加密网站登陆密码
+            model.MemberStatus = 1;
             string code = "";
             if (type == 1)//标准会员,编号为14位
             {
                 code = CreateNewCode();
                 model.SourceMemberCode = "";
+                model.MemberCode = "C" + code;
             }
             else if (type == 2)//衍生账户
             {
                 code = CreateNewCode(model.SourceMemberCode);
                 model.IsDerivativeMember = 1;
+                model.MemberCode = "Y" + code;
             }
             else //终极账户
             {
                 code = model.SourceMemberCode + "-1";
                 model.IsFinalMember = 1;
+                model.MemberCode = "Z" + code;
             }
             model.MemberType = type;
-            model.MemberCode = code;
             #endregion
             using (TransactionScope scope = new TransactionScope())
             {
@@ -141,22 +149,26 @@ namespace FinancePro.BLLData
                 capitalmodel.SharesCurrency = 0;
                 capitalmodel.ShoppingCurrency = 0;
                 MemberCapitalDetailDAL.AddNewMemberCapitalDetail(capitalmodel);
+                int rowcount = 0;
                 if (type == 1)
                 {
-                    //插入推荐表
-                    ReMemberRelationModel recommendmodel = new ReMemberRelationModel();
-                    recommendmodel.BeRecommMemberCode = model.MemberCode;
-                    recommendmodel.BeRecommMemberID = memberid;
-                    recommendmodel.BeRecommMemberName = model.MemberName;
-                    recommendmodel.RecommendMemberCode = recommendmember.MemberCode;
-                    recommendmodel.RecommendMemberID = recommendmember.ID;
-                    recommendmodel.RecommendMemberName = recommendmember.MemberName;
-                    recommendmodel.RecommendStatus = 1;
-                    recommendmodel.RecommendTime = DateTime.Now;
-                    int rowcount = ReMemberRelationDAL.AddNewReMemberRelation(recommendmodel);
-                    if (rowcount < 1)
+                    if (recommendmember != null)
                     {
-                        return "操作失败";
+                        //插入推荐表
+                        ReMemberRelationModel recommendmodel = new ReMemberRelationModel();
+                        recommendmodel.BeRecommMemberCode = model.MemberCode;
+                        recommendmodel.BeRecommMemberID = memberid;
+                        recommendmodel.BeRecommMemberName = model.MemberName;
+                        recommendmodel.RecommendMemberCode = recommendmember.MemberCode;
+                        recommendmodel.RecommendMemberID = recommendmember.ID;
+                        recommendmodel.RecommendMemberName = recommendmember.MemberName;
+                        recommendmodel.RecommendStatus = 1;
+                        recommendmodel.RecommendTime = DateTime.Now;
+                        rowcount = ReMemberRelationDAL.AddNewReMemberRelation(recommendmodel);
+                        if (rowcount < 1)
+                        {
+                            return "操作失败";
+                        }
                     }
                     //插入世代信息表
                     int upmemberid = memberid;
@@ -192,62 +204,68 @@ namespace FinancePro.BLLData
                     while (upmemberid > 0);
                 }
                 //判断上级是否达到报单中心，若达到则修改性质
-                int recommendnum = ReMemberRelationDAL.GetReMemberRelationCountByMemberid(recommendmember.ID);
-                if (recommendnum >= reportnumbernum)
+                if (recommendmember != null)
                 {
-                    int rows = MemberDAL.UpdateMemberIsReportMember(recommendmember.ID, 1);
-                    if (rows < 1)
+                    int recommendnum = ReMemberRelationDAL.GetReMemberRelationCountByMemberid(recommendmember.ID);
+                    if (recommendnum >= reportnumbernum)
                     {
-                        return "操作失败";
+                        int rows = MemberDAL.UpdateMemberIsReportMember(recommendmember.ID, 1);
+                        if (rows < 1)
+                        {
+                            return "操作失败";
+                        }
                     }
                 }
                 //计算动态的资金分配，记入DynamicReward表
                 List<MemberIterationInfoModel> recommendlist = MemberIterationInfoDAL.GetMemberIterationInfoByMemberId(memberid);
                 bool isreport = true;
-                foreach (MemberIterationInfoModel item in recommendlist)
+                if (recommendlist != null)
                 {
-                    decimal totalnum = 0;
-                    //查询是否报单中心
-                    bool report = MemberDAL.GetMemberIsReportMember(item.SuperiorMemberID);
-                    //查询会员的直推人数
-                    int linerecommend = ReMemberRelationDAL.GetReMemberRelationCountByMemberid(item.SuperiorMemberID);
-                    if (linerecommend < item.GenerationNum)
+                    foreach (MemberIterationInfoModel item in recommendlist)
                     {
-                        continue;//若直推人数小于当前世代数，则无权拿到本次奖励
-                    }
-                    if (item.GenerationNum == 1)//若为第一代，则需要计算推荐奖
-                    {
-                        totalnum += baseProportion * recommendProportion / 100;
-                    }
-                    totalnum += baseProportion * leaderProportion / 100;
-                    if (report && isreport)
-                    {
-                        totalnum += baseProportion * reportProportion / 100;
-                        isreport = false;
-                    }
-                    if (totalnum > 0)
-                    {
-                        string[] listarry = distributionList.TrimEnd(',').Split(',');//依次为(积分,游戏币,购物币,股权币,复利币)
-                        if (listarry.Length < 5)
+                        decimal totalnum = 0;
+                        //查询是否报单中心
+                        bool report = MemberDAL.GetMemberIsReportMember(item.SuperiorMemberID);
+                        //查询会员的直推人数
+                        int linerecommend = ReMemberRelationDAL.GetReMemberRelationCountByMemberid(item.SuperiorMemberID);
+                        if (linerecommend < item.GenerationNum)
                         {
-                            return "操作失败";
+                            continue;//若直推人数小于当前世代数，则无权拿到本次奖励
                         }
-                        DynamicRewardModel dynamicmodel = new DynamicRewardModel();
-                        dynamicmodel.CompoundCurrency = totalnum * listarry[4].ParseToDecimal(0) / 100;
-                        dynamicmodel.GameCurrency = totalnum * listarry[1].ParseToDecimal(0) / 100;
-                        dynamicmodel.LStatus = 1;
-                        dynamicmodel.MemberID = item.MemberID;
-                        dynamicmodel.MemberName = item.MemberName;
-                        dynamicmodel.MemberPoints = totalnum * listarry[0].ParseToDecimal(0) / 100;
-                        dynamicmodel.SharesCurrency = totalnum * listarry[3].ParseToDecimal(0) / 100;
-                        dynamicmodel.ShoppingCurrency = totalnum * listarry[2].ParseToDecimal(0) / 100;
-                        dynamicmodel.SourceMemberID = memberid;
-                        dynamicmodel.SourceMemberName = model.MemberName;
-                        //加入待充值表
-                        int drows = DynamicRewardDAL.AddNewDynamicReward(dynamicmodel);
-                        if (drows < 1)
+                        if (item.GenerationNum == 1)//若为第一代，则需要计算推荐奖
                         {
-                            return "操作失败";
+                            totalnum += baseProportion * recommendProportion / 100;
+                        }
+                        totalnum += baseProportion * leaderProportion / 100;
+                        if (report && isreport)
+                        {
+                            totalnum += baseProportion * reportProportion / 100;
+                            isreport = false;
+                        }
+                        if (totalnum > 0)
+                        {
+                            string[] listarry = distributionList.TrimEnd(',').Split(',');//依次为(积分,游戏币,购物币,股权币,复利币)
+                            if (listarry.Length < 5)
+                            {
+                                return "操作失败";
+                            }
+                            DynamicRewardModel dynamicmodel = new DynamicRewardModel();
+                            dynamicmodel.CompoundCurrency = totalnum * listarry[4].ParseToDecimal(0) / 100;
+                            dynamicmodel.GameCurrency = totalnum * listarry[1].ParseToDecimal(0) / 100;
+                            dynamicmodel.LStatus = 1;
+                            dynamicmodel.MemberID = item.MemberID;
+                            dynamicmodel.MemberName = item.MemberName;
+                            dynamicmodel.MemberPoints = totalnum * listarry[0].ParseToDecimal(0) / 100;
+                            dynamicmodel.SharesCurrency = totalnum * listarry[3].ParseToDecimal(0) / 100;
+                            dynamicmodel.ShoppingCurrency = totalnum * listarry[2].ParseToDecimal(0) / 100;
+                            dynamicmodel.SourceMemberID = memberid;
+                            dynamicmodel.SourceMemberName = model.MemberName;
+                            //加入待充值表
+                            int drows = DynamicRewardDAL.AddNewDynamicReward(dynamicmodel);
+                            if (drows < 1)
+                            {
+                                return "操作失败";
+                            }
                         }
                     }
                 }
@@ -333,70 +351,74 @@ namespace FinancePro.BLLData
                 }
                 //扣除来源账户的游戏币和报单币(激活账户需要扣除200游戏币100报单币或者积分)
                 #region 计算信息
-                if (memberextendinfo.FormCurreyNum > 100 && memberCapital.GameCurrency > 200)//当会员的相关信息足够时
+                if (memberextendinfo != null)
                 {
-                    //扣减报单币
-                    rowcount = MemberExtendInfoDAL.UpdateMemberFormCurrey(0 - 100, memberextendinfo.MemberID, "激活会员消耗100报单币");
-                    if (rowcount < 1)
+                    if (memberextendinfo.FormCurreyNum > 100 && memberCapital.GameCurrency > 200)//当会员的相关信息足够时
                     {
-                        return "操作失败";
-                    }
-                    //扣减游戏币
-                    rowcount = MemberCapitalDetailDAL.UpdateGameCurrency(0 - 200, "激活会员消耗", memberextendinfo.MemberID);
-                    if (rowcount < 1)
-                    {
-                        return "操作失败";
-                    }
-                }
-                else if (memberextendinfo.FormCurreyNum < 100 || memberCapital.GameCurrency < 200)
-                {
-                    decimal Surplus = 0;
-                    if (memberextendinfo.FormCurreyNum < 100)
-                    {
-                        Surplus += 100 - memberextendinfo.FormCurreyNum;
-                    }
-                    if (memberCapital.GameCurrency < 200)
-                    {
-                        Surplus += 200 - memberCapital.GameCurrency;
-                    }
-                    if (memberCapital.MemberPoints < Surplus)
-                    {
-                        return "操作失败";
-                    }
-                    if (memberextendinfo.FormCurreyNum > 0)
-                    {
+                        //扣减报单币
                         rowcount = MemberExtendInfoDAL.UpdateMemberFormCurrey(0 - 100, memberextendinfo.MemberID, "激活会员消耗100报单币");
                         if (rowcount < 1)
                         {
                             return "操作失败";
                         }
-                    }
-                    if (memberCapital.GameCurrency > 0)
-                    {
+                        //扣减游戏币
                         rowcount = MemberCapitalDetailDAL.UpdateGameCurrency(0 - 200, "激活会员消耗", memberextendinfo.MemberID);
                         if (rowcount < 1)
                         {
                             return "操作失败";
                         }
                     }
-                    rowcount = MemberCapitalDetailDAL.UpdateMemberPoints(0 - Surplus, "激活会员消耗", memberextendinfo.MemberID);
-                    if (rowcount < 1)
+                    else if (memberextendinfo.FormCurreyNum < 100 || memberCapital.GameCurrency < 200)
                     {
-                        return "操作失败";
+                        decimal Surplus = 0;
+                        if (memberextendinfo.FormCurreyNum < 100)
+                        {
+                            Surplus += 100 - memberextendinfo.FormCurreyNum;
+                        }
+                        if (memberCapital.GameCurrency < 200)
+                        {
+                            Surplus += 200 - memberCapital.GameCurrency;
+                        }
+                        if (memberCapital.MemberPoints < Surplus)
+                        {
+                            return "操作失败";
+                        }
+                        if (memberextendinfo.FormCurreyNum > 0)
+                        {
+                            rowcount = MemberExtendInfoDAL.UpdateMemberFormCurrey(0 - 100, memberextendinfo.MemberID, "激活会员消耗100报单币");
+                            if (rowcount < 1)
+                            {
+                                return "操作失败";
+                            }
+                        }
+                        if (memberCapital.GameCurrency > 0)
+                        {
+                            rowcount = MemberCapitalDetailDAL.UpdateGameCurrency(0 - 200, "激活会员消耗", memberextendinfo.MemberID);
+                            if (rowcount < 1)
+                            {
+                                return "操作失败";
+                            }
+                        }
+                        rowcount = MemberCapitalDetailDAL.UpdateMemberPoints(0 - Surplus, "激活会员消耗", memberextendinfo.MemberID);
+                        if (rowcount < 1)
+                        {
+                            return "操作失败";
+                        }
                     }
                 }
                 #endregion
                 //释放动态奖金
                 rowcount = DynamicRewardDAL.ReleaseDynamicReward(memberid, "得到来自会员的注册激活动态奖励");
-                if (rowcount < 1)
-                {
-                    return "操作失败";
-                }
+                //if (rowcount < 1)
+                //{
+                //    return "操作失败";
+                //}
+                //更改释放状态
                 rowcount = DynamicRewardDAL.UpdateDynamicRewardStatus(memberid);
-                if (rowcount < 1)
-                {
-                    return "操作失败";
-                }
+                //if (rowcount < 1)
+                //{
+                //    return "操作失败";
+                //}
                 //计算静态资金并返还
                 decimal gamecurrey = baseProportion * pointProportion / 100;
                 decimal commingProportion = baseProportion * gameProportion / 100;
@@ -420,7 +442,9 @@ namespace FinancePro.BLLData
             int month = DateTime.Now.Month;
             int day = DateTime.Now.Day;
             int re = new Random().Next(1111, 1899);
-            string code = DateTime.Now.ToString("HHmmss") + (year + re).ToString() + (month + 87).ToString() + (day + 66).ToString();
+            int reday = new Random().Next(11, 66);
+            int rem=new Random().Next(11, 87);
+            string code = DateTime.Now.ToString("HHmmss") + (year + re).ToString() + (month + rem).ToString() + (day + reday).ToString();
             return code;
         }
         /// <summary>
@@ -440,9 +464,9 @@ namespace FinancePro.BLLData
             else if (oldnumber.Contains("-"))
             {
                 int pindex = oldnumber.IndexOf('-');
-                string oldnum = oldnumber.Substring(0, 14);
+                string oldnum = oldnumber.Substring(0, 15);
                 string fullstr = oldnumber.Substring(0, pindex);
-                if (fullstr.Length == 14)
+                if (fullstr.Length == 15)
                 {
                     return oldnum + "1";
                 }
@@ -454,7 +478,7 @@ namespace FinancePro.BLLData
             }
             else
             {
-                string oldnum = oldnumber.Substring(0, 14);
+                string oldnum = oldnumber.Substring(0, 15);
                 int num = (oldnumber.Replace(oldnum, "")).ParseToInt(0);
                 return oldnum + (num + 1).ToString();
             }

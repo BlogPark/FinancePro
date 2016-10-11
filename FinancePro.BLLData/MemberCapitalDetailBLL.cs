@@ -305,11 +305,11 @@ namespace FinancePro.BLLData
         /// <param name="membercode"></param>
         /// <param name="count"></param>
         /// <returns></returns>
-        public string SystemDistributeFormCurrey(string membercode, int count)
+        public string SystemDistributeFormCurrey(int memberid, int count)
         {
             string result = "1";
             #region 查询会员信息
-            MemberInfoModel member = MemberDAL.GetBriefSingleMemberModel(membercode.Trim());
+            MemberInfoModel member = MemberDAL.GetBriefSingleMemberModel(memberid);
             if (member == null)
             {
                 return "没有查询到此会员信息";
@@ -318,11 +318,12 @@ namespace FinancePro.BLLData
             {
                 return "会员状态不正确，无法为其派发";
             }
+            int sysfcount = SystemConfigsBLL.GetConfigsValueByID(1).ParseToInt(0);
             #endregion
             #region 判断逻辑
-            if (count < 1)
+            if (count > sysfcount)
             {
-                return "转增数量不正确";
+                return "系统报单币不足以完成本次操作";
             }
             #endregion
             using (TransactionScope scope = new TransactionScope())
@@ -332,7 +333,10 @@ namespace FinancePro.BLLData
                 formcurreylogmodel.MemberID = member.ID;
                 formcurreylogmodel.MemberName = member.MemberName;
                 formcurreylogmodel.MemberCode = member.MemberCode;
-                formcurreylogmodel.Remark = "为会员" + member.MemberName + ":" + member.MemberCode + "派发" + count + "个报单币";
+                if (count > 0)
+                    formcurreylogmodel.Remark = "为会员" + member.MemberName + ":" + member.MemberCode + "派发" + count + "个报单币";
+                else
+                    formcurreylogmodel.Remark = "惩罚会员" + member.MemberName + ":" + member.MemberCode + count + "个报单币";
                 int rowcount = FormCurreyDAL.UpdateDeductionFormCurrey(formcurreylogmodel);
                 if (rowcount < 1)
                 {
@@ -340,7 +344,10 @@ namespace FinancePro.BLLData
                 }
                 MemberFormCurreyLogModel memberformcurreylogmodel = new MemberFormCurreyLogModel();
                 memberformcurreylogmodel.NFormCurreyNum = count;
-                memberformcurreylogmodel.Remark = "得到系统派发" + count + "个报单币";
+                if (count > 0)
+                    memberformcurreylogmodel.Remark = "得到系统派发" + count + "个报单币";
+                else
+                    memberformcurreylogmodel.Remark = "被系统惩罚" + count + "个报单币";
                 memberformcurreylogmodel.MemberID = member.ID;
                 rowcount = FormCurreyDAL.AddNewMemberFormCurrey(memberformcurreylogmodel);
                 if (rowcount < 1)
@@ -350,6 +357,84 @@ namespace FinancePro.BLLData
                 scope.Complete();
             }
             return result;
+        }
+        /// <summary>
+        /// 查询会员的报单币信息
+        /// </summary>
+        /// <param name="pageindex"></param>
+        /// <param name="pagesize"></param>
+        /// <param name="totalrowcount"></param>
+        /// <returns></returns>
+        public List<MemberExtendInfoModel> GetMemberExtendInfoForPage(MemberExtendInfoModel searchmodel, out int totalrowcount)
+        {
+            return MemberExtendInfoDAL.GetMemberExtendInfoForPage(searchmodel, out totalrowcount);
+        }
+        /// <summary>
+        /// 分页查询会员的资产信息
+        /// </summary>
+        /// <param name="searchmodel"></param>
+        /// <param name="totalrowcount"></param>
+        /// <returns></returns>
+        public List<MemberCapitalDetailModel> GetMemberCapitalDetailForPage(MemberCapitalDetailModel searchmodel, out int totalrowcount)
+        {
+            return MemberCapitalDetailDAL.GetMemberCapitalDetailForPage(searchmodel, out totalrowcount);
+        }
+        /// <summary>
+        /// 奖励和惩罚会员的资产信息
+        /// </summary>
+        /// <param name="memberid">会员ID</param>
+        /// <param name="operatetype">操作类型（1 奖励 2 惩罚）</param>
+        /// <param name="count">数量</param>
+        /// <param name="moneytype">资产类型</param>
+        /// <returns></returns>
+        public int RewardAndPunishmentMember(int memberid, int operatetype, decimal count, int moneytype, string remark)
+        {
+            int result = 0;
+            if (operatetype == 2)
+            {
+                count = 0 - count;
+            }
+            if (string.IsNullOrWhiteSpace(remark))
+            {
+                if (operatetype == 1)
+                {
+                    remark = "系统奖励";
+                }
+                if (operatetype == 2)
+                {
+                    remark = "系统惩罚";
+                }
+            }
+            switch (moneytype)
+            {
+                case 1://游戏币
+                    result = MemberCapitalDetailDAL.UpdateGameCurrency(count, remark, memberid);
+                    break;
+                case 2://股权币
+                    result = MemberCapitalDetailDAL.UpdateSharesCurrency(count, remark, memberid);
+                    break;
+                case 3://购物币
+                    result = MemberCapitalDetailDAL.UpdateShoppingCurrency(count, remark, memberid);
+                    break;
+                case 4://会员积分
+                    result = MemberCapitalDetailDAL.UpdateMemberPoints(count, remark, memberid);
+                    break;
+                case 5://复利币
+                    result = MemberCapitalDetailDAL.UpdateCompoundCurrency(count, remark, memberid);
+                    break;
+                default:
+                    break;
+            }
+            return result;
+        }
+        /// <summary>
+        /// 追加系统报单币
+        /// </summary>
+        /// <param name="count"></param>
+        /// <returns></returns>
+        public bool AddSystemFormCurrey(int count)
+        {
+            return FormCurreyDAL.AddNewFormCurrey(count);
         }
     }
 }

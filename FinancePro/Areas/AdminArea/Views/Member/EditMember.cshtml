@@ -34,13 +34,13 @@
                     {
                         <div class="form-group">
                             <label class="col-sm-3 control-label">真实姓名<span style="color: red">*</span></label>
-                            <div class="col-sm-7">
+                            <div class="col-sm-6">
                                 @Html.TextBoxFor(m => m.member.MemberName, new { @placeholder = "真实姓名", @class = "form-control" })
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="col-sm-3 control-label">性&nbsp;&nbsp;&nbsp;别</label>
-                            <div class="col-sm-7">
+                            <div class="col-sm-6">
                                 <label class="radio-inline">
                                     <input type="radio" class="uniform" name="optionsRadios1" value="1" @(Model.member.MemberSex == 1 ? "checked" : "")>
                                     男
@@ -55,19 +55,19 @@
                         </div>
                         <div class="form-group">
                             <label class="col-sm-3 control-label">手机号码<span style="color: red">*</span></label>
-                            <div class="col-sm-7">
+                            <div class="col-sm-6">
                                 @Html.TextBoxFor(m => m.member.MemberPhone, new { @placeholder = "手机号码", @class = "form-control" })
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="col-sm-3 control-label">会员邮箱<span style="color: red">*</span></label>
-                            <div class="col-sm-7">
+                            <div class="col-sm-6">
                                 @Html.TextBoxFor(m => m.member.MemberEmail, new { @placeholder = "会员邮箱", @class = "form-control" })
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="col-sm-3 control-label">身份证号</label>
-                            <div class="col-sm-7">
+                            <div class="col-sm-6">
                                 @Html.TextBoxFor(m => m.member.MemberIDNumber, new { @placeholder = "身份证号", @class = "form-control" })
                             </div>
                         </div>
@@ -100,25 +100,31 @@
                         </div>
                         <div class="form-group">
                             <label class="col-sm-3 control-label">详细地址</label>
-                            <div class="col-sm-7">
+                            <div class="col-sm-6">
                                 @Html.TextBoxFor(m => m.member.MemberAddress, new { @placeholder = "详细地址", @class = "form-control" })
                             </div>
                         </div>                        
                         <div class="form-group">
                             <label class="col-sm-3 control-label">开户行名称<span style="color: red">*</span></label>
-                            <div class="col-sm-7">
-                                @Html.TextBoxFor(m => m.member.MemberBankName, new { @placeholder = "开户行名称", @class = "form-control" })
+                            <div class="col-sm-6">
+                                @Html.TextBoxFor(m => m.member.MemberBankName, new { @placeholder = "开户行名称（请精确到开户分行）", @class = "form-control" })
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-sm-3 control-label">银行卡账户<span style="color: red">*</span></label>
-                            <div class="col-sm-7">
-                                @Html.TextBoxFor(m => m.member.MemberBankCode, new { @placeholder = "银行卡账户", @class = "form-control" })
+                            <label class="col-sm-3 control-label">银行卡户名<span style="color: red">*</span></label>
+                            <div class="col-sm-6">
+                                @Html.TextBoxFor(m => m.member.MemberBankUserName, new { @placeholder = "银行卡户名", @class = "form-control" })
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-sm-3 control-label">推荐人编号<span style="color: red">*</span></label>
-                            <div class="col-sm-7">
+                            <label class="col-sm-3 control-label">银行卡号<span style="color: red">*</span></label>
+                            <div class="col-sm-6">
+                                @Html.TextBoxFor(m => m.member.MemberBankCode, new { @placeholder = "银行卡号", @class = "form-control" })
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">推荐人编号</label>
+                            <div class="col-sm-6">
                                 @Html.TextBoxFor(m => m.member.SourceMemberCode, new { @placeholder = "推荐人编号", @class = "form-control" })
                             </div>
                         </div>

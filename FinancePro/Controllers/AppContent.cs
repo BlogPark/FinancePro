@@ -33,7 +33,7 @@ namespace FinancePro.Controllers
         /// <summary>
         /// 网站加密字符串
         /// </summary>
-        public static string SecrectStr = SystemConfigsBLL.GetConfigsValueByID(24);
+        public static string SecrectStr = SystemConfigsBLL.GetConfigsValueByID(16);
         /// <summary>
         /// 网站使用模板名称
         /// </summary>

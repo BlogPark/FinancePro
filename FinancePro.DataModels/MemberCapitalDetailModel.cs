@@ -108,7 +108,14 @@ namespace FinancePro.DataModels
         #endregion
 
         #region 扩展字段
-        
+        /// <summary>
+        /// 页索引
+        /// </summary>
+        public int PageIndex { get; set; }
+        /// <summary>
+        /// 页容量
+        /// </summary>
+        public int PageSize { get; set; }
         #endregion
     }
 }

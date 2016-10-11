@@ -335,5 +335,68 @@ WHERE   MemberID = @memberid";
                 return null;
             }
         }
+        /// <summary>
+        /// 分页查询会员的资产信息
+        /// </summary>
+        /// <param name="searchmodel"></param>
+        /// <param name="totalrowcount"></param>
+        /// <returns></returns>
+        public static List<MemberCapitalDetailModel> GetMemberCapitalDetailForPage(MemberCapitalDetailModel searchmodel, out int totalrowcount)
+        {
+            List<MemberCapitalDetailModel> list = new List<MemberCapitalDetailModel>();
+            string columms = @" ID,MemberID,MemberName,MemberCode,GameCurrency,SharesCurrency,ShoppingCurrency,MemberPoints,CompoundCurrency ";
+            string where = "";
+            if (searchmodel != null)
+            {
+                //名字
+                if (!string.IsNullOrWhiteSpace(searchmodel.MemberName) && string.IsNullOrWhiteSpace(where))
+                {
+                    where += @" MemberName Like '%" + searchmodel.MemberName + "%'";
+                }
+                else if (!string.IsNullOrWhiteSpace(searchmodel.MemberName) && !string.IsNullOrWhiteSpace(where))
+                {
+                    where += @" AND MemberName Like '%" + searchmodel.MemberName + "%'";
+                }
+                //编号
+                if (!string.IsNullOrWhiteSpace(searchmodel.MemberCode) && string.IsNullOrWhiteSpace(where))
+                {
+                    where += @" MemberCode ='" + searchmodel.MemberCode + "'";
+                }
+                else if (!string.IsNullOrWhiteSpace(searchmodel.MemberCode) && !string.IsNullOrWhiteSpace(where))
+                {
+                    where += @" AND MemberCode ='" + searchmodel.MemberCode + "'";
+                }
+            }
+            PageProModel page = new PageProModel();
+            page.colums = columms;
+            page.orderby = "ID";
+            page.pageindex = searchmodel.PageIndex;
+            page.pagesize = searchmodel.PageSize;
+            page.tablename = @"dbo.MemberCapitalDetail";
+            page.where = where;
+            DataTable dt = PublicHelperDAL.GetTable(page, out totalrowcount);
+            if (dt.Rows.Count > 0)
+            {
+                foreach (DataRow item in dt.Rows)
+                {
+                    MemberCapitalDetailModel model = new MemberCapitalDetailModel();
+                    model.ID = item["ID"].ToString().ParseToInt(0);
+                    model.MemberID = item["MemberID"].ToString().ParseToInt(0);
+                    model.MemberName = item["MemberName"].ToString();
+                    model.MemberCode = item["MemberCode"].ToString();
+                    model.GameCurrency = item["GameCurrency"].ToString().ParseToDecimal(0);
+                    model.SharesCurrency = item["SharesCurrency"].ToString().ParseToDecimal(0);
+                    model.ShoppingCurrency = item["ShoppingCurrency"].ToString().ParseToDecimal(0);
+                    model.MemberPoints = item["MemberPoints"].ToString().ParseToDecimal(0);
+                    model.CompoundCurrency = item["CompoundCurrency"].ToString().ParseToDecimal(0);
+                    list.Add(model);
+                }
+                return list;
+            }
+            else
+            {
+                return null;
+            }
+        }
     }
 }

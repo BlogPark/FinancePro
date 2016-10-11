@@ -108,5 +108,64 @@ WHERE   MemberID = @memberid";
                                     };
             return helper.ExecuteSql(sqltxt, paramter);
         }
+        /// <summary>
+        /// 查询会员的报单币信息
+        /// </summary>
+        /// <param name="pageindex"></param>
+        /// <param name="pagesize"></param>
+        /// <param name="totalrowcount"></param>
+        /// <returns></returns>
+        public static List<MemberExtendInfoModel> GetMemberExtendInfoForPage(MemberExtendInfoModel searchmodel,out int totalrowcount)
+        {
+            List<MemberExtendInfoModel> list = new List<MemberExtendInfoModel>();
+            string columms = @" MemberID,MemberName,MemberCode,FormCurreyNum ";
+            string where = "";
+            if (searchmodel != null)
+            {
+                //名字
+                if (!string.IsNullOrWhiteSpace(searchmodel.MemberName) && string.IsNullOrWhiteSpace(where))
+                {
+                    where += @" MemberName Like '%" + searchmodel.MemberName + "%'";
+                }
+                else if (!string.IsNullOrWhiteSpace(searchmodel.MemberName) && !string.IsNullOrWhiteSpace(where))
+                {
+                    where += @" AND MemberName Like '%" + searchmodel.MemberName + "%'";
+                }
+                //编号
+                if (!string.IsNullOrWhiteSpace(searchmodel.MemberCode) && string.IsNullOrWhiteSpace(where))
+                {
+                    where += @" MemberCode ='" + searchmodel.MemberCode + "'";
+                }
+                else if (!string.IsNullOrWhiteSpace(searchmodel.MemberCode) && !string.IsNullOrWhiteSpace(where))
+                {
+                    where += @" AND MemberCode ='" + searchmodel.MemberCode + "'";
+                }
+            }
+            PageProModel page = new PageProModel();
+            page.colums = columms;
+            page.orderby = "FormCurreyNum";
+            page.pageindex = searchmodel.PageIndex;
+            page.pagesize = searchmodel.PageSize;
+            page.tablename = @"dbo.MemberExtendInfo";
+            page.where = where;
+            DataTable dt = PublicHelperDAL.GetTable(page, out totalrowcount);
+            if (dt.Rows.Count > 0)
+            {
+                foreach (DataRow item in dt.Rows)
+                {
+                    MemberExtendInfoModel model = new MemberExtendInfoModel();
+                    model.MemberID = item["MemberID"].ToString().ParseToInt(0);
+                    model.MemberName = item["MemberName"].ToString();
+                    model.MemberCode = item["MemberCode"].ToString();
+                    model.FormCurreyNum = item["FormCurreyNum"].ToString().ParseToInt(0);
+                    list.Add(model);
+                }
+                return list;
+            }
+            else
+            {
+                return null;
+            }
+        }
     }
 }

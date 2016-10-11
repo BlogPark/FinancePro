@@ -159,7 +159,7 @@
             $.ajax({
                 url: '@Url.Action("updatesta", "Member", new { area = "AdminArea" })',
                 dataType: 'Json',
-                data: { 'id': id, 'status': status },
+                data: { 'id': id, 'type': status },
                 type: 'POST',
                 success: function (data) {
                     if (data == "1") {

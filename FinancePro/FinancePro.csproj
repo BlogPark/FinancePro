@@ -114,6 +114,7 @@
   <ItemGroup>
     <Compile Include="Areas\AdminArea\AdminAreaAreaRegistration.cs" />
     <Compile Include="Areas\AdminArea\Controllers\DefaultController.cs" />
+    <Compile Include="Areas\AdminArea\Controllers\MemberCapitalController.cs" />
     <Compile Include="Areas\AdminArea\Controllers\MemberController.cs" />
     <Compile Include="Areas\AdminArea\Controllers\SysSettingsController.cs" />
     <Compile Include="Areas\AdminArea\Models\AddMemberViewModel.cs" />
@@ -121,7 +122,9 @@
     <Compile Include="Areas\AdminArea\Models\AdminUserViewModel.cs" />
     <Compile Include="Areas\AdminArea\Models\DefaultViewModel.cs" />
     <Compile Include="Areas\AdminArea\Models\EditMemberViewModel.cs" />
+    <Compile Include="Areas\AdminArea\Models\FormCurreyDetailViewModel.cs" />
     <Compile Include="Areas\AdminArea\Models\LoginViewModel.cs" />
+    <Compile Include="Areas\AdminArea\Models\MemberCapitalIndexViewModel.cs" />
     <Compile Include="Areas\AdminArea\Models\MemberIndexViewModel.cs" />
     <Compile Include="Areas\AdminArea\Models\SysAdminGroupViewModel.cs" />
     <Compile Include="Areas\AdminArea\Models\SysConfigsViewModel.cs" />
@@ -617,6 +620,12 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Areas\AdminArea\Views\Member\EditMember.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Areas\AdminArea\Views\MemberCapital\Index.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Areas\AdminArea\Views\MemberCapital\FormCurreyDetail.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

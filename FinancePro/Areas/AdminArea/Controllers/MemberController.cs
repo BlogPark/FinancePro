@@ -8,10 +8,12 @@ using FinancePro.BLLData;
 using FinancePro.Common;
 using FinancePro.Controllers;
 using FinancePro.DataModels;
+using FinancePro.Filters;
 using Webdiyer.WebControls.Mvc;
 
 namespace FinancePro.Areas.AdminArea.Controllers
 {
+    [AdminLoginAttribute]
     public class MemberController : Controller
     {
         //会员操作相关页面

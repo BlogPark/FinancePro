@@ -23,7 +23,7 @@ namespace FinancePro.DALData
         public static MemberInfoModel GetSingleMemberModel(int ID)
         {
             StringBuilder strSql = new StringBuilder();
-            strSql.Append(@"select ID, MemberAddress, MemberBankName, MemberBankCode, MemberLogPwd, MemberStatus, MemberType, IsFinalMember, IsDerivativeMember, IsSpecialMember, IsReportMember, MemberName, AddTime, MemberCode, MemberSex, MemberPhone, MemberEmail, MemberProvince, MemberCity, MemberArea,MemberIDNumber,SourceMemberCode  ");
+            strSql.Append(@"select ID, MemberAddress, MemberBankName, MemberBankCode, MemberLogPwd, MemberStatus, MemberType, IsFinalMember, IsDerivativeMember, IsSpecialMember, IsReportMember, MemberName, AddTime, MemberCode, MemberSex, MemberPhone, MemberEmail, MemberProvince, MemberCity, MemberArea,MemberIDNumber,SourceMemberCode,MemberSecondPwd,MemberBankUserName  ");
             strSql.Append("  from MemberInfo ");
             strSql.Append(" where ID=@ID");
             SqlParameter[] parameters = {
@@ -62,6 +62,8 @@ namespace FinancePro.DALData
                 model.MemberArea = ds.Tables[0].Rows[0]["MemberArea"].ToString();
                 model.MemberIDNumber = ds.Tables[0].Rows[0]["MemberIDNumber"].ToString();
                 model.SourceMemberCode = ds.Tables[0].Rows[0]["SourceMemberCode"].ToString();
+                model.MemberSecondPwd = ds.Tables[0].Rows[0]["MemberSecondPwd"].ToString();
+                model.MemberBankUserName = ds.Tables[0].Rows[0]["MemberBankUserName"].ToString();
                 return model;
             }
             else
@@ -77,7 +79,7 @@ namespace FinancePro.DALData
         public static MemberInfoModel GetBriefSingleMemberModel(int ID)
         {
             StringBuilder strSql = new StringBuilder();
-            strSql.Append(@"select ID, MemberBankName, MemberBankCode, MemberStatus, MemberType, IsFinalMember, IsDerivativeMember, IsSpecialMember, IsReportMember, MemberName, MemberCode, MemberPhone,MemberIDNumber,SourceMemberCode  ");
+            strSql.Append(@"select ID, MemberBankName, MemberBankCode, MemberStatus, MemberType, IsFinalMember, IsDerivativeMember, IsSpecialMember, IsReportMember, MemberName, MemberCode, MemberPhone,MemberIDNumber,SourceMemberCode,MemberBankUserName  ");
             strSql.Append("  from MemberInfo ");
             strSql.Append(" where ID=@ID");
             SqlParameter[] parameters = {
@@ -105,6 +107,7 @@ namespace FinancePro.DALData
                 model.MemberPhone = ds.Tables[0].Rows[0]["MemberPhone"].ToString();
                 model.MemberIDNumber = ds.Tables[0].Rows[0]["MemberIDNumber"].ToString();
                 model.SourceMemberCode = ds.Tables[0].Rows[0]["SourceMemberCode"].ToString();
+                model.MemberBankUserName = ds.Tables[0].Rows[0]["MemberBankUserName"].ToString();
                 return model;
             }
             else
@@ -120,7 +123,7 @@ namespace FinancePro.DALData
         public static MemberInfoModel GetBriefSingleMemberModel(string membercode)
         {
             StringBuilder strSql = new StringBuilder();
-            strSql.Append(@"select ID, MemberBankName, MemberBankCode, MemberStatus, MemberType, IsFinalMember, IsDerivativeMember, IsSpecialMember, IsReportMember, MemberName, MemberCode, MemberPhone,MemberIDNumber,SourceMemberCode  ");
+            strSql.Append(@"select ID, MemberBankName, MemberBankCode, MemberStatus, MemberType, IsFinalMember, IsDerivativeMember, IsSpecialMember, IsReportMember, MemberName, MemberCode, MemberPhone,MemberIDNumber,SourceMemberCode,MemberBankUserName  ");
             strSql.Append("  from MemberInfo ");
             strSql.Append(" where MemberCode=@MemberCode");
             SqlParameter[] parameters = {
@@ -148,6 +151,7 @@ namespace FinancePro.DALData
                 model.MemberPhone = ds.Tables[0].Rows[0]["MemberPhone"].ToString();
                 model.MemberIDNumber = ds.Tables[0].Rows[0]["MemberIDNumber"].ToString();
                 model.SourceMemberCode = ds.Tables[0].Rows[0]["SourceMemberCode"].ToString();
+                model.MemberBankUserName = ds.Tables[0].Rows[0]["MemberBankUserName"].ToString();
                 return model;
             }
             else
@@ -163,7 +167,7 @@ namespace FinancePro.DALData
         public static MemberInfoModel GetBriefSingleMemberModelByMemberName(string membername)
         {
             StringBuilder strSql = new StringBuilder();
-            strSql.Append(@"select ID, MemberBankName, MemberBankCode, MemberStatus, MemberType, IsFinalMember, IsDerivativeMember, IsSpecialMember, IsReportMember, MemberName, MemberCode, MemberPhone,MemberIDNumber,SourceMemberCode  ");
+            strSql.Append(@"select ID, MemberBankName, MemberBankCode, MemberStatus, MemberType, IsFinalMember, IsDerivativeMember, IsSpecialMember, IsReportMember, MemberName, MemberCode, MemberPhone,MemberIDNumber,SourceMemberCode,MemberBankUserName  ");
             strSql.Append("  from MemberInfo ");
             strSql.Append(" where MemberName=@MemberName");
             SqlParameter[] parameters = {
@@ -191,6 +195,7 @@ namespace FinancePro.DALData
                 model.MemberPhone = ds.Tables[0].Rows[0]["MemberPhone"].ToString();
                 model.MemberIDNumber = ds.Tables[0].Rows[0]["MemberIDNumber"].ToString();
                 model.SourceMemberCode = ds.Tables[0].Rows[0]["SourceMemberCode"].ToString();
+                model.MemberBankUserName = ds.Tables[0].Rows[0]["MemberBankUserName"].ToString();
                 return model;
             }
             else
@@ -206,7 +211,7 @@ namespace FinancePro.DALData
         public static MemberInfoModel GetBriefSingleMemberModelBySourceMemberCode(string sourcemembercode)
         {
             StringBuilder strSql = new StringBuilder();
-            strSql.Append(@"select ID, MemberBankName, MemberBankCode, MemberStatus, MemberType, IsFinalMember, IsDerivativeMember, IsSpecialMember, IsReportMember, MemberName, MemberCode, MemberPhone,MemberIDNumber,SourceMemberCode  ");
+            strSql.Append(@"select ID, MemberBankName, MemberBankCode, MemberStatus, MemberType, IsFinalMember, IsDerivativeMember, IsSpecialMember, IsReportMember, MemberName, MemberCode, MemberPhone,MemberIDNumber,SourceMemberCode,MemberBankUserName  ");
             strSql.Append("  from MemberInfo ");
             strSql.Append(" where SourceMemberCode = @sourcemembercode AND MemberType = 3");
             SqlParameter[] parameters = {
@@ -234,6 +239,7 @@ namespace FinancePro.DALData
                 model.MemberPhone = ds.Tables[0].Rows[0]["MemberPhone"].ToString();
                 model.MemberIDNumber = ds.Tables[0].Rows[0]["MemberIDNumber"].ToString();
                 model.SourceMemberCode = ds.Tables[0].Rows[0]["SourceMemberCode"].ToString();
+                model.MemberBankUserName = ds.Tables[0].Rows[0]["MemberBankUserName"].ToString();
                 return model;
             }
             else
@@ -250,9 +256,9 @@ namespace FinancePro.DALData
         {
             StringBuilder strSql = new StringBuilder();
             strSql.Append("insert into MemberInfo(");
-            strSql.Append("MemberAddress,MemberBankName,MemberBankCode,MemberLogPwd,MemberStatus,MemberType,IsFinalMember,IsDerivativeMember,IsSpecialMember,IsReportMember,MemberName,AddTime,MemberCode,MemberSex,MemberPhone,MemberEmail,MemberProvince,MemberCity,MemberArea,MemberIDNumber,SourceMemberCode");
+            strSql.Append("MemberAddress,MemberBankName,MemberBankCode,MemberLogPwd,MemberStatus,MemberType,IsFinalMember,IsDerivativeMember,IsSpecialMember,IsReportMember,MemberName,AddTime,MemberCode,MemberSex,MemberPhone,MemberEmail,MemberProvince,MemberCity,MemberArea,MemberIDNumber,SourceMemberCode,MemberSecondPwd,MemberBankUserName");
             strSql.Append(") values (");
-            strSql.Append("@MemberAddress,@MemberBankName,@MemberBankCode,@MemberLogPwd,1,@MemberType,@IsFinalMember,@IsDerivativeMember,@IsSpecialMember,@IsReportMember,@MemberName,GETDATE(),@MemberCode,@MemberSex,@MemberPhone,@MemberEmail,@MemberProvince,@MemberCity,@MemberArea,@MemberIDNumber,@SourceMemberCode");
+            strSql.Append("@MemberAddress,@MemberBankName,@MemberBankCode,@MemberLogPwd,@MemberStatus,@MemberType,@IsFinalMember,@IsDerivativeMember,@IsSpecialMember,@IsReportMember,@MemberName,GETDATE(),@MemberCode,@MemberSex,@MemberPhone,@MemberEmail,@MemberProvince,@MemberCity,@MemberArea,@MemberIDNumber,@SourceMemberCode,@MemberSecondPwd,@MemberBankUserName");
             strSql.Append(") ");
             strSql.Append(";select @@IDENTITY");
             SqlParameter[] parameters = {
@@ -274,7 +280,10 @@ namespace FinancePro.DALData
                         new SqlParameter("@MemberCity", SqlDbType.NVarChar) ,            
                         new SqlParameter("@MemberArea", SqlDbType.NVarChar),
                         new SqlParameter("@MemberIDNumber",SqlDbType.NVarChar),
-                        new SqlParameter("@SourceMemberCode",SqlDbType.NVarChar)
+                        new SqlParameter("@SourceMemberCode",SqlDbType.NVarChar),
+                        new SqlParameter("@MemberStatus",SqlDbType.Int),
+                        new SqlParameter("@MemberSecondPwd",SqlDbType.NVarChar),
+                        new SqlParameter("@MemberBankUserName",SqlDbType.NVarChar)
             };
             parameters[0].Value = model.MemberAddress;
             parameters[1].Value = model.MemberBankName;
@@ -295,6 +304,9 @@ namespace FinancePro.DALData
             parameters[16].Value = model.MemberArea;
             parameters[17].Value = model.MemberIDNumber;
             parameters[18].Value = model.SourceMemberCode;
+            parameters[19].Value = model.MemberStatus;
+            parameters[20].Value = model.MemberSecondPwd;
+            parameters[21].Value = model.MemberBankUserName;
             object obj = helper.GetSingle(strSql.ToString(), parameters);
             if (obj == null)
             {

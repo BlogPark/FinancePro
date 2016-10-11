@@ -235,6 +235,26 @@ namespace FinancePro.DataModels
             get { return _sourcemembercode; }
             set { _sourcemembercode = value; }
         }
+        private string _membersecondpwd;
+        /// <summary>
+        /// 会员二级密码
+        /// </summary>		
+        [DataMember]
+        public string MemberSecondPwd
+        {
+            get { return _membersecondpwd; }
+            set { _membersecondpwd = value; }
+        }
+        private string _memberbankusername;
+        /// <summary>
+        /// 会员银行账户名字
+        /// </summary>		
+        [DataMember]
+        public string MemberBankUserName
+        {
+            get { return _memberbankusername; }
+            set { _memberbankusername = value; }
+        }        
         #endregion
 
         #region 扩展字段

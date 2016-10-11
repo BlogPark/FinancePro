@@ -14,7 +14,6 @@ namespace FinancePro.DataModels
     [DataContract]
     public class MemberExtendInfoModel
     {
-
         #region 原始字段
         private int _id;
         /// <summary>
@@ -67,6 +66,15 @@ namespace FinancePro.DataModels
             set { _formcurreynum = value; }
         } 
         #endregion
-
+        #region 扩展字段
+        /// <summary>
+        /// 页索引
+        /// </summary>
+        public int PageIndex { get; set; }
+        /// <summary>
+        /// 页容量
+        /// </summary>
+        public int PageSize { get; set; }
+        #endregion
     }
 }

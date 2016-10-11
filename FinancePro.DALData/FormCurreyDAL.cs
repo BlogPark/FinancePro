@@ -25,7 +25,7 @@ OUTPUT  0 ,
         '' ,
         '' ,
         @count ,
-        '系统新增' + @count + '个报单币' ,
+        '系统新增' + CONVERT(NVARCHAR(50),@count) + '个报单币' ,
         GETDATE()
         INTO FormCurreyLog
 WHERE   ID = 1";
