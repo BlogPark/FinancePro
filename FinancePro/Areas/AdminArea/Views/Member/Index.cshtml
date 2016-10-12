@@ -61,6 +61,7 @@
                             <div class="btn-group pull-right invoice-btn-group">
                                 <p class="btn-toolbar">
                                     <button class="btn btn-primary" type="submit"><i class="fa fa-search"></i>&nbsp;搜索</button>
+                                    <a class="btn btn-primary" onclick="create()"><i class="fa fa-plus"></i>&nbsp;生成会员编号</a>
                                 </p>
                             </div>
                         }
@@ -170,6 +171,21 @@
                     }
                 }
             });
+        }
+        function create() {
+            $.ajax({
+                url: '@Url.Action("addmembercode", "Member", new { area = "AdminArea" })',
+                 dataType: 'Json',
+                 type: 'POST',
+                 success: function (data) {
+                     if (data == "1") {
+                         bootbox.alert("操作成功");
+                     }
+                     else {
+                         bootbox.alert("操作失败");
+                     }
+                 }
+             });
         }
     </script>
 }

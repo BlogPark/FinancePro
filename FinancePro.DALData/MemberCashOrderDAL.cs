@@ -24,9 +24,9 @@ namespace FinancePro.DALData
         {
             StringBuilder strSql = new StringBuilder();
             strSql.Append("insert into MemberCashOrder(");
-            strSql.Append("CashOrderCode,CashBankCode,MemberID,MemberName,MemberCode,CashNum,FinishCashNum,CStatus,AddTime,CashBankName,CommissionNum");
+            strSql.Append("CashOrderCode,CashBankCode,MemberID,MemberName,MemberCode,CashNum,FinishCashNum,CStatus,AddTime,CashBankName,CommissionNum,CashBankUserName");
             strSql.Append(") values (");
-            strSql.Append("@CashOrderCode,@CashBankCode,@MemberID,@MemberName,@MemberCode,@CashNum,@FinishCashNum,1,GETDATE(),@CashBankName,@CommissionNum");
+            strSql.Append("@CashOrderCode,@CashBankCode,@MemberID,@MemberName,@MemberCode,@CashNum,@FinishCashNum,1,GETDATE(),@CashBankName,@CommissionNum,@CashBankUserName");
             strSql.Append(") ");
             SqlParameter[] parameters = {
 			            new SqlParameter("@CashOrderCode", SqlDbType.NVarChar) ,            
@@ -37,7 +37,8 @@ namespace FinancePro.DALData
                         new SqlParameter("@CashNum", SqlDbType.Decimal) ,            
                         new SqlParameter("@FinishCashNum", SqlDbType.Decimal) ,         
                         new SqlParameter("@CashBankName", SqlDbType.NVarChar),
-                        new SqlParameter("@CommissionNum",SqlDbType.Decimal)
+                        new SqlParameter("@CommissionNum",SqlDbType.Decimal),
+                        new SqlParameter("@CashBankUserName",SqlDbType.NVarChar)
             };
             parameters[0].Value = model.CashOrderCode;
             parameters[1].Value = model.CashBankCode;
@@ -48,6 +49,7 @@ namespace FinancePro.DALData
             parameters[6].Value = model.FinishCashNum;
             parameters[7].Value = model.CashBankName;
             parameters[8].Value = model.CommissionNum;
+            parameters[9].Value = model.CashBankUserName;
             return helper.ExecuteSql(strSql.ToString(), parameters);
         }
         /// <summary>
@@ -73,7 +75,7 @@ WHERE   ID = @id";
         public static List<MemberCashOrderModel> GetAllMemberCashByPage(MemberCashOrderModel model, out int totalrowcount)
         {
             List<MemberCashOrderModel> list = new List<MemberCashOrderModel>();
-            string columms = @"ID ,CashOrderCode ,MemberID ,MemberName ,MemberCode ,CashNum ,FinishCashNum ,CStatus ,CASE CStatus WHEN 1 THEN '新申请'  WHEN 2 THEN '已打款'  WHEN 3 THEN '已驳回' END AS CStatusName , AddTime , CashBankName ,CashBankCode";
+            string columms = @"ID ,CashOrderCode ,MemberID ,MemberName ,MemberCode ,CashNum ,FinishCashNum ,CStatus ,CASE CStatus WHEN 1 THEN '新申请'  WHEN 2 THEN '已打款'  WHEN 3 THEN '已驳回' END AS CStatusName , AddTime , CashBankName ,CashBankCode,CashBankUserName,DATEDIFF(DAY,AddTime,GETDATE()) diffday";
             string where = "";
             if (model != null)
             {
@@ -138,6 +140,9 @@ WHERE   ID = @id";
                 {
                     membercashordermodel.AddTime = DateTime.Parse(item["AddTime"].ToString());
                 }
+                membercashordermodel.CashBankUserName = item["CashBankUserName"].ToString();
+                membercashordermodel.CStatusName = item["CStatusName"].ToString();
+                membercashordermodel.DiffDay = item["diffday"].ToString().ParseToInt(0);
                 list.Add(membercashordermodel);
             }
             return list;

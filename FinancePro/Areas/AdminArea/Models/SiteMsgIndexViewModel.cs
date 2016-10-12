@@ -9,12 +9,11 @@ namespace FinancePro.Areas.AdminArea.Models
 {
     [Serializable]
     [DataContract]
-    public class DefaultViewModel
+    public class SiteMsgIndexViewModel
     {
-        /// <summary>
-        /// 后台首页数据
-        /// </summary>
         [DataMember]
-        public AdminHomeDataModel admindata { get; set; }
+        public List<AdminSiteNewsModel> modellist { get; set; }
+        [DataMember]
+        public AdminSiteNewsModel addmodel { get; set; }
     }
 }

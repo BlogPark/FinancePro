@@ -40,6 +40,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AdminHomeDataModel.cs" />
     <Compile Include="AdminSiteNewsModel.cs" />
     <Compile Include="Class1.cs" />
     <Compile Include="DynamicRewardModel.cs" />
@@ -47,6 +48,7 @@
     <Compile Include="MemberCapitalDetailModel.cs" />
     <Compile Include="MemberCapitalLogModel.cs" />
     <Compile Include="MemberCashOrderModel.cs" />
+    <Compile Include="MemberCodeModel.cs" />
     <Compile Include="MemberExtendInfoModel.cs" />
     <Compile Include="MemberFormCurreyLogModel.cs" />
     <Compile Include="MemberInfoModel.cs" />

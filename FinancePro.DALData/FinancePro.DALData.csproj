@@ -50,6 +50,7 @@
     <Compile Include="MemberCapitalDetailDAL.cs" />
     <Compile Include="MemberCapitalLogDAL.cs" />
     <Compile Include="MemberCashOrderDAL.cs" />
+    <Compile Include="MemberCodeDAL.cs" />
     <Compile Include="MemberDAL.cs" />
     <Compile Include="MemberExtendInfoDAL.cs" />
     <Compile Include="MemberFormCurreyLogDAL.cs" />

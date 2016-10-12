@@ -15,7 +15,7 @@ namespace FinancePro.BLLData
         /// </summary>
         /// <param name="memberid"></param>
         /// <returns></returns>
-        public WebHomeDataModel GetHomeData(int memberid)
+        public WebHomeDataModel GetWEBHomeData(int memberid)
         {
             WebHomeDataModel model = new WebHomeDataModel();
             model.Memberinfo = MemberDAL.GetBriefSingleMemberModel(memberid);//会员信息
@@ -31,6 +31,19 @@ namespace FinancePro.BLLData
             model.MemberRelation = ReMemberRelationDAL.GetReMemberRelationListByPositive(memberid, out teamtotalcount);//会员团队树信息
             model.TeamTotalCount = teamtotalcount;
             model.RecommendCount = ReMemberRelationDAL.GetReMemberRelationCountByMemberid(memberid);//会员直推人数;
+            return model;
+        }
+        /// <summary>
+        /// 得到后台首页数据集合
+        /// </summary>
+        /// <param name="memberid"></param>
+        /// <returns></returns>
+        public AdminHomeDataModel GetAdminHomeData(int memberid)
+        {
+            AdminHomeDataModel model = new AdminHomeDataModel();
+            model.ActiveMemberCount = MemberDAL.GetMemberCount(1);//系统活动会员数
+            model.TotalMemberCount = MemberDAL.GetMemberCount(0);//系统会员数
+            model.FormCurreyCount = SystemConfigsBLL.GetConfigsValueByID(1).ParseToInt(0);//系统报单币总数
             return model;
         }
     }

@@ -115,7 +115,7 @@ namespace FinancePro.Areas.AdminArea.Controllers
             {
                 member.MemberStatus = 1;
                 member.MemberLogPwd = DESEncrypt.Encrypt("666666", AppContent.SecrectStr);//加密密码
-                string row = memberbll.AddNewMemberInfo(member,1);
+                string row = memberbll.AddNewMemberInfo(member, 1);
             }
             return RedirectToActionPermanent("Index", "Member", new { area = "AdminArea" });
         }
@@ -141,6 +141,15 @@ namespace FinancePro.Areas.AdminArea.Controllers
         {
             List<ReginTableModel> list = ReginTableBLL.GetReginTableListModel(id);
             return Json(list);
+        }
+        [HttpPost]
+        public ActionResult addmembercode()
+        {
+            int result = MemberCodeBLL.CreateNewMemberCode();
+            if (result == 1)
+                return Json("1");
+            else
+                return Json("0");
         }
     }
 }

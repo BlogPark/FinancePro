@@ -104,21 +104,25 @@ namespace FinancePro.BLLData
             string code = "";
             if (type == 1)//标准会员,编号为14位
             {
-                code = CreateNewCode();
+                code =MemberCodeBLL.GetMemberCode().ToString();
+                if (code == "0")
+                {
+                    return "没有可以使用的会员编号";
+                }
                 model.SourceMemberCode = "";
-                model.MemberCode = "C" + code;
+                model.MemberCode = "JLC" + code;
             }
             else if (type == 2)//衍生账户
             {
                 code = CreateNewCode(model.SourceMemberCode);
                 model.IsDerivativeMember = 1;
-                model.MemberCode = "Y" + code;
+                model.MemberCode = "JLY" + code;
             }
             else //终极账户
             {
                 code = model.SourceMemberCode + "-1";
                 model.IsFinalMember = 1;
-                model.MemberCode = "Z" + code;
+                model.MemberCode = "JLZ" + code;
             }
             model.MemberType = type;
             #endregion

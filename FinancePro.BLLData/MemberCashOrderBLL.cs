@@ -113,6 +113,16 @@ namespace FinancePro.BLLData
             {
                 return errorlist;
             }
-        }        
+        }
+        /// <summary>
+        /// 分页查询会员提现记录
+        /// </summary>
+        /// <param name="model"></param>
+        /// <param name="totalrowcount"></param>
+        /// <returns></returns>
+        public List<MemberCashOrderModel> GetAllMemberCashByPage(MemberCashOrderModel model, out int totalrowcount)
+        {
+            return MemberCashOrderDAL.GetAllMemberCashByPage(model, out totalrowcount);
+        }
     }
 }

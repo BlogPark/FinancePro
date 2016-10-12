@@ -472,7 +472,7 @@ WHERE   MemberIDNumber = @MemberIDNumber
             string where = "";
             if (searchmodel != null)
             {
-                if (searchmodel.MemberStatus >0)
+                if (searchmodel.MemberStatus > 0)
                 {
                     where += @" MemberStatus=" + searchmodel.MemberStatus;
                 }
@@ -571,6 +571,21 @@ WHERE   MemberIDNumber = @MemberIDNumber
             {
                 return null;
             }
+        }
+        /// <summary>
+        /// 得到会员的总数
+        /// </summary>
+        /// <param name="isactive">是否激活</param>
+        /// <returns></returns>
+        public static int GetMemberCount(int isactive)
+        {
+            string sqltxt = @"SELECT  COUNT(0) AS con
+FROM    dbo.MemberInfo ";
+            if (isactive == 1)
+            {
+                sqltxt += @" WHERE   MemberStatus = 2 ";
+            }
+            return helper.GetSingle(sqltxt).ToString().ParseToInt(0);
         }
     }
 }

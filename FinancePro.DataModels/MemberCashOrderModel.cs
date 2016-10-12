@@ -133,6 +133,16 @@ namespace FinancePro.DataModels
             get { return _cashbankcode; }
             set { _cashbankcode = value; }
         }
+        private string _cashbankusername;
+        /// <summary>
+        /// 开户名字
+        /// </summary>		
+        [DataMember]
+        public string CashBankUserName
+        {
+            get { return _cashbankusername; }
+            set { _cashbankusername = value; }
+        }        
         #endregion
 
         #region 扩展字段

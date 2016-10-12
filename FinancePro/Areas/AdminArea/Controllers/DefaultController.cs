@@ -18,7 +18,7 @@ namespace FinancePro.Areas.AdminArea.Controllers
         // GET: /AdminArea/Default/
 
         private SysMenuAndUserBLL bll = new SysMenuAndUserBLL();
-
+        private WebHomeindexBLL homebll = new WebHomeindexBLL();
         public ActionResult Index()
         {
             SessionLoginModel sysuser = Session[AppContent.SESSION_LOGIN_NAME] as SessionLoginModel;
@@ -27,8 +27,7 @@ namespace FinancePro.Areas.AdminArea.Controllers
                 return RedirectToAction("Login", "Default", new { area = "AdminArea" });
             }
             DefaultViewModel model = new DefaultViewModel();
-            //model.datamodel = adminbll.GetDefaultData();
-            model.UserName = sysuser.User.TruethName;
+            model.admindata = homebll.GetAdminHomeData(sysuser.User.ID);
             return View(model);
         }
         /// <summary>
