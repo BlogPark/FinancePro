@@ -135,9 +135,14 @@
     <Compile Include="Areas\AdminArea\Models\SysConfigsViewModel.cs" />
     <Compile Include="Areas\AdminArea\Models\SysMenuIndexViewModel.cs" />
     <Compile Include="Areas\AdminArea\Models\SysUserMenuViewModel.cs" />
+    <Compile Include="Areas\WebFormArea\Controllers\LoginController.cs" />
+    <Compile Include="Areas\WebFormArea\Controllers\RegisterController.cs" />
+    <Compile Include="Areas\WebFormArea\Controllers\WebHomeController.cs" />
+    <Compile Include="Areas\WebFormArea\WebFormAreaAreaRegistration.cs" />
     <Compile Include="Controllers\AppContent.cs" />
     <Compile Include="Controllers\IndexPubController.cs" />
     <Compile Include="Filters\AdminLoginAttribute.cs" />
+    <Compile Include="Filters\WebLoginAttribute.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -470,10 +475,38 @@
       <DependentUpon>Web.config</DependentUpon>
     </Content>
     <Content Include="Views\Web.config" />
+    <Content Include="webasset\images\bj-01.jpg" />
+    <Content Include="webasset\images\bj.jpg" />
+    <Content Include="webasset\images\bj2.jpg" />
+    <Content Include="webasset\images\bottom-bj.jpg" />
+    <Content Include="webasset\images\fenlei-bj.jpg" />
+    <Content Include="webasset\images\index-1.jpg" />
+    <Content Include="webasset\images\index-2-1.jpg" />
+    <Content Include="webasset\images\index-2-2.jpg" />
+    <Content Include="webasset\images\index-2-3.jpg" />
+    <Content Include="webasset\images\index-2-4.jpg" />
+    <Content Include="webasset\images\index-2-bj.jpg" />
+    <Content Include="webasset\images\index-2-l.jpg" />
+    <Content Include="webasset\images\index3.jpg" />
+    <Content Include="webasset\images\menu-bj.jpg" />
+    <Content Include="webasset\images\menu-tiao.jpg" />
+    <Content Include="webasset\images\menu1.jpg" />
+    <Content Include="webasset\images\menu2.jpg" />
+    <Content Include="webasset\images\menu3.jpg" />
+    <Content Include="webasset\images\menu4.jpg" />
+    <Content Include="webasset\images\menu5.jpg" />
+    <Content Include="webasset\images\menu6.jpg" />
+    <Content Include="webasset\images\menu7.jpg" />
+    <Content Include="webasset\images\menu8.jpg" />
+    <Content Include="webasset\images\renzheng.jpg" />
+    <Content Include="webasset\images\vip.jpg" />
+    <Content Include="webasset\mm_menu.js" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Areas\AdminArea\Views\Shared\" />
+    <Folder Include="Areas\WebFormArea\Models\" />
+    <Folder Include="Areas\WebFormArea\Views\Shared\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
@@ -640,6 +673,57 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Areas\AdminArea\Views\MemberCashOrder\Index.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Areas\WebFormArea\Views\Web.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\_WebFormLayout.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Areas\WebFormArea\Views\WebHome\Index.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="webasset\images\Thumbs.db" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Areas\WebFormArea\Views\WebHome\ApplyCash.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Areas\WebFormArea\Views\WebHome\CashList.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Areas\WebFormArea\Views\WebHome\MemberTransfer.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Areas\WebFormArea\Views\WebHome\Transferlist.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Areas\WebFormArea\Views\WebHome\CapitalDetailLog.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Areas\WebFormArea\Views\WebHome\MemberMap.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Areas\WebFormArea\Views\WebHome\WriteMessage.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Areas\WebFormArea\Views\WebHome\MessageList.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Areas\WebFormArea\Views\WebHome\UserInfo.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Areas\WebFormArea\Views\WebHome\UpdatePwd.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Areas\WebFormArea\Views\WebHome\MemberList.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Areas\WebFormArea\Views\WebHome\AddMember.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Areas\WebFormArea\Views\Register\Index.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
