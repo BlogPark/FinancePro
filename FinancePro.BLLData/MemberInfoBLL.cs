@@ -104,7 +104,7 @@ namespace FinancePro.BLLData
             string code = "";
             if (type == 1)//标准会员,编号为14位
             {
-                code =MemberCodeBLL.GetMemberCode().ToString();
+                code = MemberCodeBLL.GetMemberCode().ToString();
                 if (code == "0")
                 {
                     return "没有可以使用的会员编号";
@@ -447,7 +447,7 @@ namespace FinancePro.BLLData
             int day = DateTime.Now.Day;
             int re = new Random().Next(1111, 1899);
             int reday = new Random().Next(11, 66);
-            int rem=new Random().Next(11, 87);
+            int rem = new Random().Next(11, 87);
             string code = DateTime.Now.ToString("HHmmss") + (year + re).ToString() + (month + rem).ToString() + (day + reday).ToString();
             return code;
         }
@@ -534,6 +534,15 @@ namespace FinancePro.BLLData
         public int UpdateMemberInfoByMemberID(MemberInfoModel updatemodel)
         {
             return MemberDAL.UpdateMemberInfo(updatemodel);
+        }
+        /// <summary>
+        /// 得到会员的报单币信息
+        /// </summary>
+        /// <param name="memberid"></param>
+        /// <returns></returns>
+        public int GetMemberFormCurreyNum(int memberid)
+        {
+            return MemberExtendInfoDAL.GetMemberExtendInfoByMemberID(memberid).FormCurreyNum;
         }
     }
 }

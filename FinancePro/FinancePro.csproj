@@ -138,6 +138,7 @@
     <Compile Include="Areas\WebFormArea\Controllers\LoginController.cs" />
     <Compile Include="Areas\WebFormArea\Controllers\RegisterController.cs" />
     <Compile Include="Areas\WebFormArea\Controllers\WebHomeController.cs" />
+    <Compile Include="Areas\WebFormArea\Models\WebHomeIndexViewModel.cs" />
     <Compile Include="Areas\WebFormArea\WebFormAreaAreaRegistration.cs" />
     <Compile Include="Controllers\AppContent.cs" />
     <Compile Include="Controllers\IndexPubController.cs" />
@@ -505,7 +506,6 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Areas\AdminArea\Views\Shared\" />
-    <Folder Include="Areas\WebFormArea\Models\" />
     <Folder Include="Areas\WebFormArea\Views\Shared\" />
   </ItemGroup>
   <ItemGroup>

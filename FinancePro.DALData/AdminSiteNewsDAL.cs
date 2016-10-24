@@ -241,7 +241,7 @@ namespace FinancePro.DALData
             return list;
         }
         /// <summary>
-        /// 根据ID得到一个对象实体
+        /// 根据用户ID查询前3条系统公告
         /// </summary>
         public static List<AdminSiteNewsModel> GetTop3ModelListByUserID(int userid)
         {

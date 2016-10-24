@@ -436,5 +436,14 @@ namespace FinancePro.BLLData
         {
             return FormCurreyDAL.AddNewFormCurrey(count);
         }
+        /// <summary>
+        /// 根据会员ID查询会员的资产信息
+        /// </summary>
+        /// <param name="memberID"></param>
+        /// <returns></returns>
+        public  MemberCapitalDetailModel GetMemberCapitalDetailByMemberID(int memberID)
+        {
+            return MemberCapitalDetailDAL.GetMemberCapitalDetailByMemberID(memberID);
+        }
     }
 }

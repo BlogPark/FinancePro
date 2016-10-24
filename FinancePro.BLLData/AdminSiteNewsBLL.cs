@@ -46,14 +46,14 @@ namespace FinancePro.BLLData
             return AdminSiteNewsDAL.GetModel(ID);
         }
         /// <summary>
-        /// 根据ID得到一个对象实体
+        ///根据用户ID得到对应的系统公告
         /// </summary>
         public List<AdminSiteNewsModel> GetModelListByUserID(int userid, int topnum = 100)
         {
             return AdminSiteNewsDAL.GetModelListByUserID(userid, topnum);
         }
         /// <summary>
-        /// 根据ID得到一个对象实体
+        /// 根据用户ID查询前3条系统公告
         /// </summary>
         public List<AdminSiteNewsModel> GetTop3ModelListByUserID(int userid)
         {
