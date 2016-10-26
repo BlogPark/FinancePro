@@ -55,6 +55,7 @@
     <Compile Include="MemberExtendInfoDAL.cs" />
     <Compile Include="MemberFormCurreyLogDAL.cs" />
     <Compile Include="MemberIterationInfoDAL.cs" />
+    <Compile Include="MemberTransferOrderDAL.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="PublicHelperDAL.cs" />
     <Compile Include="ReginTableDAL.cs" />

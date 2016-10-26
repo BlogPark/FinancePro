@@ -46,6 +46,7 @@
     <Compile Include="MemberCashOrderBLL.cs" />
     <Compile Include="MemberCodeBLL.cs" />
     <Compile Include="MemberInfoBLL.cs" />
+    <Compile Include="MemberTransferOrderBLL.cs" />
     <Compile Include="OperateLogBLL.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ReginTableBLL.cs" />
