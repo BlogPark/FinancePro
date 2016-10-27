@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using FinancePro.DALData;
 using FinancePro.DataModels;
 
 namespace FinancePro.BLLData
@@ -13,22 +14,25 @@ namespace FinancePro.BLLData
     public class MemberTransferOrderBLL
     {
         /// <summary>
-        /// 会员转账
+        /// 添加新的转账记录
         /// </summary>
-        /// <param name="sourcemodel"></param>
+        /// <param name="model"></param>
         /// <returns></returns>
-        public string MemberTransferOrder(MemberTransferOrderModel sourcemodel)
+        public int AddNewMemberTransferOrder(MemberTransferOrderModel model)
         {
-            string result = "";
-            if (string.IsNullOrWhiteSpace(sourcemodel.ReceiveMemberCode))
-            {
-                return "没有传入接受会员";
-            }
-            if (sourcemodel.TransferNumber < 1)
-            {
-                return "传入的转账金额不正确";
-            }
-            return result;
+            return MemberTransferOrderDAL.AddNewMemberTransferOrder(model);
+        }
+        /// <summary>
+        /// 按照分页读取会员转账记录
+        /// </summary>
+        /// <param name="memberid"></param>
+        /// <param name="pageindex"></param>
+        /// <param name="pagesize"></param>
+        /// <param name="totalrowcount"></param>
+        /// <returns></returns>
+        public List<MemberTransferOrderModel> GetMemberTransferOrderByMemberID(int memberid,int pageindex,int pagesize,out int totalrowcount)
+        {
+            return MemberTransferOrderDAL.GetMemberTransferByLaunchMemberID(memberid,pageindex,pagesize,out totalrowcount);
         }
     }
 }

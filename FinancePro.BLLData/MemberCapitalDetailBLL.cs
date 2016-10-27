@@ -15,6 +15,25 @@ namespace FinancePro.BLLData
     public class MemberCapitalDetailBLL
     {
         /// <summary>
+        /// 会员转账
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        public string MemberTransferOrder(MemberTransferOrderModel model)
+        {
+            string result = "";
+            if (string.IsNullOrWhiteSpace(model.ReceiveMemberCode))
+            {
+                return "没有传入接受会员";
+            }
+            if (model.TransferNumber < 1)
+            {
+                return "转账金额不正确";
+            }
+            MemberInfoModel receivemember = MemberDAL.GetBriefSingleMemberModel(model.ReceiveMemberCode);
+            return result;
+        }
+        /// <summary>
         /// 会员间转赠报单币
         /// </summary>
         /// <param name="sourcememberid">转出账户</param>
