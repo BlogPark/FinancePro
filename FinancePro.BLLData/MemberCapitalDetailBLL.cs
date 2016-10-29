@@ -31,6 +31,15 @@ namespace FinancePro.BLLData
                 return "转账金额不正确";
             }
             MemberInfoModel receivemember = MemberDAL.GetBriefSingleMemberModel(model.ReceiveMemberCode);
+            if (receivemember == null)
+            {
+                return "没有找到接受会员";
+            }
+
+            using (TransactionScope scope = new TransactionScope())
+            {
+
+            }
             return result;
         }
         /// <summary>
