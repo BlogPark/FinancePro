@@ -35,7 +35,14 @@ namespace FinancePro.BLLData
             {
                 return "没有找到接受会员";
             }
-
+            if (model.TransferType == 1)
+            {
+                MemberExtendInfoModel extendmodel = MemberExtendInfoDAL.GetMemberExtendInfoByMemberID(model.LaunchMemberID);//会员扩展信息（报单币数量）
+            }
+            else
+            {
+ 
+            }
             using (TransactionScope scope = new TransactionScope())
             {
 
