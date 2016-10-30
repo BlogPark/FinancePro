@@ -185,5 +185,68 @@ WHERE   ID = @id";
                 return null;
             }
         }
+
+        /// <summary>
+        /// 按照MemberId分页查询提现单据
+        /// </summary>
+        /// <param name="totalrowcount"></param>
+        /// <returns></returns>
+        public static List<MemberCashOrderModel> GetMemberCashByMemberId(int memberid, int pageindex, int pagesize, out int totalrowcount)
+        {
+            List<MemberCashOrderModel> list = new List<MemberCashOrderModel>();
+            string columms = @"ID ,CashOrderCode ,MemberID ,MemberName ,MemberCode ,CashNum ,FinishCashNum ,CStatus ,CASE CStatus WHEN 1 THEN '新申请'  WHEN 2 THEN '已打款'  WHEN 3 THEN '已驳回' END AS CStatusName , AddTime , CashBankName ,CashBankCode,CashBankUserName,DATEDIFF(DAY,AddTime,GETDATE()) diffday";
+            string where = "";
+            if (memberid > 0)
+            {
+                where += "MemberID=" + memberid + "";
+            }
+            PageProModel page = new PageProModel();
+            page.colums = columms;
+            page.orderby = "AddTime";
+            page.pageindex = pageindex;
+            page.pagesize = pagesize;
+            page.tablename = @"dbo.MemberCashOrder";
+            page.where = where;
+            DataTable dt = PublicHelperDAL.GetTable(page, out totalrowcount);
+            foreach (DataRow item in dt.Rows)
+            {
+                MemberCashOrderModel membercashordermodel = new MemberCashOrderModel();
+                if (item["ID"].ToString() != "")
+                {
+                    membercashordermodel.ID = int.Parse(item["ID"].ToString());
+                }
+                membercashordermodel.CashBankName = item["CashBankName"].ToString();
+                membercashordermodel.CashBankCode = item["CashBankCode"].ToString();
+                membercashordermodel.CashOrderCode = item["CashOrderCode"].ToString();
+                if (item["MemberID"].ToString() != "")
+                {
+                    membercashordermodel.MemberID = int.Parse(item["MemberID"].ToString());
+                }
+                membercashordermodel.MemberName = item["MemberName"].ToString();
+                membercashordermodel.MemberCode = item["MemberCode"].ToString();
+                if (item["CashNum"].ToString() != "")
+                {
+                    membercashordermodel.CashNum = decimal.Parse(item["CashNum"].ToString());
+                }
+                if (item["FinishCashNum"].ToString() != "")
+                {
+                    membercashordermodel.FinishCashNum = decimal.Parse(item["FinishCashNum"].ToString());
+                }
+                if (item["CStatus"].ToString() != "")
+                {
+                    membercashordermodel.CStatus = int.Parse(item["CStatus"].ToString());
+                }
+                if (item["AddTime"].ToString() != "")
+                {
+                    membercashordermodel.AddTime = DateTime.Parse(item["AddTime"].ToString());
+                }
+                membercashordermodel.CashBankUserName = item["CashBankUserName"].ToString();
+                membercashordermodel.CStatusName = item["CStatusName"].ToString();
+                membercashordermodel.DiffDay = item["diffday"].ToString().ParseToInt(0);
+                list.Add(membercashordermodel);
+            }
+            return list;
+        }
+
     }
 }

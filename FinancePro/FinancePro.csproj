@@ -138,7 +138,11 @@
     <Compile Include="Areas\WebFormArea\Controllers\LoginController.cs" />
     <Compile Include="Areas\WebFormArea\Controllers\RegisterController.cs" />
     <Compile Include="Areas\WebFormArea\Controllers\WebHomeController.cs" />
+    <Compile Include="Areas\WebFormArea\Models\CapitalDetailLogViewModel.cs" />
+    <Compile Include="Areas\WebFormArea\Models\CashListViewModel.cs" />
+    <Compile Include="Areas\WebFormArea\Models\MemberTransferViewModel.cs" />
     <Compile Include="Areas\WebFormArea\Models\MessageListViewModel.cs" />
+    <Compile Include="Areas\WebFormArea\Models\TransferlistViewModel.cs" />
     <Compile Include="Areas\WebFormArea\Models\WebHomeIndexViewModel.cs" />
     <Compile Include="Areas\WebFormArea\WebFormAreaAreaRegistration.cs" />
     <Compile Include="Controllers\AppContent.cs" />
@@ -503,6 +507,7 @@
     <Content Include="webasset\images\renzheng.jpg" />
     <Content Include="webasset\images\vip.jpg" />
     <Content Include="webasset\mm_menu.js" />
+    <Content Include="webasset\webjs.js" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

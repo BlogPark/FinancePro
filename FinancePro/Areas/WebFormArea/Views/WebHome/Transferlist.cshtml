@@ -1,4 +1,6 @@
-﻿@{
+﻿@using Webdiyer.WebControls.Mvc
+@model FinancePro.Areas.WebFormArea.Models.TransferlistViewModel
+@{
     ViewBag.Title = "转账列表";
     Layout = "~/Views/_WebFormLayout.cshtml";
 }
@@ -77,134 +79,27 @@
                     <td width="14%" align="center"><strong>接收会员</strong></td>
                     <td width="15%" align="center"><strong>转账金额</strong></td>
                     <td width="12%" align="center"><strong>手续费</strong></td>
-                    <td width="13%" align="center"><strong>实转金额</strong></td>
                     <td width="12%" align="center"><strong>转账币种</strong></td>
+                    <td width="13%" align="center"><strong>转账备注</strong></td>
                     <td width="13%" align="center"><strong>转账时间</strong></td>
                 </tr>
-                <tr>
-                    <td height="22" align="center">1</td>
-                    <td height="22">&nbsp;</td>
-                    <td height="22">&nbsp;</td>
-                    <td height="22">&nbsp;</td>
-                    <td height="22">&nbsp;</td>
-                    <td height="22">&nbsp;</td>
-                    <td height="22">&nbsp;</td>
-                    <td height="22">&nbsp;</td>
-                </tr>
-                <tr>
-                    <td height="22" align="center">2</td>
-                    <td height="22">&nbsp;</td>
-                    <td height="22">&nbsp;</td>
-                    <td height="22">&nbsp;</td>
-                    <td height="22">&nbsp;</td>
-                    <td height="22">&nbsp;</td>
-                    <td height="22">&nbsp;</td>
-                    <td height="22">&nbsp;</td>
-                </tr>
-                <tr>
-                    <td height="22" align="center">3</td>
-                    <td height="22">&nbsp;</td>
-                    <td height="22">&nbsp;</td>
-                    <td height="22">&nbsp;</td>
-                    <td height="22">&nbsp;</td>
-                    <td height="22">&nbsp;</td>
-                    <td height="22">&nbsp;</td>
-                    <td height="22">&nbsp;</td>
-                </tr>
-                <tr>
-                    <td height="22" align="center">4</td>
-                    <td height="22">&nbsp;</td>
-                    <td height="22">&nbsp;</td>
-                    <td height="22">&nbsp;</td>
-                    <td height="22">&nbsp;</td>
-                    <td height="22">&nbsp;</td>
-                    <td height="22">&nbsp;</td>
-                    <td height="22">&nbsp;</td>
-                </tr>
-                <tr>
-                    <td height="22" align="center">5</td>
-                    <td height="22">&nbsp;</td>
-                    <td height="22">&nbsp;</td>
-                    <td height="22">&nbsp;</td>
-                    <td height="22">&nbsp;</td>
-                    <td height="22">&nbsp;</td>
-                    <td height="22">&nbsp;</td>
-                    <td height="22">&nbsp;</td>
-                </tr>
-                <tr>
-                    <td height="22" align="center">6</td>
-                    <td height="22">&nbsp;</td>
-                    <td height="22">&nbsp;</td>
-                    <td height="22">&nbsp;</td>
-                    <td height="22">&nbsp;</td>
-                    <td height="22">&nbsp;</td>
-                    <td height="22">&nbsp;</td>
-                    <td height="22">&nbsp;</td>
-                </tr>
-                <tr>
-                    <td height="22" align="center">7</td>
-                    <td height="22">&nbsp;</td>
-                    <td height="22">&nbsp;</td>
-                    <td height="22">&nbsp;</td>
-                    <td height="22">&nbsp;</td>
-                    <td height="22">&nbsp;</td>
-                    <td height="22">&nbsp;</td>
-                    <td height="22">&nbsp;</td>
-                </tr>
-                <tr>
-                    <td height="22" align="center">8</td>
-                    <td height="22">&nbsp;</td>
-                    <td height="22">&nbsp;</td>
-                    <td height="22">&nbsp;</td>
-                    <td height="22">&nbsp;</td>
-                    <td height="22">&nbsp;</td>
-                    <td height="22">&nbsp;</td>
-                    <td height="22">&nbsp;</td>
-                </tr>
-                <tr>
-                    <td height="22" align="center">9</td>
-                    <td height="22">&nbsp;</td>
-                    <td height="22">&nbsp;</td>
-                    <td height="22">&nbsp;</td>
-                    <td height="22">&nbsp;</td>
-                    <td height="22">&nbsp;</td>
-                    <td height="22">&nbsp;</td>
-                    <td height="22">&nbsp;</td>
-                </tr>
-                <tr>
-                    <td height="22" align="center">10</td>
-                    <td height="22">&nbsp;</td>
-                    <td height="22">&nbsp;</td>
-                    <td height="22">&nbsp;</td>
-                    <td height="22">&nbsp;</td>
-                    <td height="22">&nbsp;</td>
-                    <td height="22">&nbsp;</td>
-                    <td height="22">&nbsp;</td>
-                </tr>
-                <tr>
-                    <td height="22" align="center">11</td>
-                    <td height="22">&nbsp;</td>
-                    <td height="22">&nbsp;</td>
-                    <td height="22">&nbsp;</td>
-                    <td height="22">&nbsp;</td>
-                    <td height="22">&nbsp;</td>
-                    <td height="22">&nbsp;</td>
-                    <td height="22">&nbsp;</td>
-                </tr>
-                <tr>
-                    <td height="22" align="center">12</td>
-                    <td height="22">&nbsp;</td>
-                    <td height="22">&nbsp;</td>
-                    <td height="22">&nbsp;</td>
-                    <td height="22">&nbsp;</td>
-                    <td height="22">&nbsp;</td>
-                    <td height="22">&nbsp;</td>
-                    <td height="22">&nbsp;</td>
-                </tr>
+                @foreach (var item in Model.transferlist)
+                {
+                    <tr>
+                        <td height="22" align="center">@item.ID</td>
+                        <td height="22">@item.LaunchMemberCode</td>
+                        <td height="22">@item.ReceiveMemberCode</td>
+                        <td height="22">@item.TransferNumber</td>
+                        <td height="22">@item.CounterFee</td>
+                        <td height="22">@item.TransferTypeName</td>
+                        <td height="22">@item.TransferRemark</td>
+                        <td height="22">@item.AddTime.ToString("yyyy-MM-dd")</td>
+                    </tr>
+                }                
                 <tr>
                     <td height="28" colspan="8" align="right">
                         <label></label>
-                        [1] [2] [3] [4] [5] [6] 每页12条信息 共6页
+                        @Html.Pager(Model.transferlist, new PagerOptions { PageIndexParameterName = "page", ShowPageIndexBox = false, PageIndexBoxType = PageIndexBoxType.DropDownList, ShowGoButton = false })
                     </td>
                 </tr>
             </table>

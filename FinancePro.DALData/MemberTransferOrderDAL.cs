@@ -26,11 +26,10 @@ namespace FinancePro.DALData
             strSql.Append("insert into MemberTransferOrder(");
             strSql.Append("AddTime,TransferResult,LaunchMemberID,LaunchMemberCode,ReceiveMemberID,ReceiveMemberCode,TransferType,TransferNumber,TransferRemark,CounterFee");
             strSql.Append(") values (");
-            strSql.Append("@AddTime,@TransferResult,@LaunchMemberID,@LaunchMemberCode,@ReceiveMemberID,@ReceiveMemberCode,@TransferType,@TransferNumber,@TransferRemark,@CounterFee");
+            strSql.Append("GETDATE(),@TransferResult,@LaunchMemberID,@LaunchMemberCode,@ReceiveMemberID,@ReceiveMemberCode,@TransferType,@TransferNumber,@TransferRemark,@CounterFee");
             strSql.Append(") ");
             strSql.Append(";select @@IDENTITY");
-            SqlParameter[] parameters = {
-			            new SqlParameter("@AddTime", SqlDbType.DateTime) ,            
+            SqlParameter[] parameters = {          
                         new SqlParameter("@TransferResult", SqlDbType.Int) ,            
                         new SqlParameter("@LaunchMemberID", SqlDbType.Int) ,            
                         new SqlParameter("@LaunchMemberCode", SqlDbType.NVarChar) ,            
@@ -41,16 +40,15 @@ namespace FinancePro.DALData
                         new SqlParameter("@TransferRemark", SqlDbType.NVarChar) ,            
                         new SqlParameter("@CounterFee", SqlDbType.Decimal)  
             };
-            parameters[0].Value = model.AddTime;
-            parameters[1].Value = model.TransferResult;
-            parameters[2].Value = model.LaunchMemberID;
-            parameters[3].Value = model.LaunchMemberCode;
-            parameters[4].Value = model.ReceiveMemberID;
-            parameters[5].Value = model.ReceiveMemberCode;
-            parameters[6].Value = model.TransferType;
-            parameters[7].Value = model.TransferNumber;
-            parameters[8].Value = model.TransferRemark;
-            parameters[9].Value = model.CounterFee;
+            parameters[0].Value = model.TransferResult;
+            parameters[1].Value = model.LaunchMemberID;
+            parameters[2].Value = model.LaunchMemberCode;
+            parameters[3].Value = model.ReceiveMemberID;
+            parameters[4].Value = model.ReceiveMemberCode;
+            parameters[5].Value = model.TransferType;
+            parameters[6].Value = model.TransferNumber;
+            parameters[7].Value = model.TransferRemark;
+            parameters[8].Value = model.CounterFee;
 
             object obj = helper.GetSingle(strSql.ToString(), parameters);
             if (obj == null)

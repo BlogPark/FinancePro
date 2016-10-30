@@ -124,5 +124,17 @@ namespace FinancePro.BLLData
         {
             return MemberCashOrderDAL.GetAllMemberCashByPage(model, out totalrowcount);
         }
+        /// <summary>
+        /// 会员Id查询提现信息
+        /// </summary>
+        /// <param name="memberid"></param>
+        /// <param name="pageindex"></param>
+        /// <param name="pagesize"></param>
+        /// <param name="totalrowcount"></param>
+        /// <returns></returns>
+        public List<MemberCashOrderModel> GetMemberCashByMemberId(int memberid, int pageindex, int pagesize, out int totalrowcount)
+        {
+            return MemberCashOrderDAL.GetMemberCashByMemberId(memberid, pageindex, pagesize, out totalrowcount);
+        }
     }
 }

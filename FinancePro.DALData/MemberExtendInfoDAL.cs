@@ -87,7 +87,7 @@ namespace FinancePro.DALData
         /// <param name="formcurrey"></param>
         /// <param name="memberid"></param>
         /// <returns></returns>
-        public static int UpdateMemberFormCurrey(int formcurrey,int memberid,string remark)
+        public static int UpdateMemberFormCurrey(decimal formcurrey,int memberid,string remark)
         {
             string sqltxt = @"UPDATE  A
 SET     FormCurreyNum = FormCurreyNum + @FormCurreyNum

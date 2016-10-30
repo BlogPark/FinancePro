@@ -1,4 +1,5 @@
-﻿@{
+﻿@model FinancePro.Areas.WebFormArea.Models.MemberTransferViewModel
+@{
     ViewBag.Title = "会员转账";
     Layout = "~/Views/_WebFormLayout.cshtml";
 }
@@ -64,54 +65,64 @@
         </td>
         <td width="13" align="left" valign="top">&nbsp;</td>
         <td width="643" align="center" valign="top">
-            <table width="97%" border="0" cellspacing="0" cellpadding="0">
+            @using (Html.BeginForm("MemberTransfer", "WebHome", new { area = "WebFormArea" }, FormMethod.Post))
+            { <table width="97%" border="0" cellspacing="0" cellpadding="0">
                 <tr>
                     <td>&nbsp;</td>
                 </tr>
             </table>
-            <table width="51%" border="1" cellpadding="0" cellspacing="0" bordercolor="#666666" style="border-collapse:collapse;">
-                <tr>
-                    <td width="40%" height="44" align="center"><span class="STYLE1">会员币转账</span></td>
-                    <td width="60%" height="44" align="center">游戏币转账</td>
-                </tr>
-                <tr>
-                    <td height="44" align="center">当前账户余额</td>
-                    <td height="44" align="left">&nbsp;&nbsp;88888</td>
-                </tr>
-                <tr>
-                    <td height="44" align="center">接收会员</td>
-                    <td height="44" align="left">
-                        &nbsp;&nbsp;<input name="textfield" type="text" size="20" />
-                    </td>
-                </tr>
-                <tr>
-                    <td height="44" align="center">转账手续费</td>
-                    <td height="44" align="left">&nbsp;&nbsp;<input name="textfield2" type="text" size="10" /></td>
-                </tr>
-                <tr>
-                    <td height="44" align="center">转账金额</td>
-                    <td height="44" align="left">
-                        &nbsp;&nbsp;<input name="textfield22" type="text" size="5" />
-                        *30=
-                        <input name="textfield222" type="text" size="5" />
-                    </td>
-                </tr>
-                <tr>
-                    <td height="44" align="center">实际转账金额</td>
-                    <td height="44" align="left">&nbsp;&nbsp;<input name="textfield23" type="text" size="10" /></td>
-                </tr>
-                <tr>
-                    <td height="44" align="center">备注</td>
-                    <td height="44" align="left">&nbsp;&nbsp;<input name="textfield3" type="text" size="20" /></td>
-                </tr>
-                <tr>
-                    <td height="44" colspan="2" align="center">
-                        <label>
-                            <input type="submit" name="Submit" value="确定转账" />
-                        </label>
-                    </td>
-                </tr>
-            </table>
+                <table width="96%" border="1" cellpadding="0" cellspacing="0" bordercolor="#666666" style="border-collapse:collapse;">
+                    <tr>
+                        <td height="44" align="center" colspan="2"><span class="STYLE1">会员转账</span></td>
+                    </tr>
+                    <tr>
+                        <td height="44" align="center">转账类型</td>
+                        <td height="44" align="left">
+                            &nbsp;&nbsp;
+                            <select id="transfer_TransferType" name="transfer.TransferType" style="width:50%" onchange="valuechang()">
+                                <option value="1">报单币</option>
+                                <option value="2">积分</option>
+                                <option value="3">购物币</option>
+                                <option value="4">股权币</option>
+                                <option value="5">复利币</option>
+                                <option value="6">游戏币</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td height="44" align="center">接收会员</td>
+                        <td height="44" align="left">
+                            &nbsp;&nbsp;@Html.TextBoxFor(m => m.transfer.ReceiveMemberCode, new { @placeholder = "会员编号" })
+                        </td>
+                    </tr>
+                    <tr>
+                        <td height="44" align="center">转账金额</td>
+                        <td height="44" align="left">
+                            &nbsp;&nbsp;<input name="transfernum" id="transfernum" type="number" step="0.1" size="10" value="0" onchange="valuechang()" />
+                           @Html.HiddenFor(m=>m.feetype)
+                        </td>
+                    </tr>
+                    <tr>
+                        <td height="44" align="center">转账手续费</td>
+                        <td height="44" align="left">&nbsp;&nbsp;@Html.TextBoxFor(m => m.transfer.CounterFee, new { @disabled = "disabled" })
+                    </tr>
+                    <tr>
+                        <td height="44" align="center">实际转账金额</td>
+                        <td height="44" align="left">&nbsp;&nbsp;@Html.TextBoxFor(m => m.transfer.TransferNumber, new { @disabled = "disabled" })</td>
+                    </tr>
+                    <tr>
+                        <td height="44" align="center">备注</td>
+                        <td height="44" align="left">&nbsp;&nbsp;@Html.TextBoxFor(m => m.transfer.TransferRemark, new { @style = "width:80%" })</td>
+                    </tr>
+                    <tr>
+                        <td height="44" colspan="2" align="center">
+                            <label>
+                                <input type="submit" name="Submit" value="确定转账" /><span style="color:red">@Model.ErrorText</span>
+                            </label>
+                        </td>
+                    </tr>
+                </table>
+            }
         </td>
     </tr>
 </table>

@@ -7,6 +7,7 @@ using FinancePro.Areas.WebFormArea.Models;
 using FinancePro.BLLData;
 using FinancePro.Controllers;
 using FinancePro.DataModels;
+using Webdiyer.WebControls.Mvc;
 
 namespace FinancePro.Areas.WebFormArea.Controllers
 {
@@ -17,6 +18,10 @@ namespace FinancePro.Areas.WebFormArea.Controllers
         private AdminSiteNewsBLL sitenewsbll = new AdminSiteNewsBLL();
         private MemberCapitalDetailBLL capitaldetailbll = new MemberCapitalDetailBLL();
         private MemberInfoBLL memberbll = new MemberInfoBLL();
+        private MemberTransferOrderBLL tranferbll = new MemberTransferOrderBLL();
+        private OperateLogBLL logbll = new OperateLogBLL();
+        private MemberCashOrderBLL cashbll = new MemberCashOrderBLL();
+        private int PageSize = 20;
         //首页
         public ActionResult Index()
         {
@@ -63,45 +68,104 @@ namespace FinancePro.Areas.WebFormArea.Controllers
             return View();
         }
         //提现列表
-        public ActionResult CashList()
+        public ActionResult CashList(int page = 1)
         {
             MemberInfoModel logmember = Session[AppContent.SESSION_WEB_LOGIN] as MemberInfoModel;
             if (logmember == null)
             {
                 return RedirectToAction("Index", "Login", new { area = "WebFormArea" });
             }
-            return View();
+            CashListViewModel model = new CashListViewModel();
+            int totalrowcount = 0;
+            List<MemberCashOrderModel> list = cashbll.GetMemberCashByMemberId(logmember.ID, page, PageSize, out totalrowcount);
+            PagedList<MemberCashOrderModel> pagelist = null;
+            if (list != null)
+            {
+                pagelist = new PagedList<MemberCashOrderModel>(list, page, PageSize, totalrowcount);
+            }
+            model.cashlist = pagelist;
+            return View(model);
         }
         //会员转账
         public ActionResult MemberTransfer()
         {
+            //MemberInfoModel logmember = Session[AppContent.SESSION_WEB_LOGIN] as MemberInfoModel;
+            //if (logmember == null)
+            //{
+            //    return RedirectToAction("Index", "Login", new { area = "WebFormArea" });
+            //}
+            MemberTransferViewModel model = new MemberTransferViewModel();
+            model.feetype = SystemConfigsBLL.GetConfigsValueByID(25).ParseToInt(0);
+            return View(model);
+        }
+        /// <summary>
+        /// 会员转账提交
+        /// </summary>
+        /// <returns></returns>
+        [HttpPost]
+        public ActionResult MemberTransfer(MemberTransferOrderModel transfer)
+        {
             MemberInfoModel logmember = Session[AppContent.SESSION_WEB_LOGIN] as MemberInfoModel;
             if (logmember == null)
             {
                 return RedirectToAction("Index", "Login", new { area = "WebFormArea" });
             }
-            return View();
+            MemberTransferOrderModel model = transfer;
+            model.LaunchMemberID = logmember.ID;
+            model.LaunchMemberCode = logmember.MemberCode;
+            string result = capitaldetailbll.AddNewMemberTransferOrder(model);
+            MemberTransferViewModel returnmodel = new MemberTransferViewModel();
+            if (result == "1")
+            {
+                returnmodel.ErrorText = "";
+                returnmodel.transfer = new MemberTransferOrderModel();
+                returnmodel.feetype = SystemConfigsBLL.GetConfigsValueByID(25).ParseToInt(0);
+            }
+            else
+            {
+                returnmodel.ErrorText = result;
+                returnmodel.transfer = new MemberTransferOrderModel();
+                returnmodel.feetype = SystemConfigsBLL.GetConfigsValueByID(25).ParseToInt(0);
+            }
+            return View(returnmodel);
         }
         //转账列表
-        public ActionResult Transferlist()
+        public ActionResult Transferlist(int page = 1)
         {
             MemberInfoModel logmember = Session[AppContent.SESSION_WEB_LOGIN] as MemberInfoModel;
             if (logmember == null)
             {
                 return RedirectToAction("Index", "Login", new { area = "WebFormArea" });
             }
-            return View();
+            TransferlistViewModel model = new TransferlistViewModel();
+            int totalrowcount = 0;
+            List<MemberTransferOrderModel> list = tranferbll.GetMemberTransferOrderByMemberID(logmember.ID, page, PageSize, out totalrowcount);
+            PagedList<MemberTransferOrderModel> pagelist = null;
+            if (list != null)
+            {
+                pagelist = new PagedList<MemberTransferOrderModel>(list, page, PageSize, totalrowcount);
+            }
+            model.transferlist = pagelist;
+            return View(model);
         }
         //收益明细日志
-        public ActionResult CapitalDetailLog()
+        public ActionResult CapitalDetailLog(int page = 1)
         {
             MemberInfoModel logmember = Session[AppContent.SESSION_WEB_LOGIN] as MemberInfoModel;
             if (logmember == null)
             {
                 return RedirectToAction("Index", "Login", new { area = "WebFormArea" });
             }
-
-            return View();
+            CapitalDetailLogViewModel model = new CapitalDetailLogViewModel();
+            int totalrowcount = 0;
+            List<MemberCapitalLogModel> list = logbll.GetMemberCapitalLogByMemberid(logmember.ID, page, PageSize, out totalrowcount);
+            PagedList<MemberCapitalLogModel> pagelist = null;
+            if (list != null)
+            {
+                pagelist = new PagedList<MemberCapitalLogModel>(list, page, PageSize, totalrowcount);
+            }
+            model.loglist = pagelist;
+            return View(model);
         }
 
         //会员图谱
