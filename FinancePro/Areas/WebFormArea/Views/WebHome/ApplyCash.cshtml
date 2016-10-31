@@ -1,4 +1,5 @@
-﻿@{
+﻿@model FinancePro.Areas.WebFormArea.Models.ApplyCashViewModel
+@{
     ViewBag.Title = "申请提现";
     Layout = "~/Views/_WebFormLayout.cshtml";
 }
@@ -69,43 +70,88 @@
                     <td>&nbsp;</td>
                 </tr>
             </table>
-            <table width="97%" border="0" cellspacing="0" cellpadding="0">
-                <tr>
-                    <td height="49" align="left"><span class="STYLE1">积分币申请提现</span></td>
-                </tr>
-            </table>
-            <table width="97%" border="0" cellspacing="0" cellpadding="0">
-                <tr>
-                    <td height="49" align="left">当前积分币余额：<span class="STYLE1">8888</span></td>
-                </tr>
-            </table>
-            <table width="97%" border="0" cellspacing="0" cellpadding="0">
-                <tr>
-                    <td height="49" align="left">提现手续费率：<span class="STYLE1">20%</span></td>
-                </tr>
-            </table>
-            <table width="97%" border="0" cellspacing="0" cellpadding="0">
-                <tr>
-                    <td height="49" align="left">
-                        申请提现金额：
-                        <label>
-                            <input name="textfield" type="text" size="10" />
-                        </label>
-                        <span class="STYLE1">*30</span>=
-                        <input name="textfield2" type="text" size="10" />
-                        金额必须为30的整倍数
-                    </td>
-                </tr>
-            </table>
-            <table width="97%" border="0" cellspacing="0" cellpadding="0">
-                <tr>
-                    <td height="49" align="left">
-                        <label>
-                            <input type="submit" name="Submit" value="提交" />
-                        </label>
-                    </td>
-                </tr>
-            </table>
+            @using (Html.BeginForm("ApplyCash", "WebHome", new { area = "WebFormArea" }, FormMethod.Post))
+            {
+                <table width="97%" border="0" cellspacing="0" cellpadding="0">
+                    <tr>
+                        <td height="49" align="left"><span class="STYLE1">积分币申请提现</span></td>
+                    </tr>
+                </table>
+                <table width="97%" border="0" cellspacing="0" cellpadding="0">
+                    <tr>
+                        <td height="49" align="left">当前积分币余额：<span class="STYLE1" id="memberpoints">@Model.memberpoint</span></td>
+                        @Html.HiddenFor(m => m.mincashnum)
+                        @Html.HiddenFor(m => m.maxnum)
+                        @Html.HiddenFor(m => m.feenum)
+                        @Html.HiddenFor(m => m.basenum)
+                    </tr>
+                </table>
+                <table width="97%" border="0" cellspacing="0" cellpadding="0">
+                    <tr>
+                        <td height="49" align="left">提现手续费率：<span class="STYLE1">@(Model.feenum)%</span></td>
+                    </tr>
+                </table>
+                <table width="97%" border="0" cellspacing="0" cellpadding="0">
+                    <tr>
+                        <td height="49" align="left">
+                            申请提现金额：
+                            <label>
+                                @Html.TextBoxFor(m => m.cashorder.CashNum, new { @size = "10", @onchange = "cashvaluechange()" })
+                            </label>
+                            <span style="color:red;">金额必须为@(Model.basenum)的整倍数</span>
+                        </td>
+                    </tr>
+                </table>
+                <table width="97%" border="0" cellspacing="0" cellpadding="0">
+                    <tr>
+                        <td height="49" align="left">
+                            手续费用：
+                            <label>
+                                @Html.TextBoxFor(m => m.cashorder.CashNum, new { @disable = "disable" })
+                            </label>
+                        </td>
+                    </tr>
+                </table>
+                <table width="97%" border="0" cellspacing="0" cellpadding="0">
+                    <tr>
+                        <td height="49" align="left">
+                            开户银行：
+                            <label>
+                                @Html.TextBoxFor(m => m.cashorder.CashBankName, new { @size = "25" })
+                            </label>
+                        </td>
+                    </tr>
+                </table>
+                <table width="97%" border="0" cellspacing="0" cellpadding="0">
+                    <tr>
+                        <td height="49" align="left">
+                            开户银行账户名字：
+                            <label>
+                                @Html.TextBoxFor(m => m.cashorder.CashBankUserName, new { @size = "10" })
+                            </label>
+                        </td>
+                    </tr>
+                </table>
+                <table width="97%" border="0" cellspacing="0" cellpadding="0">
+                    <tr>
+                        <td height="49" align="left">
+                            开户银行卡号：
+                            <label>
+                                @Html.TextBoxFor(m => m.cashorder.CashBankCode, new { @size = "20" })
+                            </label>
+                        </td>
+                    </tr>
+                </table>
+                <table width="97%" border="0" cellspacing="0" cellpadding="0">
+                    <tr>
+                        <td height="49" align="left">
+                            <label>
+                                <input type="submit" name="Submit" value="提交" />
+                            </label>
+                        </td>
+                    </tr>
+                </table>
+            }
         </td>
     </tr>
 </table>

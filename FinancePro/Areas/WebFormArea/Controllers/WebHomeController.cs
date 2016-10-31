@@ -65,7 +65,15 @@ namespace FinancePro.Areas.WebFormArea.Controllers
             {
                 return RedirectToAction("Index", "Login", new { area = "WebFormArea" });
             }
-            return View();
+            MemberCapitalDetailModel capitaldetail = capitaldetailbll.GetMemberCapitalDetailByMemberID(logmember.ID);
+            ApplyCashViewModel model = new ApplyCashViewModel();
+            model.memberpoint = capitaldetail.MemberPoints;
+            model.cashorder = new MemberCashOrderModel() { CashBankCode = logmember.MemberBankCode, CashBankName = logmember.MemberBankName, CashBankUserName = logmember.MemberBankUserName };
+            model.feenum = SystemConfigsBLL.GetConfigsValueByID(10).ParseToInt(20);
+            model.basenum = SystemConfigsBLL.GetConfigsValueByID(20).ParseToInt(30);
+            model.maxnum = SystemConfigsBLL.GetConfigsValueByID(13).ParseToInt(50);
+            model.mincashnum = SystemConfigsBLL.GetConfigsValueByID(21).ParseToInt(50);
+            return View(model);
         }
         //提现列表
         public ActionResult CashList(int page = 1)
@@ -89,11 +97,11 @@ namespace FinancePro.Areas.WebFormArea.Controllers
         //会员转账
         public ActionResult MemberTransfer()
         {
-            //MemberInfoModel logmember = Session[AppContent.SESSION_WEB_LOGIN] as MemberInfoModel;
-            //if (logmember == null)
-            //{
-            //    return RedirectToAction("Index", "Login", new { area = "WebFormArea" });
-            //}
+            MemberInfoModel logmember = Session[AppContent.SESSION_WEB_LOGIN] as MemberInfoModel;
+            if (logmember == null)
+            {
+                return RedirectToAction("Index", "Login", new { area = "WebFormArea" });
+            }
             MemberTransferViewModel model = new MemberTransferViewModel();
             model.feetype = SystemConfigsBLL.GetConfigsValueByID(25).ParseToInt(0);
             return View(model);
