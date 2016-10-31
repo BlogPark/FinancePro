@@ -1,4 +1,4 @@
-﻿
+﻿@model FinancePro.Areas.WebFormArea.Models.MessageListViewModel
 @{
     ViewBag.Title = "消息列表";
     Layout = "~/Views/_WebFormLayout.cshtml";
@@ -66,73 +66,21 @@
             </table>
             <table width="96%" border="1" cellpadding="5" cellspacing="0" bordercolor="#666666" style="border-collapse:collapse;">
                 <tr>
-                    <td width="17%" height="28" align="center"><strong>发件人</strong></td>
-                    <td width="66%" align="center"><strong>标题</strong></td>
+                    <td width="17%" height="28" align="center"><strong>标题</strong></td>
+                    <td width="33%" align="center"><strong>内容</strong></td>
                     <td width="17%" align="center"><strong>时间</strong></td>
+                    <td width="33%" align="center"><strong>回复内容</strong></td>
+                    
                 </tr>
-                <tr>
-                    <td height="28" align="center">&nbsp;</td>
-                    <td align="center">&nbsp;</td>
-                    <td align="center">&nbsp;</td>
-                </tr>
-                <tr>
-                    <td height="28" align="center">&nbsp;</td>
-                    <td align="center">&nbsp;</td>
-                    <td align="center">&nbsp;</td>
-                </tr>
-                <tr>
-                    <td height="28" align="center">&nbsp;</td>
-                    <td align="center">&nbsp;</td>
-                    <td align="center">&nbsp;</td>
-                </tr>
-                <tr>
-                    <td height="28" align="center">&nbsp;</td>
-                    <td align="center">&nbsp;</td>
-                    <td align="center">&nbsp;</td>
-                </tr>
-                <tr>
-                    <td height="28" align="center">&nbsp;</td>
-                    <td align="center">&nbsp;</td>
-                    <td align="center">&nbsp;</td>
-                </tr>
-                <tr>
-                    <td height="28" align="center">&nbsp;</td>
-                    <td align="center">&nbsp;</td>
-                    <td align="center">&nbsp;</td>
-                </tr>
-                <tr>
-                    <td height="28" align="center">&nbsp;</td>
-                    <td align="center">&nbsp;</td>
-                    <td align="center">&nbsp;</td>
-                </tr>
-                <tr>
-                    <td height="28" align="center">&nbsp;</td>
-                    <td align="center">&nbsp;</td>
-                    <td align="center">&nbsp;</td>
-                </tr>
-                <tr>
-                    <td height="28" align="center">&nbsp;</td>
-                    <td align="center">&nbsp;</td>
-                    <td align="center">&nbsp;</td>
-                </tr>
-                <tr>
-                    <td height="28" align="center">&nbsp;</td>
-                    <td align="center">&nbsp;</td>
-                    <td align="center">&nbsp;</td>
-                </tr>
-                <tr>
-                    <td height="28" align="center">&nbsp;</td>
-                    <td align="center">&nbsp;</td>
-                    <td align="center">&nbsp;</td>
-                </tr>
-                <tr>
-                    <td height="28" align="right">&nbsp;</td>
-                    <td height="28" align="right">&nbsp;</td>
-                    <td height="28" align="right">&nbsp;</td>
-                </tr>
-                <tr>
-                    <td height="28" colspan="3" align="right">[1] [2] [3] [4] [5] [6] 每页12封邮件 共6页 </td>
-                </tr>
+                @foreach (var item in Model.WebContactList)
+                {
+                    <tr>
+                        <td height="28" align="center">@item.MessageTitle</td>
+                        <td align="center">@item.MessageContent</td>
+                        <td align="center">@item.AddTime.ToString("yyyy-MM-dd")</td>
+                        <td align="center">@item.ReplyContent</td>
+                    </tr>
+                }              
             </table>
             <table width="97%" border="0" cellspacing="0" cellpadding="0">
                 <tr>

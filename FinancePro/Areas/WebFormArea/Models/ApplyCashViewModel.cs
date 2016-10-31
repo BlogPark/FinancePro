@@ -41,5 +41,10 @@ namespace FinancePro.Areas.WebFormArea.Models
         /// </summary>
         [DataMember]
         public int basenum { get; set; }
+        /// <summary>
+        /// 错误消息
+        /// </summary>
+        [DataMember]
+        public string ErrorStr { get; set; }
     }
 }

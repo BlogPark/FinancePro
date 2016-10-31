@@ -145,6 +145,7 @@
     <Compile Include="Areas\WebFormArea\Models\MessageListViewModel.cs" />
     <Compile Include="Areas\WebFormArea\Models\TransferlistViewModel.cs" />
     <Compile Include="Areas\WebFormArea\Models\WebHomeIndexViewModel.cs" />
+    <Compile Include="Areas\WebFormArea\Models\WriteMessageViewModel.cs" />
     <Compile Include="Areas\WebFormArea\WebFormAreaAreaRegistration.cs" />
     <Compile Include="Controllers\AppContent.cs" />
     <Compile Include="Controllers\IndexPubController.cs" />

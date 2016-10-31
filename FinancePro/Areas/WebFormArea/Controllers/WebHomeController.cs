@@ -75,6 +75,42 @@ namespace FinancePro.Areas.WebFormArea.Controllers
             model.mincashnum = SystemConfigsBLL.GetConfigsValueByID(21).ParseToInt(50);
             return View(model);
         }
+        /// <summary>
+        /// 提现申请提交
+        /// </summary>
+        /// <param name="cashorder"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public ActionResult ApplyCash(MemberCashOrderModel cashorder)
+        {
+            MemberInfoModel logmember = Session[AppContent.SESSION_WEB_LOGIN] as MemberInfoModel;
+            if (logmember == null)
+            {
+                return RedirectToAction("Index", "Login", new { area = "WebFormArea" });
+            }
+            MemberCapitalDetailModel capitaldetail = capitaldetailbll.GetMemberCapitalDetailByMemberID(logmember.ID);
+            ApplyCashViewModel model = new ApplyCashViewModel();
+            MemberCashOrderModel sourcemodel = cashorder;
+            sourcemodel.MemberCode = logmember.MemberCode;
+            sourcemodel.MemberID = logmember.ID;
+            sourcemodel.MemberName = logmember.MemberName;
+            string result = cashbll.AddNewMemberCashOrder(sourcemodel);
+            if (result != "1")
+            {
+                model.ErrorStr = result;
+            }
+            else
+            {
+                model.ErrorStr = "操作成功";
+            }
+            model.memberpoint = capitaldetail.MemberPoints;
+            model.cashorder = new MemberCashOrderModel() { CashBankCode = logmember.MemberBankCode, CashBankName = logmember.MemberBankName, CashBankUserName = logmember.MemberBankUserName };
+            model.feenum = SystemConfigsBLL.GetConfigsValueByID(10).ParseToInt(20);
+            model.basenum = SystemConfigsBLL.GetConfigsValueByID(20).ParseToInt(30);
+            model.maxnum = SystemConfigsBLL.GetConfigsValueByID(13).ParseToInt(50);
+            model.mincashnum = SystemConfigsBLL.GetConfigsValueByID(21).ParseToInt(50);
+            return View(model);
+        }
         //提现列表
         public ActionResult CashList(int page = 1)
         {
@@ -194,7 +230,19 @@ namespace FinancePro.Areas.WebFormArea.Controllers
             {
                 return RedirectToAction("Index", "Login", new { area = "WebFormArea" });
             }
-            return View();
+            WriteMessageViewModel model = new WriteMessageViewModel();
+            return View(model);
+        }
+        [HttpPost]
+        public ActionResult WriteMessage(WebContactMessageModel message)
+        {
+            MemberInfoModel logmember = Session[AppContent.SESSION_WEB_LOGIN] as MemberInfoModel;
+            if (logmember == null)
+            {
+                return RedirectToAction("Index", "Login", new { area = "WebFormArea" });
+            }
+            WriteMessageViewModel model = new WriteMessageViewModel();
+            return View(model);
         }
         //消息列表
         public ActionResult MessageList()
