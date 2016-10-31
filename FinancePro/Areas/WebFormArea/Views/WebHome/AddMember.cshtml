@@ -1,4 +1,5 @@
-﻿@{
+﻿@model FinancePro.Areas.WebFormArea.Models.AddMemberViewModel
+@{
     ViewBag.Title = "AddMember";
     Layout = "~/Views/_WebFormLayout.cshtml";
 }
@@ -61,102 +62,109 @@
         </td>
         <td width="13" align="left" valign="top">&nbsp;</td>
         <td width="643" align="center" valign="top">
-            <table width="97%" border="0" cellspacing="0" cellpadding="0">
-                <tr>
-                    <td>&nbsp;</td>
-                </tr>
-            </table>
-            <table width="96%" border="1" cellpadding="5" cellspacing="0" bordercolor="#ABC9EF" style="border-collapse:collapse;">
-
-                <tr>
-                    <td width="14%" height="28" align="center">会员编号</td>
-                    <td>
-                        1234567
-                        <label>
-                            <input type="submit" name="Submit" value="刷新" />
-                        </label>
-                    </td>
-                </tr>
-                <tr>
-                    <td height="28" align="center">推荐人编号</td>
-                    <td>
-                        <label>
-                            <input type="text" name="textfield" />
-                        </label>
-                    </td>
-                </tr>
-                <tr>
-                    <td height="28" align="center">登录密码</td>
-                    <td><input type="password" name="textfield2" /></td>
-                </tr>
-                <tr>
-                    <td height="28" align="center">密码确认</td>
-                    <td><input type="password" name="textfield2" /></td>
-                </tr>
-                <tr>
-                    <td height="28" align="center">二级密码</td>
-                    <td><input type="password" name="textfield22" /></td>
-                </tr>
-                <tr>
-                    <td height="28" align="center">真实姓名</td>
-                    <td><input type="text" name="textfield3" /></td>
-                </tr>
-                <tr>
-                    <td height="28" align="center">性别</td>
-                    <td>
-                        <p>
+            @using (Html.BeginForm("", "", new { }, FormMethod.Post))
+            {
+                <table width="97%" border="0" cellspacing="0" cellpadding="0">
+                    <tr>
+                        <td>
+                            &nbsp;
+                            @Html.HiddenFor(m => m.member.MemberProvince)
+                            @Html.HiddenFor(m => m.member.MemberCity)
+                            @Html.HiddenFor(m => m.member.MemberArea)
+                            @Html.HiddenFor(m => m.member.MemberSex)
+                            @Html.HiddenFor(m => m.member.IsDerivativeMember)
+                            @Html.HiddenFor(m => m.member.MemberType)
+                            @Html.HiddenFor(m => m.member.SourceMemberCode)
+                        </td>
+                    </tr>
+                </table>
+                <table width="96%" border="1" cellpadding="5" cellspacing="0" bordercolor="#ABC9EF" style="border-collapse:collapse;">
+                    <tr>
+                        <td width="14%" height="28" align="center">会员编号</td>
+                        <td>
+                            @Html.LabelFor(m => m.member.MemberCode)
+                        </td>
+                    </tr>
+                    <tr>
+                        <td height="28" align="center">登录密码</td>
+                        <td><input type="password" name="textfield2" /></td>
+                    </tr>
+                    <tr>
+                        <td height="28" align="center">密码确认</td>
+                        <td>@Html.PasswordFor(m => m.member.MemberLogPwd)</td>
+                    </tr>
+                    <tr>
+                        <td height="28" align="center">二级密码</td>
+                        <td>@Html.PasswordFor(m => m.member.MemberSecondPwd)</td>
+                    </tr>
+                    <tr>
+                        <td height="28" align="center">真实姓名</td>
+                        <td>@Html.TextBoxFor(m => m.member.MemberName)</td>
+                    </tr>
+                    <tr>
+                        <td height="28" align="center">性别</td>
+                        <td>
+                            <p>
+                                <label>
+                                    <input type="radio" name="reagerRadios1" value="1" checked>
+                                    男
+                                    <input type="radio" name="reagerRadios1" value="2">
+                                    女
+                                </label>
+                                <br />
+                            </p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td height="28" align="center">手机号</td>
+                        <td>@Html.TextBoxFor(m => m.member.MemberPhone)</td>
+                    </tr>
+                    <tr>
+                        <td height="28" align="center">身份证号</td>
+                        <td>@Html.TextBoxFor(m => m.member.MemberIDNumber, new { @size = "32" })</td>
+                    </tr>
+                    <tr>
+                        <td height="28" align="center">联系地址</td>
+                        <td>
+                            <select id="redrpprovince">
+                                <option value="0">选择省份</option>
+                                @foreach (var item in Model.regintable)
+                                {
+                                    <option value="@item.REGION_ID">@item.REGION_NAME</option>
+                                }
+                            </select>
+                            <select id="redrpcity">
+                                <option value="0"></option>
+                            </select>
+                            <select class="form-control" id="redrparea">
+                                <option value="0"></option>
+                            </select>
+                            @Html.TextBoxFor(m => m.member.MemberAddress, new { @size = "32" })
+                        </td>
+                    </tr>
+                    <tr>
+                        <td height="28" align="center">银行卡号</td>
+                        <td>@Html.TextBoxFor(m => m.member.MemberBankCode, new { @size = "32" })</td>
+                    </tr>
+                    <tr>
+                        <td height="28" align="center">银行户名</td>
+                        <td>@Html.TextBoxFor(m => m.member.MemberBankUserName, new { @size = "32" })</td>
+                    </tr>
+                    <tr>
+                        <td height="28" align="center">开户支行</td>
+                        <td>@Html.TextBoxFor(m => m.member.MemberBankName, new { @size = "32" })</td>
+                    </tr>
+                    <tr>
+                        <td height="28" colspan="2" align="left">
                             <label>
-                                <input type="radio" name="RadioGroup1" value="单选" />
-                                男
-                                <input type="radio" name="RadioGroup1" value="单选" />
-                                女
+                                &nbsp;&nbsp;&nbsp;
+                                <input type="submit" name="Submit2" value="提交" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                <input type="reset" name="Submit22" value="重置" />
                             </label>
-                            <br />
-                        </p>
-                    </td>
-                </tr>
-                <tr>
-                    <td height="28" align="center">手机号</td>
-                    <td><input type="text" name="textfield32" /></td>
-                </tr>
-                <tr>
-                    <td height="28" align="center">身份证号</td>
-                    <td><input name="textfield322" type="text" size="32" maxlength="16" /></td>
-                </tr>
-                <tr>
-                    <td height="28" align="center">联系地址</td>
-                    <td>
-                        <select id="s_province" name="s_province"></select>
-                        <select id="s_city" name="s_city"></select>
-                        <select id="s_county" name="s_county"></select>
-                        <script class="resources library" src="area.js" type="text/javascript"></script>
-
-                        <script type="text/javascript">_init_area();</script>
-                        <input name="textfield32" type="text" size="30" />
-                    </td>
-                </tr>
-                <tr>
-                    <td height="28" align="center">银行卡号</td>
-                    <td><input name="textfield3222" type="text" size="32" maxlength="16" /></td>
-                </tr>
-                <tr>
-                    <td height="28" align="center">银行户名</td>
-                    <td><input name="textfield3223" type="text" size="32" maxlength="16" /></td>
-                </tr>
-                <tr>
-                    <td height="28" align="center">开户支行</td>
-                    <td><input name="textfield3224" type="text" size="32" maxlength="16" /></td>
-                </tr>
-                <tr>
-                    <td height="28" colspan="2" align="left">
-                        <label>
-                            &nbsp;&nbsp;&nbsp;
-                            <input type="submit" name="Submit2" value="提交" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                            <input type="submit" name="Submit22" value="重置" />
-                        </label>
-                    </td>
-                </tr>
-            </table>
+                        </td>
+                    </tr>
+                </table>
+            }
             <table width="97%" border="0" cellspacing="0" cellpadding="0">
                 <tr>
                     <td>&nbsp;</td>
@@ -165,4 +173,3 @@
         </td>
     </tr>
 </table>
-

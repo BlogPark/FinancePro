@@ -138,6 +138,7 @@
     <Compile Include="Areas\WebFormArea\Controllers\LoginController.cs" />
     <Compile Include="Areas\WebFormArea\Controllers\RegisterController.cs" />
     <Compile Include="Areas\WebFormArea\Controllers\WebHomeController.cs" />
+    <Compile Include="Areas\WebFormArea\Models\AddMemberViewModel.cs" />
     <Compile Include="Areas\WebFormArea\Models\ApplyCashViewModel.cs" />
     <Compile Include="Areas\WebFormArea\Models\CapitalDetailLogViewModel.cs" />
     <Compile Include="Areas\WebFormArea\Models\CashListViewModel.cs" />

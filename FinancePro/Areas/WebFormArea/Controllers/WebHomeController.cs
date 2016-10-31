@@ -45,7 +45,18 @@ namespace FinancePro.Areas.WebFormArea.Controllers
             {
                 return RedirectToAction("Index", "Login", new { area = "WebFormArea" });
             }
-            return View();
+            AddMemberViewModel model = new AddMemberViewModel();
+            return View(model);
+        }
+        /// <summary>
+        /// 添加会员提交
+        /// </summary>
+        /// <returns></returns>
+        [HttpPost]
+        public ActionResult AddMember(MemberInfoModel member)
+        {
+            AddMemberViewModel model = new AddMemberViewModel();
+            return View(model);
         }
         //会员列表
         public ActionResult MemberList()
