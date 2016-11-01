@@ -1,4 +1,27 @@
 $(function () {
+    $("#redrpprovince").change(function () {
+        var provincename = $("#redrpprovince").find("option:selected").text();
+        var provinceid = $("#redrpprovince").val();
+        webchang(provinceid, 'redrpcity');
+        $("#member_MemberProvince").val(provincename);
+    });
+    $("#redrpcity").change(function () {
+        var cityname = $("#redrpcity").find("option:selected").text();
+        var cityid = $("#redrpcity").val();
+        webchang(cityid, 'redrparea');
+        $("#member_MemberCity").val(cityname);
+    });
+    $("#redrparea").change(function () {
+        var areaname = $("#redrparea").find("option:selected").text();
+        var areaid = $("#redrparea").val();
+        $("#member_MemberArea").val(areaname);
+    });
+    var raval = $("input:radio[name=reagerRadios1]:checked").val();
+    $("#member_MemberSex").val(raval);
+    $("input:radio[name=reagerRadios1]").change(function () {
+        var raval = $("input:radio[name=reagerRadios1]:checked").val();
+        $("#member_MemberSex").val(raval);
+    });
 });
 function valuechang() {
     var transfernum = $("#transfernum").val();

@@ -46,6 +46,10 @@ namespace FinancePro.Areas.WebFormArea.Controllers
                 return RedirectToAction("Index", "Login", new { area = "WebFormArea" });
             }
             AddMemberViewModel model = new AddMemberViewModel();
+            model.member.MemberType = 2;
+            model.member.SourceMemberCode = logmember.MemberCode;
+            model.regintable = ReginTableBLL.GetReginTableListModel(1);
+            model.member.IsDerivativeMember = 1;
             return View(model);
         }
         /// <summary>
@@ -55,7 +59,21 @@ namespace FinancePro.Areas.WebFormArea.Controllers
         [HttpPost]
         public ActionResult AddMember(MemberInfoModel member)
         {
+            MemberInfoModel logmember = Session[AppContent.SESSION_WEB_LOGIN] as MemberInfoModel;
+            if (logmember == null)
+            {
+                return RedirectToAction("Index", "Login", new { area = "WebFormArea" });
+            }
             AddMemberViewModel model = new AddMemberViewModel();
+            string result = memberbll.AddNewMemberInfo(member, member.MemberType);
+            if (result == "1")
+            {
+                model.ErrorStr = "操作成功";
+            }
+            else
+            {
+                model.ErrorStr = result;
+            }
             return View(model);
         }
         //会员列表
