@@ -44,9 +44,26 @@ namespace FinancePro.BLLData
         /// 得到会员编号
         /// </summary>
         /// <returns></returns>
-        public static int GetMemberCode()
+        public static MemberCodeModel GetMemberCode()
         {
             return MemberCodeDAL.GetMemberCode();
+        }
+        /// <summary>
+        /// 得到最大的会员ID
+        /// </summary>
+        /// <returns></returns>
+        public static int GetMaxMemberCode()
+        {
+            return MemberCodeDAL.GetMaxMemberCode();
+        }
+        /// <summary>
+        /// 更改数据状态
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public static int UpdateMemberCodeStatus(int id)
+        {
+            return MemberCodeDAL.UpdateMemberCodeStatus(id);
         }
     }
 }

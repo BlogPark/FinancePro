@@ -84,9 +84,9 @@ function webchang(id, control) {
             $("#" + control).html('');
             $("#" + control).html(optionstr);
             if (control == 'redrpcity') {
-                $("#member_City").val('');
+                $("#member_MemberCity").val('');
                 $("#redrparea").html('<option value="0"></option>');
-                $("#member_Area").val('');
+                $("#member_MemberArea").val('');
             }
         }
     });

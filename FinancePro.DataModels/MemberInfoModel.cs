@@ -283,6 +283,11 @@ namespace FinancePro.DataModels
         /// </summary>
         [DataMember]
         public string VerificationCode { get; set; }
+        /// <summary>
+        /// 会员编码ID
+        /// </summary>
+        [DataMember]
+        public int MemberCodeID { get; set; }
 
         #endregion
 

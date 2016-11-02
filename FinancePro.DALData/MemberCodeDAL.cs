@@ -46,13 +46,21 @@ namespace FinancePro.DALData
         /// 得到会员编号
         /// </summary>
         /// <returns></returns>
-        public static int GetMemberCode()
+        public static MemberCodeModel GetMemberCode()
         {
+            MemberCodeModel model = new MemberCodeModel();
             StringBuilder strSql = new StringBuilder();
-            strSql.Append("select TOP 1 MemberCode  ");
+            strSql.Append("select TOP 1 ID,MemberCode  ");
             strSql.Append("  from MemberCode ");
             strSql.Append(" where  CStatus=1");
-            return helper.GetSingle(strSql.ToString()).ToString().ParseToInt(0);
+            DataTable dt = helper.Query(strSql.ToString()).Tables[0];
+            Dictionary<int, string> dic = new Dictionary<int, string>();
+            if (dt.Rows.Count > 0)
+            {
+                model.ID=dt.Rows[0]["ID"].ToString().ParseToInt(0);
+                model.MemberCode = dt.Rows[0]["MemberCode"].ToString().ParseToInt(0);
+            }
+            return model;
         }
         /// <summary>
         /// 得到最大会员编号
@@ -64,6 +72,19 @@ namespace FinancePro.DALData
             strSql.Append("select MAX(MemberCode)  ");
             strSql.Append("  from MemberCode ");
             return helper.GetSingle(strSql.ToString()).ToString().ParseToInt(0);
+        }
+        /// <summary>
+        /// 更改数据状态
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public static int UpdateMemberCodeStatus(int id)
+        {
+            string sqltxt = @" UPDATE dbo.MemberCode
+  SET CStatus=0
+  WHERE ID=@id";
+            SqlParameter[] paramter = { new SqlParameter("@id",id)};
+            return helper.ExecuteSql(sqltxt, paramter);
         }
     }
 }
