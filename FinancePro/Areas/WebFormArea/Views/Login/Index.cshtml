@@ -1,4 +1,5 @@
-﻿<!DOCTYPE html>
+﻿@model FinancePro.DataModels.MemberInfoModel
+<!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8">
@@ -6,20 +7,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="">
     <meta name="author" content="">
-
     <!-- CSS -->
-
-    <link rel="stylesheet" href="css/supersized.css">
-    <link rel="stylesheet" href="css/login.css">
-    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/webasset/css/supersized.css">
+    <link rel="stylesheet" href="/webasset/css/login.css">
+    <link href="/webasset/css/bootstrap.min.css" rel="stylesheet">
     <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
     <!--[if lt IE 9]>
         <script src="js/html5.js"></script>
     <![endif]-->
-    <script src="js/jquery-1.8.2.min.js"></script>
-    <script type="text/javascript" src="js/jquery.form.js"></script>
-    <script type="text/javascript" src="js/tooltips.js"></script>
-    <script type="text/javascript" src="js/login.js"></script>
+    <script src="@Url.Content("/js/jquery/jquery-1.9.1.min.js")"></script>
+    <script type="text/javascript" src="/webasset/js/jquery.form.js"></script>
+    <script type="text/javascript" src="/webasset/js/tooltips.js"></script>
+    <script type="text/javascript" src="/webasset/js/login.js"></script>
 </head>
 
 <body>
@@ -28,50 +27,43 @@
         <div class="main_box">
             <div class="login_box">
                 <div class="login_logo">
-                    <img src="images/logo.png">
+                    <img src="/webasset/images/logo.png">
                 </div>
 
                 <div class="login_form">
-                    <form action="index.html" id="login_form" method="post">
+                    @using (Html.BeginForm("Index", "Login", new { area = "WebFormArea" }, FormMethod.Post))
+                    {
                         <div class="form-group">
                             <label for="j_username" class="t">帐　号：</label>
-                            <input id="email" value="" name="email" type="text" class="form-control x319 in"
-                                   autocomplete="off">
+                            @Html.TextBoxFor(m => m.MemberCode, new { @class = "form-control x319 in", @placeholder = "账号", @autocomplete = "off" })                           
                         </div>
                         <div class="form-group">
                             <label for="j_password" class="t">密　码：</label>
-                            <input id="password" value="" name="password" type="password"
-                                   class="password form-control x319 in">
+                            @Html.PasswordFor(m => m.MemberLogPwd, new { @class = "password form-control x319 in", @placeholder="密码" })                            
                         </div>
                         <div class="form-group">
                             <label for="j_captcha" class="t">验证码：</label>
-                            <input id="j_captcha" name="j_captcha" type="text" class="form-control x164 in">
-                            <img id="captcha_img" alt="点击更换" title="点击更换" src="images/captcha.jpeg" class="m">
-                        </div>
-                        <div class="form-group">
-                            <label class="t"></label>
-                            <label for="j_remember" class="m">
-                                <input id="j_remember" type="checkbox" value="true">&nbsp;记住登陆账号!
-                            </label>
+                            @Html.TextBoxFor(m => m.VerificationCode, new { @class="form-control x164 in"})
+                            <img id="valiCode" alt="点击更换" title="点击更换" src="/WebFormArea/Login/GetImg" class="m">
                         </div>
                         <div class="form-group space">
                             <label class="t"></label>
-                            <button type="button" id="submit_btn"
+                            <button type="submit" id="submit_btn"
                                     class="btn btn-primary btn-lg">
-                                &nbsp;登&nbsp;录&nbsp
+                                &nbsp;登&nbsp;录&nbsp;
                             </button>
                             <input type="reset" value="&nbsp;重&nbsp;置&nbsp;" class="btn btn-default btn-lg">
+                            <label class="t" style="color:red;">@ViewData["ErrorStr"]</label>
                         </div>
-                    </form>
+                    }
                 </div>
             </div>
         </div>
     </div>
-
     <!-- Javascript -->
-
-    <script src="js/supersized.3.2.7.min.js"></script>
-    <script src="js/supersized-init.js"></script>
-    <script src="js/scripts.js"></script>
+    <script src="/webasset/js/supersized.3.2.7.min.js"></script>
+    <script src="/webasset/js/supersized-init.js"></script>
+    <script src="/webasset/js/scripts.js"></script>
+    <script language="JavaScript" src="/webasset/webjs.js"></script>
 </body>
 </html>

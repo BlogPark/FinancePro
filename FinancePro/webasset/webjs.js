@@ -1,4 +1,7 @@
 $(function () {
+    $("#valiCode").bind("click", function() {
+        this.src = "/WebFormArea/Login/GetImg?time=" + (new Date()).getTime();
+        });
     $("#redrpprovince").change(function () {
         var provincename = $("#redrpprovince").find("option:selected").text();
         var provinceid = $("#redrpprovince").val();

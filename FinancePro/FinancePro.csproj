@@ -484,10 +484,21 @@
       <DependentUpon>Web.config</DependentUpon>
     </Content>
     <Content Include="Views\Web.config" />
+    <Content Include="webasset\css\bootstrap.min.css" />
+    <Content Include="webasset\css\login.css" />
+    <Content Include="webasset\css\supersized.css" />
+    <Content Include="webasset\fonts\glyphicons-halflings-regular.svg" />
+    <Content Include="webasset\images\1.png" />
+    <Content Include="webasset\images\backgrounds\0.jpg" />
+    <Content Include="webasset\images\backgrounds\1.jpg" />
+    <Content Include="webasset\images\backgrounds\2.jpg" />
+    <Content Include="webasset\images\backgrounds\3.jpg" />
     <Content Include="webasset\images\bj-01.jpg" />
     <Content Include="webasset\images\bj.jpg" />
     <Content Include="webasset\images\bj2.jpg" />
     <Content Include="webasset\images\bottom-bj.jpg" />
+    <Content Include="webasset\images\captcha.jpeg" />
+    <Content Include="webasset\images\error.png" />
     <Content Include="webasset\images\fenlei-bj.jpg" />
     <Content Include="webasset\images\index-1.jpg" />
     <Content Include="webasset\images\index-2-1.jpg" />
@@ -497,6 +508,9 @@
     <Content Include="webasset\images\index-2-bj.jpg" />
     <Content Include="webasset\images\index-2-l.jpg" />
     <Content Include="webasset\images\index3.jpg" />
+    <Content Include="webasset\images\loading.gif" />
+    <Content Include="webasset\images\logo.png" />
+    <Content Include="webasset\images\logo副本.png" />
     <Content Include="webasset\images\menu-bj.jpg" />
     <Content Include="webasset\images\menu-tiao.jpg" />
     <Content Include="webasset\images\menu1.jpg" />
@@ -509,6 +523,14 @@
     <Content Include="webasset\images\menu8.jpg" />
     <Content Include="webasset\images\renzheng.jpg" />
     <Content Include="webasset\images\vip.jpg" />
+    <Content Include="webasset\js\html5.js" />
+    <Content Include="webasset\js\jquery-1.8.2.min.js" />
+    <Content Include="webasset\js\jquery.form.js" />
+    <Content Include="webasset\js\login.js" />
+    <Content Include="webasset\js\scripts.js" />
+    <Content Include="webasset\js\supersized-init.js" />
+    <Content Include="webasset\js\supersized.3.2.7.min.js" />
+    <Content Include="webasset\js\tooltips.js" />
     <Content Include="webasset\mm_menu.js" />
     <Content Include="webasset\webjs.js" />
   </ItemGroup>
@@ -736,6 +758,14 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Areas\WebFormArea\Views\Login\Index.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="webasset\images\backgrounds\Thumbs.db" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="webasset\fonts\glyphicons-halflings-regular.eot" />
+    <Content Include="webasset\fonts\glyphicons-halflings-regular.ttf" />
+    <Content Include="webasset\fonts\glyphicons-halflings-regular.woff" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

@@ -26,12 +26,8 @@ namespace FinancePro.Areas.WebFormArea.Controllers
         }
         public ActionResult Index(string bl = "")
         {
-            //string name = SysAdminConfigBLL.GetConfigValue(23);
-            //if (name == "NewTemplateArea")
-            //{
-            //    return RedirectToAction("Index", "Login", new { area = "NewTemplateArea" });
-            //}
             MemberInfoModel model = new MemberInfoModel();
+            ViewData["ErrorStr"] = "";
             ViewBag.PageTitle = web.WebName;
             return View(model);
         }
@@ -47,6 +43,27 @@ namespace FinancePro.Areas.WebFormArea.Controllers
             {
                 return View(member);
             }
+            if (string.IsNullOrWhiteSpace(member.MemberCode))
+            {
+                ViewData["ErrorStr"] = "账号未填写！";
+                return View(member);
+            }
+            if (string.IsNullOrWhiteSpace(member.MemberLogPwd))
+            {
+                ViewData["ErrorStr"] = "密码未填写！";
+                return View(member);
+            }
+            if (string.IsNullOrWhiteSpace(member.VerificationCode))
+            {
+                ViewData["ErrorStr"] = "验证码未填写！";
+                return View(member);
+            }
+            string vcode = Session[AppContent.VALICODE].ToString();
+            if (member.VerificationCode.ToUpper() != vcode.ToUpper())
+            {
+                ViewData["ErrorStr"] = "验证码填写不正确！";
+                return View(member);
+            }
             string newpwd = DESEncrypt.Encrypt(member.MemberLogPwd, AppContent.SecrectStr);
             string logmsg = "";
             MemberInfoModel logmember = bll.MemberLogin(member.MemberCode, newpwd, out logmsg);
@@ -57,9 +74,23 @@ namespace FinancePro.Areas.WebFormArea.Controllers
             }
             else
             {
-                ViewBag.TempMsg = logmsg;
+                ViewData["ErrorStr"] = logmsg;
                 return View(member);
             }
+        }
+        /// <summary>
+        /// 产生验证码图片
+        /// </summary>
+        /// <returns></returns>
+        public ActionResult GetImg()
+        {
+            int width = 100;
+            int height = 40;
+            int fontsize = 20;
+            string code = string.Empty;
+            byte[] bytes = ValidateCode.CreateValidateGraphic(out code, 4, width, height, fontsize);
+            Session[AppContent.VALICODE] = code;
+            return File(bytes, @"image/jpeg");
         }
 
     }

@@ -261,19 +261,29 @@ namespace FinancePro.DataModels
         /// <summary>
         /// 页索引
         /// </summary>
+        [DataMember]
         public int PageIndex { get; set; }
         /// <summary>
         /// 页容量
         /// </summary>
+        [DataMember]
         public int PageSize { get; set; }
         /// <summary>
         /// 状态名称
         /// </summary>
+        [DataMember]
         public string MemberStatusName { get; set; }
         /// <summary>
         /// 类型名称
         /// </summary>
+        [DataMember]
         public string MemberTypeName { get; set; }
+        /// <summary>
+        /// 验证码
+        /// </summary>
+        [DataMember]
+        public string VerificationCode { get; set; }
+
         #endregion
 
     }
