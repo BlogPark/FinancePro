@@ -144,12 +144,14 @@
     <Compile Include="Areas\WebFormArea\Models\CashListViewModel.cs" />
     <Compile Include="Areas\WebFormArea\Models\MemberTransferViewModel.cs" />
     <Compile Include="Areas\WebFormArea\Models\MessageListViewModel.cs" />
+    <Compile Include="Areas\WebFormArea\Models\RegisterViewModel.cs" />
     <Compile Include="Areas\WebFormArea\Models\TransferlistViewModel.cs" />
     <Compile Include="Areas\WebFormArea\Models\WebHomeIndexViewModel.cs" />
     <Compile Include="Areas\WebFormArea\Models\WriteMessageViewModel.cs" />
     <Compile Include="Areas\WebFormArea\WebFormAreaAreaRegistration.cs" />
     <Compile Include="Controllers\AppContent.cs" />
     <Compile Include="Controllers\IndexPubController.cs" />
+    <Compile Include="Controllers\publicController.cs" />
     <Compile Include="Filters\AdminLoginAttribute.cs" />
     <Compile Include="Filters\WebLoginAttribute.cs" />
     <Compile Include="Global.asax.cs">

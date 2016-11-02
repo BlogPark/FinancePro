@@ -15,6 +15,11 @@ namespace FinancePro.Areas.WebFormArea
         public override void RegisterArea(AreaRegistrationContext context)
         {
             context.MapRoute(
+            "web_register",
+            "register.html",
+            new { controller = "Register", action = "Index", id = UrlParameter.Optional }
+        );
+            context.MapRoute(
              "web_login",
              "login.html",
              new { controller = "Login", action = "Index", id = UrlParameter.Optional }

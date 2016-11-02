@@ -65,6 +65,7 @@ namespace FinancePro.Areas.WebFormArea.Controllers
                 return RedirectToAction("Index", "Login", new { area = "WebFormArea" });
             }
             AddMemberViewModel model = new AddMemberViewModel();
+            model.member = member;
             string result = memberbll.AddNewMemberInfo(member, member.MemberType);
             if (result == "1")
             {

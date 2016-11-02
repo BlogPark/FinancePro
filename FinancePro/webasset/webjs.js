@@ -70,3 +70,24 @@ function cashvaluechange() {
     var fee = cashnum * feenum / 100;
     $("#cashorder_CashNum").val(fee);
 }
+function webchang(id, control) {
+    $.ajax({
+        url: '/public/obtainreagin',
+        dataType: 'Json',
+        data: { 'id': id },
+        type: 'POST',
+        success: function (data) {
+            var optionstr = '<option value="0"></option>';
+            $.each(data, function (i, item) {
+                optionstr = optionstr + '<option value="' + item.REGION_ID + '">' + item.REGION_NAME + '</option>';
+            });
+            $("#" + control).html('');
+            $("#" + control).html(optionstr);
+            if (control == 'redrpcity') {
+                $("#member_City").val('');
+                $("#redrparea").html('<option value="0"></option>');
+                $("#member_Area").val('');
+            }
+        }
+    });
+}
