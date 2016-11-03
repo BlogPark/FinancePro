@@ -484,10 +484,17 @@ namespace FinancePro.DALData
             AND MemberStatus = 2";
             SqlParameter[] paramter = { new SqlParameter("@id", memberid) };
             object obj = helper.GetSingle(sqltxt, paramter);
-            if (obj.ToString().ParseToInt(0) == 0)
-                return false;
+            if (obj != null)
+            {
+                if (obj.ToString().ParseToInt(0) == 0)
+                    return false;
+                else
+                    return true;
+            }
             else
-                return true;
+            {
+                return false;
+            }
         }
         /// <summary>
         /// 根据身份证编号查询注册会员个数
@@ -637,7 +644,7 @@ FROM    dbo.MemberInfo ";
         /// </summary>
         /// <param name="membercode"></param>
         /// <returns></returns>
-        public static List<MemberInfoModel> GetChildCountListBySourceMemberCode(string  membercode)
+        public static List<MemberInfoModel> GetChildCountListBySourceMemberCode(string membercode)
         {
             List<MemberInfoModel> list = new List<MemberInfoModel>();
             string sqltxt = @"SELECT  ID ,

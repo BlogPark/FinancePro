@@ -257,8 +257,8 @@ namespace FinancePro.BLLData
                             dynamicmodel.CompoundCurrency = totalnum * listarry[4].ParseToDecimal(0) / 100;
                             dynamicmodel.GameCurrency = totalnum * listarry[1].ParseToDecimal(0) / 100;
                             dynamicmodel.LStatus = 1;
-                            dynamicmodel.MemberID = item.MemberID;
-                            dynamicmodel.MemberName = item.MemberName;
+                            dynamicmodel.MemberID = item.SuperiorMemberID;
+                            dynamicmodel.MemberName = item.SuperiorMemberName;
                             dynamicmodel.MemberPoints = totalnum * listarry[0].ParseToDecimal(0) / 100;
                             dynamicmodel.SharesCurrency = totalnum * listarry[3].ParseToDecimal(0) / 100;
                             dynamicmodel.ShoppingCurrency = totalnum * listarry[2].ParseToDecimal(0) / 100;
@@ -317,7 +317,7 @@ namespace FinancePro.BLLData
                 relationmember = ReMemberRelationDAL.GetReMemberRelationByBeRecommMemberID(memberid);//上级推荐人信息
                 if (relationmember != null)
                 {
-                    memberextendinfo = MemberExtendInfoDAL.GetMemberExtendInfoByMemberID(relationmember.ID);
+                    memberextendinfo = MemberExtendInfoDAL.GetMemberExtendInfoByMemberID(relationmember.RecommendMemberID);
                     memberCapital = MemberCapitalDetailDAL.GetMemberCapitalDetailByMemberID(relationmember.RecommendMemberID);
                 }
             }
