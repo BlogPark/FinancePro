@@ -1,7 +1,7 @@
 $(function () {
-    $("#valiCode").bind("click", function() {
+    $("#valiCode").bind("click", function () {
         this.src = "/WebFormArea/Login/GetImg?time=" + (new Date()).getTime();
-        });
+    });
     $("#redrpprovince").change(function () {
         var provincename = $("#redrpprovince").find("option:selected").text();
         var provinceid = $("#redrpprovince").val();
@@ -51,19 +51,16 @@ function cashvaluechange() {
     var feenum = $("#feenum").val();//手续费
     var memberpoints = $("#memberpoints").html();//剩余积分
     var cashnum = $("#cashorder_CashNum").val();//提现金额
-    if (cashnum % basenum > 0)
-    {
+    if (cashnum % basenum > 0) {
         alert("提现金额不正确");
         return;
     }
-    if (cashnum < minnum)
-    {
+    if (cashnum < minnum) {
         alert("提现金额小于平台限定值");
         return;
     }
     var max = memberpoints * feenum / 100;
-    if (cashnum > max)
-    {
+    if (cashnum > max) {
         return "提现金额超出平台限定值";
         return;
     }
@@ -87,6 +84,22 @@ function webchang(id, control) {
                 $("#member_MemberCity").val('');
                 $("#redrparea").html('<option value="0"></option>');
                 $("#member_MemberArea").val('');
+            }
+        }
+    });
+}
+function activemember(id) {
+    $.ajax({
+        url: '/WebFormArea/WebHome/ActiveMember',
+        dataType: 'Json',
+        data: { 'memberid': id },
+        type: 'POST',
+        success: function (data) {
+            if (data == '1') {
+                location.reload();
+            }
+            else {
+                alert(data);
             }
         }
     });

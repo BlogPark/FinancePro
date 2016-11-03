@@ -15,48 +15,7 @@
     <tr>
         <td width="11">&nbsp;</td>
         <td width="204" align="left" valign="top">
-            <table width="96%" border="0" cellspacing="0" cellpadding="0">
-                <tr>
-                    <td height="14">&nbsp;</td>
-                </tr>
-                <tr>
-                    <td height="36" background="/webasset/images/bj-01.jpg" style="background-repeat:no-repeat;"><a href="huiyuan.htm">添加新会员</a></td>
-                </tr>
-                <tr>
-                    <td height="36" background="/webasset/images/bj-01.jpg" style="background-repeat:no-repeat;"><a href="daijihuo.htm">待激活会员列表</a></td>
-                </tr>
-                <tr>
-                    <td height="36" background="/webasset/images/bj-01.jpg" style="background-repeat:no-repeat;"><a href="yijihuo.htm">已激活会员列表</a></td>
-                </tr>
-                <tr>
-                    <td height="36" background="/webasset/images/bj-01.jpg" style="background-repeat:no-repeat;"><a href="zizhanghao.htm">会员子账号管理</a></td>
-                </tr>
-            </table>
-            <table width="100%" border="0" cellspacing="0" cellpadding="0">
-                <tr>
-                    <td height="28">
-                        <table width="100%" border="0" cellspacing="0" cellpadding="0">
-                            <tr>
-                                <td>&nbsp;</td>
-                            </tr>
-                            <tr>
-                                <td height="33" background="/webasset/images/fenlei-bj.jpg"><strong><font style="font-size:14px" color="#000000">帐号管理</font></strong></td>
-                            </tr>
-                            <tr>
-                                <td height="36" background="/webasset/images/bj-01.jpg" style="background-repeat:no-repeat;"><a href="member.htm">个人资料</a></td>
-                            </tr>
-                            <tr>
-                                <td height="36" background="/webasset/images/bj-01.jpg" style="background-repeat:no-repeat;"><a href="edit_password.htm">修改密码</a></td>
-                            </tr>
-                        </table>
-                    </td>
-                </tr>
-            </table>
-            <table width="100%" border="0" cellspacing="0" cellpadding="0">
-                <tr>
-                    <td height="234" align="center" valign="bottom"><img src="/webasset/images/vip.jpg" width="184" height="221" /></td>
-                </tr>
-            </table>
+            @Html.Action("LeftWebMenu", "IndexPub", new { area = "", type = 2 })
         </td>
         <td width="13" align="left" valign="top">&nbsp;</td>
         <td width="643" align="center" valign="top">

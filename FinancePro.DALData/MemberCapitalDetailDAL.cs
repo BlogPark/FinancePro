@@ -319,7 +319,6 @@ WHERE   MemberID = @memberid";
             DataSet ds = helper.Query(strSql.ToString(), parameters);
             if (ds.Tables[0].Rows.Count > 0)
             {
-                model.ID = ds.Tables[0].Rows[0]["ID"].ToString().ParseToInt(0);
                 model.MemberID = ds.Tables[0].Rows[0]["MemberID"].ToString().ParseToInt(0);
                 model.MemberName = ds.Tables[0].Rows[0]["MemberName"].ToString();
                 model.MemberCode = ds.Tables[0].Rows[0]["MemberCode"].ToString();

@@ -11,7 +11,7 @@
                 <table width="100%" border="1" cellpadding="5" cellspacing="0" bordercolor="#ABC9EF" style="border-collapse:collapse;background-color:#FFFFFF">
                     <tr>
                         <td width="14%" height="28" align="center">会员编号</td>
-                        <td>@Html.TextBoxFor(m => m.member.MemberCode, new { @disabled = "disabled" })</td>
+                        <td>@Html.TextBoxFor(m => m.member.MemberCode, new { @readonly = "readonly" })</td>
                     </tr>
                     <tr>
                         <td height="28" align="center">真实姓名</td>
@@ -34,6 +34,10 @@
                     <tr>
                         <td height="28" align="center">手机号</td>
                         <td>@Html.TextBoxFor(m => m.member.MemberPhone)</td>
+                    </tr>
+                    <tr>
+                        <td height="28" align="center">邮箱</td>
+                        <td>@Html.TextBoxFor(m => m.member.MemberEmail)</td>
                     </tr>
                     <tr>
                         <td height="28" align="center">身份证号</td>
@@ -107,7 +111,7 @@
                             @Html.HiddenFor(m => m.member.MemberSex)
                             @Html.HiddenFor(m => m.member.IsDerivativeMember)
                             @Html.HiddenFor(m => m.member.MemberType)
-                            @Html.HiddenFor(m => m.member.SourceMemberCode)
+                            @Html.HiddenFor(m => m.member.MemberCodeID)
                         </td>
                     </tr>
                 </table>

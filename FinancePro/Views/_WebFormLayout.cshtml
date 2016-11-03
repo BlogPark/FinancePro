@@ -54,9 +54,8 @@ function mmLoadMenus() {
 
                   window.mm_menu_1015022829_0 = new Menu("root",120,34,"",14,"#FFFFFF","#FFFFFF","#1873AA","#1873AA","center","middle",10,0,1000,-5,7,true,false,true,0,false,false);
                   mm_menu_1015022829_0.addMenuItem("添加新会员","location='@Url.Action("AddMember", "WebHome", new { area = "WebFormArea" })'");
-    mm_menu_1015022829_0.addMenuItem("待激活会员列表","location='@Url.Action("MemberList", "WebHome", new { area = "WebFormArea" })'");
-    mm_menu_1015022829_0.addMenuItem("已激活会员列表","location='@Url.Action("MemberList", "WebHome", new { area = "WebFormArea" })'");
-    mm_menu_1015022829_0.addMenuItem("会员子账号管理","location='@Url.Action("MemberList", "WebHome", new { area = "WebFormArea" })'");
+    mm_menu_1015022829_0.addMenuItem("推荐会员列表", "location='@Url.Action("MemberList", "WebHome", new { area = "WebFormArea" })'");
+    mm_menu_1015022829_0.addMenuItem("子账号管理","location='@Url.Action("MemberChildList", "WebHome", new { area = "WebFormArea" })'");
    mm_menu_1015022829_0.hideOnMouseOut=true;
    mm_menu_1015022829_0.bgColor='#555555';
    mm_menu_1015022829_0.menuBorder=1;
@@ -128,19 +127,19 @@ mm_menu_1015024727_0.writeMenus();
                         <tr>
                             <td width="99" align="left" valign="top"><a href="@Url.Action("Index", "WebHome", new { area = "WebFormArea" })"><img src="/webasset/images/menu1.jpg" width="87" height="38" border="0" /></a></td>
                             <td width="10" align="left" valign="top"><img src="/webasset/images/menu-tiao.jpg" width="6" height="38" /></td>
-                            <td width="100" align="left" valign="top"><a href="huiyuan.htm"><img src="/webasset/images/menu2.jpg" name="image1" width="100" height="38" border="0" id="image1" onmouseover="MM_showMenu(window.mm_menu_1015022829_0,0,38,null,'image1')" onmouseout="MM_startTimeout();" /></a></td>
+                            <td width="100" align="left" valign="top"><a href="@Url.Action("MemberChildList", "WebHome", new { area = "WebFormArea" })"><img src="/webasset/images/menu2.jpg" name="image1" width="100" height="38" border="0" id="image1" onmouseover="MM_showMenu(window.mm_menu_1015022829_0,0,38,null,'image1')" onmouseout="MM_startTimeout();" /></a></td>
                             <td width="10" align="left" valign="top"><img src="/webasset/images/menu-tiao.jpg" width="6" height="38" /></td>
-                            <td width="107" align="left" valign="top"><a href="shangwu.htm"><img src="/webasset/images/menu3.jpg" name="image2" width="107" height="38" border="0" id="image2" onmouseover="MM_showMenu(window.mm_menu_1015023540_0,0,38,null,'image2')" onmouseout="MM_startTimeout();" /></a></td>
+                            <td width="107" align="left" valign="top"><a href="@Url.Action("Index", "WebHome", new { area = "WebFormArea" })"><img src="/webasset/images/menu3.jpg" name="image2" width="107" height="38" border="0" id="image2" onmouseover="MM_showMenu(window.mm_menu_1015023540_0,0,38,null,'image2')" onmouseout="MM_startTimeout();" /></a></td>
                             <td width="10" align="left" valign="top"><img src="/webasset/images/menu-tiao.jpg" width="6" height="38" /></td>
-                            <td width="109" align="left" valign="top"><a href="pos.htm"><img src="/webasset/images/menu4.jpg" width="109" height="38" border="0" /></a></td>
+                            <td width="109" align="left" valign="top"><a href="@Url.Action("Index", "WebHome", new { area = "WebFormArea" })"><img src="/webasset/images/menu4.jpg" width="109" height="38" border="0" /></a></td>
                             <td width="10" align="left" valign="top"><img src="/webasset/images/menu-tiao.jpg" width="6" height="38" /></td>
-                            <td width="108" align="left" valign="top"><a href="caiwu.htm"><img src="/webasset/images/menu5.jpg" name="image3" width="108" height="38" border="0" id="image3" onmouseover="MM_showMenu(window.mm_menu_1015024005_0,0,38,null,'image3')" onmouseout="MM_startTimeout();" /></a></td>
+                            <td width="108" align="left" valign="top"><a href="@Url.Action("CapitalDetailLog", "WebHome", new { area = "WebFormArea" })"><img src="/webasset/images/menu5.jpg" name="image3" width="108" height="38" border="0" id="image3" onmouseover="MM_showMenu(window.mm_menu_1015024005_0,0,38,null,'image3')" onmouseout="MM_startTimeout();" /></a></td>
                             <td width="10" align="left" valign="top"><img src="/webasset/images/menu-tiao.jpg" width="6" height="38" /></td>
-                            <td width="108" align="left" valign="top"><a href="list.htm"><img src="/webasset/images/menu6.jpg" name="image4" width="108" height="38" border="0" id="image4" onmouseover="MM_showMenu(window.mm_menu_1015024324_0,0,38,null,'image4')" onmouseout="MM_startTimeout();" /></a></td>
+                            <td width="108" align="left" valign="top"><a href="@Url.Action("MemberMap", "WebHome", new { area = "WebFormArea" })"><img src="/webasset/images/menu6.jpg" name="image4" width="108" height="38" border="0" id="image4" onmouseover="MM_showMenu(window.mm_menu_1015024324_0,0,38,null,'image4')" onmouseout="MM_startTimeout();" /></a></td>
                             <td width="10" align="left" valign="top"><img src="/webasset/images/menu-tiao.jpg" width="6" height="38" /></td>
-                            <td width="106" align="left" valign="top"><a href="email.htm"><img src="/webasset/images/menu7.jpg" name="image5" width="106" height="38" border="0" id="image5" onmouseover="MM_showMenu(window.mm_menu_1015024411_0,0,38,null,'image5')" onmouseout="MM_startTimeout();" /></a></td>
+                            <td width="106" align="left" valign="top"><a href="@Url.Action("MessageList", "WebHome", new { area = "WebFormArea" })"><img src="/webasset/images/menu7.jpg" name="image5" width="106" height="38" border="0" id="image5" onmouseover="MM_showMenu(window.mm_menu_1015024411_0,0,38,null,'image5')" onmouseout="MM_startTimeout();" /></a></td>
                             <td width="10" align="left" valign="top"><img src="/webasset/images/menu-tiao.jpg" width="6" height="38" /></td>
-                            <td width="191" align="left" valign="top"><a href="password.htm"><img src="/webasset/images/menu8.jpg" name="image6" width="100" height="38" border="0" id="image6" onmouseover="MM_showMenu(window.mm_menu_1015024727_0,0,38,null,'image6')" onmouseout="MM_startTimeout();" /></a></td>
+                            <td width="191" align="left" valign="top"><a href="@Url.Action("UpdatePwd", "WebHome", new { area = "WebFormArea" })"><img src="/webasset/images/menu8.jpg" name="image6" width="100" height="38" border="0" id="image6" onmouseover="MM_showMenu(window.mm_menu_1015024727_0,0,38,null,'image6')" onmouseout="MM_startTimeout();" /></a></td>
                         </tr>
                     </table>
                 </td>

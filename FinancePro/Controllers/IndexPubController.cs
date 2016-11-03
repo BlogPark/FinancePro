@@ -96,5 +96,15 @@ namespace FinancePro.Controllers
             Session.Clear();// Session[AppContext.SESSION_LOGIN_NAME] = null;
             return RedirectToAction("Login", "Default", new { area = "AdminArea", returnurl = "" });
         }
+        /// <summary>
+        /// 网站左侧菜单
+        /// </summary>
+        /// <param name="type"></param>
+        /// <returns></returns>
+        public ActionResult LeftWebMenu(int type)
+        {
+            ViewData["lefttype"] = type;
+            return View();
+        }
     }
 }

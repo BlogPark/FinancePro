@@ -119,7 +119,8 @@ namespace FinancePro.Areas.AdminArea.Controllers
                 member.MemberType = 1;
                 member.IsDerivativeMember = 0;
                 member.MemberStatus = 1;
-                member.MemberLogPwd = DESEncrypt.Encrypt("666666", AppContent.SecrectStr);//加密密码
+                member.MemberLogPwd = "666666";//加密密码
+                member.MemberSecondPwd = "888888";//加密密码
                 string row = memberbll.AddNewMemberInfo(member, 1);
             }
             return RedirectToActionPermanent("Index", "Member", new { area = "AdminArea" });

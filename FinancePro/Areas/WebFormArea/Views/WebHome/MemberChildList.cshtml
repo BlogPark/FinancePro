@@ -1,6 +1,6 @@
-﻿@model FinancePro.Areas.WebFormArea.Models.MemberListViewModel
+﻿@model FinancePro.Areas.WebFormArea.Models.MemberChildListViewModel
 @{
-    ViewBag.Title = "MemberList";
+    ViewBag.Title = "会员子账户管理";
     Layout = "~/Views/_WebFormLayout.cshtml";
 }
 
@@ -36,7 +36,7 @@
                     <td width="12%" align="center"><strong>注册时间</strong></td>
                     <td width="15%" align="center"><strong>操作</strong></td>
                 </tr>
-                @foreach (var item in Model.MemberList)
+                @foreach (var item in Model.memberlist)
                 {
                     <tr>
                         <td height="22">@item.MemberCode</td>
@@ -48,7 +48,7 @@
                         <td height="22">
                             @if (item.MemberStatus == 1)
                             {
-                                <input type="button" name="Submit2" onclick="activemember(@item.ID)"  value="激活" />
+                                <input type="button" name="Submit2" onclick="activemember(@item.ID)" value="激活" />
                             }
                         </td>
                     </tr>
@@ -62,4 +62,3 @@
         </td>
     </tr>
 </table>
-

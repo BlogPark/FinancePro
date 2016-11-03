@@ -47,11 +47,12 @@ namespace FinancePro.Areas.WebFormArea.Controllers
             {
                 return RedirectToAction("Index", "Login", new { area = "WebFormArea" });
             }
-            MemberCodeModel codemodel = MemberCodeBLL.GetMemberCode();
+            MemberCodeModel codemodel = MemberCodeBLL.GetMemberCode();            
             AddMemberViewModel model = new AddMemberViewModel();
+            model.member = new MemberInfoModel();
             model.member.MemberType = 2;
             model.member.SourceMemberCode = logmember.MemberCode;
-            model.member.MemberCode = "JLY"+codemodel.MemberCode;
+            model.member.MemberCode = "JLY" + codemodel.MemberCode;
             model.member.MemberCodeID = codemodel.ID;
             model.regintable = ReginTableBLL.GetReginTableListModel(1);
             model.member.IsDerivativeMember = 1;
@@ -90,7 +91,21 @@ namespace FinancePro.Areas.WebFormArea.Controllers
             {
                 return RedirectToAction("Index", "Login", new { area = "WebFormArea" });
             }
-            return View();
+            MemberListViewModel model = new MemberListViewModel();
+            model.MemberList = memberbll.GetRecommendListByRecommendMemberId(logmember.ID);
+            return View(model);
+        }
+        //会员子账户管理
+        public ActionResult MemberChildList()
+        {
+            MemberInfoModel logmember = Session[AppContent.SESSION_WEB_LOGIN] as MemberInfoModel;
+            if (logmember == null)
+            {
+                return RedirectToAction("Index", "Login", new { area = "WebFormArea" });
+            }
+            MemberChildListViewModel model = new MemberChildListViewModel();
+            model.memberlist = memberbll.GetChildCountListBySourceMemberCode(logmember.MemberCode);
+            return View(model);
         }
         //提现
         public ActionResult ApplyCash()
@@ -246,7 +261,6 @@ namespace FinancePro.Areas.WebFormArea.Controllers
             model.loglist = pagelist;
             return View(model);
         }
-
         //会员图谱
         public ActionResult MemberMap()
         {
@@ -310,6 +324,13 @@ namespace FinancePro.Areas.WebFormArea.Controllers
                 return RedirectToAction("Index", "Login", new { area = "WebFormArea" });
             }
             return View();
+        }
+        // 激活会员
+        [HttpPost]
+        public ActionResult ActiveMember(int memberid)
+        {
+            string result = memberbll.ActiveMenber(memberid);
+            return Json(result);
         }
     }
 }

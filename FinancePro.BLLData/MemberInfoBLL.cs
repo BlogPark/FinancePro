@@ -24,7 +24,7 @@ namespace FinancePro.BLLData
         /// <returns></returns>
         public MemberInfoModel MemberLogin(string membercode, string loginpwd, out string loginresult)
         {
-            MemberInfoModel member = MemberDAL.GetBriefSingleMemberModel(membercode);
+            MemberInfoModel member = MemberDAL.GetBriefSingleMemberModelForLogin(membercode);
             if (member == null)
             {
                 loginresult = "无此会员";
@@ -96,13 +96,21 @@ namespace FinancePro.BLLData
                     }
                 }
             }
+            else
+            {
+                int count = MemberDAL.GetMemberCount(0);
+                if (count > 0)//若系统已经存在账户，则新注册的必须输入来源会员账户
+                {
+                    return "会员推荐人为空";
+                }
+            }
             #endregion
             #region 插入之前处理会员信息
-            model.MemberLogPwd = DESEncrypt.Encrypt("666666", secrectstr);//加密网站登陆密码
-            model.MemberSecondPwd = DESEncrypt.Encrypt("888888", secrectstr);//加密网站登陆密码
+            model.MemberLogPwd = DESEncrypt.Encrypt(model.MemberLogPwd, secrectstr);//加密网站登陆密码
+            model.MemberSecondPwd = DESEncrypt.Encrypt(model.MemberSecondPwd, secrectstr);//加密网站登陆密码
             model.MemberStatus = 1;
             string code = "";
-            if (type == 1)//标准会员,编号为14位
+            if (type == 1)//标准会员
             {
                 model.SourceMemberCode = "";
             }
@@ -491,6 +499,25 @@ namespace FinancePro.BLLData
         public int GetMemberFormCurreyNum(int memberid)
         {
             return MemberExtendInfoDAL.GetMemberExtendInfoByMemberID(memberid).FormCurreyNum;
+        }
+
+        /// <summary>
+        /// 根据推荐人正向查找直推会员
+        /// </summary>
+        /// <param name="memberid"></param>
+        /// <returns></returns>
+        public List<MemberInfoModel> GetRecommendListByRecommendMemberId(int memberid)
+        {
+            return ReMemberRelationDAL.GetRecommendListByRecommendMemberId(memberid);
+        }
+        /// <summary>
+        /// 按照来源会员编号查询会员信息
+        /// </summary>
+        /// <param name="membercode"></param>
+        /// <returns></returns>
+        public  List<MemberInfoModel> GetChildCountListBySourceMemberCode(string membercode)
+        {
+            return MemberDAL.GetChildCountListBySourceMemberCode(membercode);
         }
     }
 }

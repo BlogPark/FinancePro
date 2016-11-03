@@ -1,0 +1,81 @@
+﻿@if (ViewData["lefttype"].ToString() == "1")
+{
+    <table width="96%" border="0" cellspacing="0" cellpadding="0">
+        <tr>
+            <td height="14">&nbsp;</td>
+        </tr>
+        <tr>
+            <td height="36" background="/webasset/images/bj-01.jpg" style="background-repeat:no-repeat;"><a href="@Url.Action("ApplyCash", "WebHome", new { area = "WebFormArea" })">申请提现</a></td>
+        </tr>
+        <tr>
+            <td height="36" background="/webasset/images/bj-01.jpg" style="background-repeat:no-repeat;"><a href="@Url.Action("CashList", "WebHome", new { area = "WebFormArea" })">提现列表</a></td>
+        </tr>
+        <tr>
+            <td height="36" background="/webasset/images/bj-01.jpg" style="background-repeat:no-repeat;"><a href="@Url.Action("MemberTransfer", "WebHome", new { area = "WebFormArea" })">会员转账</a></td>
+        </tr>
+        <tr>
+            <td height="36" background="/webasset/images/bj-01.jpg" style="background-repeat:no-repeat;"><a href="@Url.Action("Transferlist", "WebHome", new { area = "WebFormArea" })">转账列表</a></td>
+        </tr>
+        <tr>
+            <td height="36" background="/webasset/images/bj-01.jpg" style="background-repeat:no-repeat;"><a href="@Url.Action("CapitalDetailLog", "WebHome", new { area = "WebFormArea" })">收益明细</a></td>
+        </tr>
+    </table>
+}
+else if (ViewData["lefttype"].ToString() == "2")
+{
+    <table width="96%" border="0" cellspacing="0" cellpadding="0">
+        <tr>
+            <td height="14">&nbsp;</td>
+        </tr>
+        <tr>
+            <td height="36" background="/webasset/images/bj-01.jpg" style="background-repeat:no-repeat;"><a href="@Url.Action("AddMember", "WebHome", new { area = "WebFormArea" })">添加新会员</a></td>
+        </tr>
+        <tr>
+            <td height="36" background="/webasset/images/bj-01.jpg" style="background-repeat:no-repeat;"><a href="@Url.Action("MemberList", "WebHome", new { area = "WebFormArea" })">推荐会员列表</a></td>
+        </tr>
+        <tr>
+            <td height="36" background="/webasset/images/bj-01.jpg" style="background-repeat:no-repeat;"><a href="@Url.Action("MemberChildList", "WebHome", new { area = "WebFormArea" })">子账号管理</a></td>
+        </tr>
+    </table>
+
+}
+else if (ViewData["lefttype"].ToString() == "3")
+{
+    <table width="96%" border="0" cellspacing="0" cellpadding="0">
+        <tr>
+            <td height="14">&nbsp;</td>
+        </tr>
+        <tr>
+            <td height="36" background="/webasset/images/bj-01.jpg" style="background-repeat:no-repeat;"><a href="@Url.Action("WriteMessage", "WebHome", new { area = "WebFormArea" })">写邮件</a></td>
+        </tr>
+        <tr>
+            <td height="36" background="/webasset/images/bj-01.jpg" style="background-repeat:no-repeat;"><a href="@Url.Action("MessageList", "WebHome", new { area = "WebFormArea" })">消息列表</a></td>
+        </tr>
+    </table>
+}
+else if (ViewData["lefttype"].ToString() == "4")
+{
+}
+<table width="100%" border="0" cellspacing="0" cellpadding="0">
+    <tr>
+        <td height="28">
+            <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                <tr>
+                    <td>&nbsp;</td>
+                </tr>
+                <tr>
+                    <td height="36" background="/webasset/images/bj-01.jpg" style="background-repeat:no-repeat;"><a href="@Url.Action("UserInfo", "WebHome", new { area = "WebFormArea" })">个人资料</a></td>
+                </tr>
+                <tr>
+                    <td height="36" background="/webasset/images/bj-01.jpg" style="background-repeat:no-repeat;"><a href="@Url.Action("UpdatePwd", "WebHome", new { area = "WebFormArea" })">修改密码</a></td>
+                </tr>
+
+            </table>
+        </td>
+    </tr>
+</table>
+<table width="100%" border="0" cellspacing="0" cellpadding="0">
+    <tr>
+        <td height="234" align="center" valign="bottom"><img src="/webasset/images/vip.jpg" width="184" height="221" /></td>
+    </tr>
+</table>

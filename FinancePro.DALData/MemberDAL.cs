@@ -160,6 +160,51 @@ namespace FinancePro.DALData
             }
         }
         /// <summary>
+        /// 根据会员编号读取单个会员信息(简要字段)(登陆专用)
+        /// </summary>
+        /// <param name="membercode">会员编号</param>
+        /// <returns></returns>
+        public static MemberInfoModel GetBriefSingleMemberModelForLogin(string membercode)
+        {
+            StringBuilder strSql = new StringBuilder();
+            strSql.Append(@"select ID, MemberBankName, MemberBankCode, MemberStatus, MemberType, IsFinalMember, IsDerivativeMember, IsSpecialMember, IsReportMember, MemberName, MemberCode, MemberPhone,MemberIDNumber,SourceMemberCode,MemberBankUserName,MemberLogPwd  ");
+            strSql.Append("  from MemberInfo ");
+            strSql.Append(" where MemberCode=@MemberCode");
+            SqlParameter[] parameters = {
+					new SqlParameter("@MemberCode", SqlDbType.NVarChar)
+			};
+            parameters[0].Value = membercode;
+            MemberInfoModel model = new MemberInfoModel();
+            DataSet ds = helper.Query(strSql.ToString(), parameters);
+            if (ds.Tables[0].Rows.Count > 0)
+            {
+                if (ds.Tables[0].Rows[0]["ID"].ToString() != "")
+                {
+                    model.ID = int.Parse(ds.Tables[0].Rows[0]["ID"].ToString());
+                }
+                model.MemberBankName = ds.Tables[0].Rows[0]["MemberBankName"].ToString();
+                model.MemberBankCode = ds.Tables[0].Rows[0]["MemberBankCode"].ToString();
+                model.MemberStatus = ds.Tables[0].Rows[0]["MemberStatus"].ToString().ParseToInt(1);
+                model.MemberType = ds.Tables[0].Rows[0]["MemberType"].ToString().ParseToInt(1);
+                model.IsFinalMember = ds.Tables[0].Rows[0]["IsFinalMember"].ToString().ParseToInt(0);
+                model.IsDerivativeMember = ds.Tables[0].Rows[0]["IsDerivativeMember"].ToString().ParseToInt(0);
+                model.IsSpecialMember = ds.Tables[0].Rows[0]["IsSpecialMember"].ToString().ParseToInt(0);
+                model.IsReportMember = ds.Tables[0].Rows[0]["IsReportMember"].ToString().ParseToInt(0);
+                model.MemberName = ds.Tables[0].Rows[0]["MemberName"].ToString();
+                model.MemberCode = ds.Tables[0].Rows[0]["MemberCode"].ToString();
+                model.MemberPhone = ds.Tables[0].Rows[0]["MemberPhone"].ToString();
+                model.MemberIDNumber = ds.Tables[0].Rows[0]["MemberIDNumber"].ToString();
+                model.SourceMemberCode = ds.Tables[0].Rows[0]["SourceMemberCode"].ToString();
+                model.MemberBankUserName = ds.Tables[0].Rows[0]["MemberBankUserName"].ToString();
+                model.MemberLogPwd = ds.Tables[0].Rows[0]["MemberLogPwd"].ToString();
+                return model;
+            }
+            else
+            {
+                return null;
+            }
+        }
+        /// <summary>
         /// 根据会员编号读取单个会员信息(简要字段)
         /// </summary>
         /// <param name="membercode">会员编号</param>
@@ -586,6 +631,49 @@ FROM    dbo.MemberInfo ";
                 sqltxt += @" WHERE   MemberStatus = 2 ";
             }
             return helper.GetSingle(sqltxt).ToString().ParseToInt(0);
+        }
+        /// <summary>
+        /// 按照来源会员编号查询会员信息
+        /// </summary>
+        /// <param name="membercode"></param>
+        /// <returns></returns>
+        public static List<MemberInfoModel> GetChildCountListBySourceMemberCode(string  membercode)
+        {
+            List<MemberInfoModel> list = new List<MemberInfoModel>();
+            string sqltxt = @"SELECT  ID ,
+        MemberName ,
+        MemberCode ,
+        MemberIDNumber ,
+        MemberPhone ,
+        CASE MemberStatus
+          WHEN 1 THEN '待激活'
+          WHEN 2 THEN '已激活'
+          WHEN 3 THEN '已冻结'
+          WHEN 4 THEN '已完成'
+        END AS MemberStatusName ,
+        MemberStatus,AddTime
+FROM    dbo.MemberInfo
+WHERE  SourceMemberCode=@sourcecode";
+            SqlParameter[] paramter = { new SqlParameter("@sourcecode", membercode) };
+            DataTable dt = helper.Query(sqltxt, paramter).Tables[0];
+            if (dt.Rows.Count > 0)
+            {
+                foreach (DataRow item in dt.Rows)
+                {
+                    list.Add(new MemberInfoModel()
+                    {
+                        ID = item["ID"].ToString().ParseToInt(0),
+                        MemberName = item["MemberName"].ToString(),
+                        MemberCode = item["MemberCode"].ToString(),
+                        MemberIDNumber = item["MemberIDNumber"].ToString(),
+                        MemberPhone = item["MemberPhone"].ToString(),
+                        MemberStatusName = item["MemberStatusName"].ToString(),
+                        MemberStatus = item["MemberStatus"].ToString().ParseToInt(1),
+                        AddTime = item["AddTime"].ToString().ParseToDateTime(DateTime.Now)
+                    });
+                }
+            }
+            return list;
         }
     }
 }

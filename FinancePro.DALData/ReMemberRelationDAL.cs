@@ -9,6 +9,9 @@ using FinancePro.DataModels;
 
 namespace FinancePro.DALData
 {
+    /// <summary>
+    /// 会员推荐关系类
+    /// </summary>
     public class ReMemberRelationDAL
     {
         public static DbHelperSQL helper = new DbHelperSQL();
@@ -281,7 +284,7 @@ namespace FinancePro.DALData
 			};
             parameters[0].Value = memberid;
             object obj = helper.GetSingle(strSql.ToString(), parameters);
-            if (obj!=null)
+            if (obj != null)
             {
                 return obj.ToString().ParseToInt(0);
             }
@@ -289,6 +292,52 @@ namespace FinancePro.DALData
             {
                 return 0;
             }
+        }
+        /// <summary>
+        /// 根据推荐人正向查找直推会员
+        /// </summary>
+        /// <param name="memberid"></param>
+        /// <returns></returns>
+        public static List<MemberInfoModel> GetRecommendListByRecommendMemberId(int memberid)
+        {
+            List<MemberInfoModel> list = new List<MemberInfoModel>();
+            string sqltxt = @"SELECT  ID ,
+        MemberName ,
+        MemberCode ,
+        MemberIDNumber ,
+        MemberPhone ,
+        CASE MemberStatus
+          WHEN 1 THEN '待激活'
+          WHEN 2 THEN '已激活'
+          WHEN 3 THEN '已冻结'
+          WHEN 4 THEN '已完成'
+        END AS MemberStatusName ,
+        MemberStatus,AddTime
+FROM    dbo.MemberInfo
+WHERE   ID IN ( SELECT  BeRecommMemberID
+                FROM    dbo.ReMemberRelation
+                WHERE   RecommendMemberID = @memberid
+                        AND RecommendStatus = 1 )";
+            SqlParameter[] paramter = { new SqlParameter("@memberid", memberid) };
+            DataTable dt = helper.Query(sqltxt, paramter).Tables[0];
+            if (dt.Rows.Count > 0)
+            {
+                foreach (DataRow item in dt.Rows)
+                {
+                    list.Add(new MemberInfoModel()
+                    {
+                        ID = item["ID"].ToString().ParseToInt(0),
+                        MemberName = item["MemberName"].ToString(),
+                        MemberCode = item["MemberCode"].ToString(),
+                        MemberIDNumber = item["MemberIDNumber"].ToString(),
+                        MemberPhone = item["MemberPhone"].ToString(),
+                        MemberStatusName = item["MemberStatusName"].ToString(),
+                        MemberStatus = item["MemberStatus"].ToString().ParseToInt(1),
+                        AddTime = item["AddTime"].ToString().ParseToDateTime(DateTime.Now)
+                    });
+                }
+            }
+            return list;
         }
     }
 }
