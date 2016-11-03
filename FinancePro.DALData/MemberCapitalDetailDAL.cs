@@ -398,5 +398,35 @@ WHERE   MemberID = @memberid";
                 return null;
             }
         }
+        /// <summary>
+        /// 扣减平台管理费
+        /// </summary>
+        /// <param name="memberid"></param>
+        /// <returns></returns>
+        public static int UpdateMemberISDeSysCost(int memberid, decimal syscost)
+        {
+            string sqltxt = @"UPDATE  dbo.MemberCapitalDetail
+SET     ISDeSysCost = 1 ,
+        MemberPoints = MemberPoints - @syscost
+OUTPUT  DELETED.MemberID ,
+        DELETED.MemberName ,
+        DELETED.MemberCode ,
+        DELETED.MemberPoints ,
+        INSERTED.MemberPoints ,
+        @remark ,
+        GETDATE()
+        INTO MemberCapitalLog ( MemberID, MemberName, MemberCode,
+                                BMemberPoints, NMemberPoints, LogRemark,
+                                AddTime )
+WHERE   MemberID = @mid
+        AND MemberPoints > 30
+        AND ISNULL(ISDeSysCost, 0) = 0";
+            SqlParameter[] paramter = { 
+                                          new SqlParameter("@syscost",syscost),
+                                          new SqlParameter("@remark","扣减平台管理费用"),
+                                          new SqlParameter("@mid",memberid)
+                                      };
+            return helper.ExecuteSql(sqltxt);
+        }
     }
 }

@@ -104,19 +104,11 @@ namespace FinancePro.BLLData
             string code = "";
             if (type == 1)//标准会员,编号为14位
             {
-                code = MemberCodeBLL.GetMemberCode().ToString();
-                if (code == "0")
-                {
-                    return "没有可以使用的会员编号";
-                }
                 model.SourceMemberCode = "";
-                model.MemberCode = "JLC" + code;
             }
             else if (type == 2)//衍生账户
             {
-                code = CreateNewCode(model.SourceMemberCode);
                 model.IsDerivativeMember = 1;
-                model.MemberCode = "JLY" + code;
             }
             else //终极账户
             {
@@ -273,6 +265,12 @@ namespace FinancePro.BLLData
                         }
                     }
                 }
+                //更改会员编号的状态为已使用
+                rowcount = MemberCodeBLL.UpdateMemberCodeStatus(model.MemberCodeID);
+                if (rowcount < 1)
+                {
+                    return "操作失败";
+                }
                 scope.Complete();
             }
             if (type == 2 && isAutoActive == 1)
@@ -297,6 +295,7 @@ namespace FinancePro.BLLData
             int pointProportion = SystemConfigsBLL.GetConfigsValueByID(18).ParseToInt(0);//静态分配积分占比(%)
             int gameProportion = SystemConfigsBLL.GetConfigsValueByID(19).ParseToInt(0);//静态分配游戏币占比(%)
             int baseProportion = SystemConfigsBLL.GetConfigsValueByID(17).ParseToInt(300);//一期网站计算基数
+            decimal syscost = SystemConfigsBLL.GetConfigsValueByID(11).ParseToDecimal(0);//平台管理费用
             #endregion
             #region 读取会员信息
             MemberInfoModel member = MemberDAL.GetBriefSingleMemberModel(memberid);//该会员信息
@@ -435,57 +434,6 @@ namespace FinancePro.BLLData
                 scope.Complete();
             }
             return result;
-        }
-        /// <summary>
-        /// 产生新会员编号
-        /// </summary>
-        /// <returns></returns>
-        private string CreateNewCode()
-        {
-            int year = DateTime.Now.Year;
-            int month = DateTime.Now.Month;
-            int day = DateTime.Now.Day;
-            int re = new Random().Next(1111, 1899);
-            int reday = new Random().Next(11, 66);
-            int rem = new Random().Next(11, 87);
-            string code = DateTime.Now.ToString("HHmmss") + (year + re).ToString() + (month + rem).ToString() + (day + reday).ToString();
-            return code;
-        }
-        /// <summary>
-        /// 产生新会员编号
-        /// </summary>
-        /// <returns></returns>
-        private string CreateNewCode(string oldnumber)
-        {
-            if (string.IsNullOrWhiteSpace(oldnumber))
-            {
-                return "";
-            }
-            if (oldnumber.Length == 14)
-            {
-                return oldnumber + "1";
-            }
-            else if (oldnumber.Contains("-"))
-            {
-                int pindex = oldnumber.IndexOf('-');
-                string oldnum = oldnumber.Substring(0, 15);
-                string fullstr = oldnumber.Substring(0, pindex);
-                if (fullstr.Length == 15)
-                {
-                    return oldnum + "1";
-                }
-                else
-                {
-                    int num = (fullstr.Replace(oldnum, "")).ParseToInt(0);
-                    return oldnum + (num + 1).ToString();
-                }
-            }
-            else
-            {
-                string oldnum = oldnumber.Substring(0, 15);
-                int num = (oldnumber.Replace(oldnum, "")).ParseToInt(0);
-                return oldnum + (num + 1).ToString();
-            }
         }
         /// <summary>
         /// 分页查询会员列表

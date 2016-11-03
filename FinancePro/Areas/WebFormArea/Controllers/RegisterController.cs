@@ -18,9 +18,9 @@ namespace FinancePro.Areas.WebFormArea.Controllers
         public ActionResult Index()
         {
             RegisterViewModel model = new RegisterViewModel();
-            MemberCodeModel codemodel=MemberCodeBLL.GetMemberCode();
+            MemberCodeModel codemodel = MemberCodeBLL.GetMemberCode();
             model.member = new MemberInfoModel();
-            model.member.MemberCode = "JL"+codemodel.MemberCode;
+            model.member.MemberCode = "JL" + codemodel.MemberCode;
             model.member.MemberCodeID = codemodel.ID;
             model.member.MemberType = 1;
             model.member.IsDerivativeMember = 0;
@@ -43,7 +43,12 @@ namespace FinancePro.Areas.WebFormArea.Controllers
             }
             RegisterViewModel model = new RegisterViewModel();
             model.regintable = ReginTableBLL.GetReginTableListModel(1);
+            MemberCodeModel codemodel = MemberCodeBLL.GetMemberCode();
             model.member = member;
+            model.member.MemberCode = "JL" + codemodel.MemberCode;
+            model.member.MemberCodeID = codemodel.ID;
+            model.member.MemberType = 1;
+            model.member.IsDerivativeMember = 0;
             return View(model);
         }
     }

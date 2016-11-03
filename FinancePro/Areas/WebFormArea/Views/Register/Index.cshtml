@@ -11,7 +11,7 @@
                 <table width="100%" border="1" cellpadding="5" cellspacing="0" bordercolor="#ABC9EF" style="border-collapse:collapse;background-color:#FFFFFF">
                     <tr>
                         <td width="14%" height="28" align="center">会员编号</td>
-                        <td><label>@Html.TextBoxFor(m => m.member.MemberCode, new { @disabled = "disabled" })</label></td>
+                        <td>@Html.TextBoxFor(m => m.member.MemberCode, new { @disabled = "disabled" })</td>
                     </tr>
                     <tr>
                         <td height="28" align="center">真实姓名</td>
@@ -81,6 +81,10 @@
                     <tr>
                         <td height="28" align="center">二级密码</td>
                         <td>@Html.PasswordFor(m => m.member.MemberSecondPwd)</td>
+                    </tr>
+                    <tr>
+                        <td height="28" align="center">推荐人编号</td>
+                        <td>@Html.TextBoxFor(m => m.member.SourceMemberCode)</td>
                     </tr>
                     <tr>
                         <td height="28" colspan="2" align="left">

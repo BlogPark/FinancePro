@@ -113,6 +113,11 @@ namespace FinancePro.Areas.AdminArea.Controllers
         {
             if (member != null)
             {
+                MemberCodeModel codemodel = MemberCodeBLL.GetMemberCode();
+                member.MemberCode = "JL" + codemodel.MemberCode;
+                member.MemberCodeID = codemodel.ID;
+                member.MemberType = 1;
+                member.IsDerivativeMember = 0;
                 member.MemberStatus = 1;
                 member.MemberLogPwd = DESEncrypt.Encrypt("666666", AppContent.SecrectStr);//加密密码
                 string row = memberbll.AddNewMemberInfo(member, 1);

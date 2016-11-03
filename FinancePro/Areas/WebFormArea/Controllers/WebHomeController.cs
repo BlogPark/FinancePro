@@ -7,10 +7,12 @@ using FinancePro.Areas.WebFormArea.Models;
 using FinancePro.BLLData;
 using FinancePro.Controllers;
 using FinancePro.DataModels;
+using FinancePro.Filters;
 using Webdiyer.WebControls.Mvc;
 
 namespace FinancePro.Areas.WebFormArea.Controllers
 {
+    [WebLoginAttribute]
     public class WebHomeController : Controller
     {
         //网站前端页面
@@ -45,9 +47,12 @@ namespace FinancePro.Areas.WebFormArea.Controllers
             {
                 return RedirectToAction("Index", "Login", new { area = "WebFormArea" });
             }
+            MemberCodeModel codemodel = MemberCodeBLL.GetMemberCode();
             AddMemberViewModel model = new AddMemberViewModel();
             model.member.MemberType = 2;
             model.member.SourceMemberCode = logmember.MemberCode;
+            model.member.MemberCode = "JLY"+codemodel.MemberCode;
+            model.member.MemberCodeID = codemodel.ID;
             model.regintable = ReginTableBLL.GetReginTableListModel(1);
             model.member.IsDerivativeMember = 1;
             return View(model);

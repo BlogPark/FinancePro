@@ -86,5 +86,16 @@ namespace FinancePro.DALData
             SqlParameter[] paramter = { new SqlParameter("@id",id)};
             return helper.ExecuteSql(sqltxt, paramter);
         }
+        /// <summary>
+        /// 查询剩余会员编号数量
+        /// </summary>
+        /// <returns></returns>
+        public static int GetCanUsedCodeCount ()
+        {
+            string sqltxt = @"  SELECT COUNT(0)
+  FROM dbo.MemberCode
+  WHERE CStatus=1";
+            return helper.GetSingle(sqltxt).ToString().ParseToInt(0);
+        }
     }
 }

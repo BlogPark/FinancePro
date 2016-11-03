@@ -104,7 +104,37 @@ namespace FinancePro.DataModels
         {
             get { return _compoundcurrency; }
             set { _compoundcurrency = value; }
-        } 
+        }
+        private int _isdesyscost;
+        /// <summary>
+        /// 是否已扣减平台管理费
+        /// </summary>		
+        [DataMember]
+        public int ISDeSysCost
+        {
+            get { return _isdesyscost; }
+            set { _isdesyscost = value; }
+        }
+        private decimal _totalassignedpoints;
+        /// <summary>
+        /// 累计分配积分
+        /// </summary>		
+        [DataMember]
+        public decimal TotalAssignedPoints
+        {
+            get { return _totalassignedpoints; }
+            set { _totalassignedpoints = value; }
+        }
+        private int _iscreadchild;
+        /// <summary>
+        /// 是否已创建子账户
+        /// </summary>		
+        [DataMember]
+        public int ISCreadChild
+        {
+            get { return _iscreadchild; }
+            set { _iscreadchild = value; }
+        }
         #endregion
 
         #region 扩展字段

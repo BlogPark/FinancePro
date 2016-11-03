@@ -26,7 +26,11 @@ namespace FinancePro.BLLData
                 {
                     basenum = 1000000;
                 }
-                for (int i = 0; i < 40000; i++)
+                else
+                {
+                    basenum = basenum + 1;
+                }
+                for (int i = 0; i < 60000; i++)
                 {
                     MemberCodeModel model = new MemberCodeModel();
                     model.MemberCode = basenum;
@@ -64,6 +68,14 @@ namespace FinancePro.BLLData
         public static int UpdateMemberCodeStatus(int id)
         {
             return MemberCodeDAL.UpdateMemberCodeStatus(id);
+        }
+        /// <summary>
+        /// 查询剩余会员编号数量
+        /// </summary>
+        /// <returns></returns>
+        public static int GetCanUsedCodeCount()
+        {
+            return MemberCodeDAL.GetCanUsedCodeCount();
         }
     }
 }
