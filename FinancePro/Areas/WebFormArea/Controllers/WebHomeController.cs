@@ -325,6 +325,12 @@ namespace FinancePro.Areas.WebFormArea.Controllers
             }
             return View();
         }
+        //申请POS
+        public ActionResult ApplyPOS()
+        {
+            ApplyPOSViewModel model = new ApplyPOSViewModel();
+            return View(model);
+        }
         // 激活会员
         [HttpPost]
         public ActionResult ActiveMember(int memberid)

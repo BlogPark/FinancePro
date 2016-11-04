@@ -1,4 +1,12 @@
 $(function () {
+    $("#adpic").hide();
+    $("#erradpic").hide();
+    $("#idbpic").hide();
+    $("#erridbpic").hide();
+    $("#idwhbpic").hide();
+    $("#erridwhbpic").hide();
+    $("#cbpic").hide();
+    $("#errcbpic").hide();
     $("#valiCode").bind("click", function () {
         this.src = "/WebFormArea/Login/GetImg?time=" + (new Date()).getTime();
     });
@@ -24,6 +32,98 @@ $(function () {
     $("input:radio[name=reagerRadios1]").change(function () {
         var raval = $("input:radio[name=reagerRadios1]:checked").val();
         $("#member_MemberSex").val(raval);
+    });
+    $("#fileupload").fileupload({
+        dataType: 'json',
+        type: "POST",
+        singleFileUploads: true,
+        autoUpload: true,
+        done: function (e, data) {
+            var path = data.result.path;
+            var urlpath = data.result.urlpath;
+            var ustatus = data.result.status;
+            var msg = data.result.meg;
+            if (ustatus) {
+                $("#upload1").hide();
+                $("#idfpic").show();
+                $("#erridfpic").hide();
+                $("#idfpic").attr("src", urlpath);
+                $("#applymodel_IDNumberFrontPath").val(path);
+            }
+            else {
+                $("#erridfpic").show();
+                $("#erridfpic").html(msg);
+            }
+        }
+    });
+    $("#fileupload1").fileupload({
+        dataType: 'json',
+        type: "POST",
+        singleFileUploads: true,
+        autoUpload: true,
+        done: function (e, data) {
+            var path = data.result.path;
+            var urlpath = data.result.urlpath;
+            var ustatus = data.result.status;
+            var msg = data.result.meg;
+            if (ustatus) {
+                $("#upload2").hide();
+                $("#idbpic").show();
+                $("#erridbpic").hide();
+                $("#idbpic").attr("src", urlpath);
+                $("#applymodel_IDNumberBackPath").val(path);
+            }
+            else {
+                $("#erridbpic").show();
+                $("#erridbpic").html(msg);
+            }
+        }
+    });
+    $("#fileupload2").fileupload({
+        dataType: 'json',
+        type: "POST",
+        singleFileUploads: true,
+        autoUpload: true,
+        done: function (e, data) {
+            var path = data.result.path;
+            var urlpath = data.result.urlpath;
+            var ustatus = data.result.status;
+            var msg = data.result.meg;
+            if (ustatus) {
+                $("#upload3").hide();
+                $("#idwhbpic").show();
+                $("#erridwhbpic").hide();
+                $("#idwhbpic").attr("src", urlpath);
+                $("#applymodel_IDWithHandPath").val(path);
+            }
+            else {
+                $("#erridwhbpic").show();
+                $("#erridwhbpic").html(msg);
+            }
+        }
+    });
+    $("#fileupload3").fileupload({
+        dataType: 'json',
+        type: "POST",
+        singleFileUploads: true,
+        autoUpload: true,
+        done: function (e, data) {
+            var path = data.result.path;
+            var urlpath = data.result.urlpath;
+            var ustatus = data.result.status;
+            var msg = data.result.meg;
+            if (ustatus) {
+                $("#upload4").hide();
+                $("#cbpic").show();
+                $("#errcbpic").hide();
+                $("#cbpic").attr("src", urlpath);
+                $("#applymodel_CardFrontPath").val(path);
+            }
+            else {
+                $("#errcbpic").show();
+                $("#errcbpic").html(msg);
+            }
+        }
     });
 });
 function valuechang() {

@@ -43,6 +43,7 @@
   <ItemGroup>
     <Compile Include="AdminConfigs.cs" />
     <Compile Include="AdminSiteNewsDAL.cs" />
+    <Compile Include="ApplyPOSDAL.cs" />
     <Compile Include="Class1.cs" />
     <Compile Include="DbHelperSQL.cs" />
     <Compile Include="DynamicRewardDAL.cs" />

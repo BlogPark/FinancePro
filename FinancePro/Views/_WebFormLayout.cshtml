@@ -40,6 +40,8 @@
         }
         -->
     </style>
+    <link rel="stylesheet" type="text/css" href="@Url.Content("/bootstrap-dist/css/bootstrap.min.css")">
+    @RenderSection("mycss", required: false)
     <script language="JavaScript">
 <!--
 function mmLoadMenus() {
@@ -68,7 +70,14 @@ mm_menu_1015023540_0.addMenuItem("申请商务中心","location='@Url.Action("In
    mm_menu_1015023540_0.bgColor='#555555';
    mm_menu_1015023540_0.menuBorder=1;
    mm_menu_1015023540_0.menuLiteBgColor='#FFFFFF';
-   mm_menu_1015023540_0.menuBorderBgColor='#777777';
+   mm_menu_1015023540_0.menuBorderBgColor = '#777777';
+   window.mm_menu_1015023541_0 = new Menu("root",120,34,"",14,"#FFFFFF","#FFFFFF","#1873AA","#1873AA","center","middle",10,0,1000,-5,7,true,false,true,0,false,false);
+   mm_menu_1015023541_0.addMenuItem("申请POS","location='@Url.Action("ApplyPOS", "WebHome", new { area = "WebFormArea" })'");
+   mm_menu_1015023541_0.hideOnMouseOut=true;
+   mm_menu_1015023541_0.bgColor='#555555';
+   mm_menu_1015023541_0.menuBorder=1;
+   mm_menu_1015023541_0.menuLiteBgColor='#FFFFFF';
+   mm_menu_1015023541_0.menuBorderBgColor='#777777';
   window.mm_menu_1015024005_0 = new Menu("root",120,34,"",14,"#FFFFFF","#FFFFFF","#1873AA","#1873AA","center","middle",10,0,1000,-5,7,true,false,true,0,false,false);
   mm_menu_1015024005_0.addMenuItem("申请提现","location='@Url.Action("ApplyCash", "WebHome", new { area = "WebFormArea" })'");
     mm_menu_1015024005_0.addMenuItem("提现列表","location='@Url.Action("CashList", "WebHome", new { area = "WebFormArea" })'");
@@ -131,7 +140,7 @@ mm_menu_1015024727_0.writeMenus();
                             <td width="10" align="left" valign="top"><img src="/webasset/images/menu-tiao.jpg" width="6" height="38" /></td>
                             <td width="107" align="left" valign="top"><a href="@Url.Action("Index", "WebHome", new { area = "WebFormArea" })"><img src="/webasset/images/menu3.jpg" name="image2" width="107" height="38" border="0" id="image2" onmouseover="MM_showMenu(window.mm_menu_1015023540_0,0,38,null,'image2')" onmouseout="MM_startTimeout();" /></a></td>
                             <td width="10" align="left" valign="top"><img src="/webasset/images/menu-tiao.jpg" width="6" height="38" /></td>
-                            <td width="109" align="left" valign="top"><a href="@Url.Action("Index", "WebHome", new { area = "WebFormArea" })"><img src="/webasset/images/menu4.jpg" width="109" height="38" border="0" /></a></td>
+                            <td width="109" align="left" valign="top"><a href="@Url.Action("ApplyPOS", "WebHome", new { area = "WebFormArea" })"><img src="/webasset/images/menu4.jpg" name="image7" width="109" height="38" border="0" id="image7" onmouseover="MM_showMenu(window.mm_menu_1015023541_0,0,38,null,'image7')" onmouseout="MM_startTimeout();" /></a></td>
                             <td width="10" align="left" valign="top"><img src="/webasset/images/menu-tiao.jpg" width="6" height="38" /></td>
                             <td width="108" align="left" valign="top"><a href="@Url.Action("CapitalDetailLog", "WebHome", new { area = "WebFormArea" })"><img src="/webasset/images/menu5.jpg" name="image3" width="108" height="38" border="0" id="image3" onmouseover="MM_showMenu(window.mm_menu_1015024005_0,0,38,null,'image3')" onmouseout="MM_startTimeout();" /></a></td>
                             <td width="10" align="left" valign="top"><img src="/webasset/images/menu-tiao.jpg" width="6" height="38" /></td>
@@ -164,6 +173,7 @@ mm_menu_1015024727_0.writeMenus();
         </table>
     </center>
     <script src="@Url.Content("/js/jquery/jquery-1.9.1.min.js")"></script>
+    @RenderSection("scriptfiles", required: false)
     <script language="JavaScript" src="/webasset/webjs.js"></script>
 </body>
 </html>
