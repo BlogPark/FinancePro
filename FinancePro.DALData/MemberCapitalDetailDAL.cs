@@ -21,9 +21,9 @@ namespace FinancePro.DALData
         {
             StringBuilder strSql = new StringBuilder();
             strSql.Append("insert into MemberCapitalDetail(");
-            strSql.Append("MemberID,MemberName,MemberCode,GameCurrency,SharesCurrency,ShoppingCurrency,MemberPoints,CompoundCurrency");
+            strSql.Append("MemberID,MemberName,MemberCode,GameCurrency,SharesCurrency,ShoppingCurrency,MemberPoints,CompoundCurrency,ISCreadChild,TotalAssignedPoints,ISDeSysCost,DeSysCost");
             strSql.Append(") values (");
-            strSql.Append("@MemberID,@MemberName,@MemberCode,0,0,0,0,0");
+            strSql.Append("@MemberID,@MemberName,@MemberCode,0,0,0,0,0,0,0,0,0");
             strSql.Append(") ");
             SqlParameter[] parameters = {
 			            new SqlParameter("@MemberID", SqlDbType.Int) ,            
@@ -308,7 +308,7 @@ WHERE   MemberID = @memberid";
         public static MemberCapitalDetailModel GetMemberCapitalDetailByMemberID(int memberID)
         {
             StringBuilder strSql = new StringBuilder();
-            strSql.Append("select  MemberID, MemberName, MemberCode, GameCurrency, SharesCurrency, ShoppingCurrency, MemberPoints, CompoundCurrency  ");
+            strSql.Append("select  MemberID, MemberName, MemberCode, GameCurrency, SharesCurrency, ShoppingCurrency, (MemberPoints-ISNULL(DeSysCost,0)) AS  MemberPoints, CompoundCurrency  ");
             strSql.Append("  from MemberCapitalDetail ");
             strSql.Append(" where MemberID=@MemberID");
             SqlParameter[] parameters = {
@@ -343,7 +343,7 @@ WHERE   MemberID = @memberid";
         public static List<MemberCapitalDetailModel> GetMemberCapitalDetailForPage(MemberCapitalDetailModel searchmodel, out int totalrowcount)
         {
             List<MemberCapitalDetailModel> list = new List<MemberCapitalDetailModel>();
-            string columms = @" ID,MemberID,MemberName,MemberCode,GameCurrency,SharesCurrency,ShoppingCurrency,MemberPoints,CompoundCurrency ";
+            string columms = @" ID,MemberID,MemberName,MemberCode,GameCurrency,SharesCurrency,ShoppingCurrency,(MemberPoints-ISNULL(DeSysCost,0)) AS MemberPoints,CompoundCurrency ";
             string where = "";
             if (searchmodel != null)
             {
@@ -406,24 +406,54 @@ WHERE   MemberID = @memberid";
         {
             string sqltxt = @"UPDATE  dbo.MemberCapitalDetail
 SET     ISDeSysCost = 1 ,
-        MemberPoints = MemberPoints - @syscost
+        DeSysCost = ISNULL(DeSysCost,0) + @syscost
 OUTPUT  DELETED.MemberID ,
         DELETED.MemberName ,
         DELETED.MemberCode ,
         DELETED.MemberPoints ,
-        INSERTED.MemberPoints ,
+        DELETED.MemberPoints-@syscost ,
         @remark ,
         GETDATE()
         INTO MemberCapitalLog ( MemberID, MemberName, MemberCode,
                                 BMemberPoints, NMemberPoints, LogRemark,
                                 AddTime )
 WHERE   MemberID = @mid
-        AND MemberPoints > 30
+        AND MemberPoints >= @syscost
         AND ISNULL(ISDeSysCost, 0) = 0";
             SqlParameter[] paramter = { 
                                           new SqlParameter("@syscost",syscost),
                                           new SqlParameter("@remark","扣减平台管理费用"),
                                           new SqlParameter("@mid",memberid)
+                                      };
+            return helper.ExecuteSql(sqltxt);
+        }
+        /// <summary>
+        /// 扣减平台管理费
+        /// </summary>
+        /// <param name="memberid"></param>
+        /// <returns></returns>
+        public static int UpdateMemberISDeSysCostFromDynamicReward(int memberid, decimal syscost)
+        {
+            string sqltxt = @"UPDATE  dbo.MemberCapitalDetail
+SET     ISDeSysCost = 1 ,
+        DeSysCost = ISNULL(DeSysCost,0) + @syscost
+OUTPUT  DELETED.MemberID ,
+        DELETED.MemberName ,
+        DELETED.MemberCode ,
+        DELETED.MemberPoints ,
+        DELETED.MemberPoints-  @syscost,
+        @remark ,
+        GETDATE()
+        INTO MemberCapitalLog ( MemberID, MemberName, MemberCode,
+                                BMemberPoints, NMemberPoints, LogRemark,
+                                AddTime )
+WHERE   MemberID IN (SELECT MemberID FROM dbo.DynamicReward WHERE SourceMemberID=@memberid)
+        AND MemberPoints >= @syscost
+        AND ISNULL(ISDeSysCost, 0) = 0";
+            SqlParameter[] paramter = { 
+                                          new SqlParameter("@syscost",syscost),
+                                          new SqlParameter("@remark","扣减平台管理费用"),
+                                          new SqlParameter("@memberid",memberid)
                                       };
             return helper.ExecuteSql(sqltxt);
         }

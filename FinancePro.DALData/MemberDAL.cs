@@ -682,5 +682,12 @@ WHERE  SourceMemberCode=@sourcecode";
             }
             return list;
         }
+
+        public static int AddNewMemberInfoByDynamicReward(int memberid)
+        {
+            int result = 0;
+            string sqltxt = @"";
+            return result;
+        }
     }
 }

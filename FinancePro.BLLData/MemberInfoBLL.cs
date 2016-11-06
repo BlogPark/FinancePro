@@ -94,6 +94,10 @@ namespace FinancePro.BLLData
                     {
                         return "推荐账户已被注销";
                     }
+                    if (recommendmember.IsFinalMember == 1)
+                    {
+                        return "推荐账户为终极账户，无法继续创建账户";
+                    }
                 }
             }
             else
@@ -420,6 +424,8 @@ namespace FinancePro.BLLData
                 #endregion
                 //释放动态奖金
                 rowcount = DynamicRewardDAL.ReleaseDynamicReward(memberid, "得到来自会员的注册激活动态奖励");
+                //扣减平台管理费
+                rowcount = MemberCapitalDetailDAL.UpdateMemberISDeSysCostFromDynamicReward(memberid, syscost);
                 //if (rowcount < 1)
                 //{
                 //    return "操作失败";

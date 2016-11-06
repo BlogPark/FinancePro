@@ -92,6 +92,18 @@ namespace FinancePro.Areas.WebFormArea.Controllers
             Session[AppContent.VALICODE] = code;
             return File(bytes, @"image/jpeg");
         }
-
+         /// <summary>
+         /// 退出系统
+         /// </summary>
+         /// <returns></returns>
+        public ActionResult LogOut ()
+        {
+            MemberInfoModel logmember = Session[AppContent.SESSION_WEB_LOGIN] as MemberInfoModel;
+            if (logmember != null)
+            {
+                Session.Remove(AppContent.SESSION_WEB_LOGIN);
+            }
+            return RedirectToAction("Index", "Login", new { area = "WebFormArea" });
+        }
     }
 }

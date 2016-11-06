@@ -135,6 +135,16 @@ namespace FinancePro.DataModels
             get { return _iscreadchild; }
             set { _iscreadchild = value; }
         }
+        private decimal _desyscost;
+        /// <summary>
+        /// 平台管理费
+        /// </summary>		
+        [DataMember]
+        public decimal DeSysCost
+        {
+            get { return _desyscost; }
+            set { _desyscost = value; }
+        }        
         #endregion
 
         #region 扩展字段

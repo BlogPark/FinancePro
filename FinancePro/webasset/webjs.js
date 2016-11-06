@@ -1,6 +1,6 @@
 $(function () {
-    $("#adpic").hide();
-    $("#erradpic").hide();
+    $("#idfpic").hide();
+    $("#erridfpic").hide();
     $("#idbpic").hide();
     $("#erridbpic").hide();
     $("#idwhbpic").hide();
