@@ -152,7 +152,7 @@
         $(function () {
             App.init(); //Initialise plugins and elements
             FormWizard.init();
-            $("#member_Sex").val($("input:radio[name=optionsRadios1]:checked").val());
+            $("#member_MemberSex").val($("input:radio[name=optionsRadios1]:checked").val());
             $("input:radio[name=optionsRadios1]").change(function () {
                 var id = $(this).val();
                 $("#member_MemberSex").val(id);

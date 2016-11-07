@@ -159,6 +159,7 @@
     <Compile Include="Areas\WebFormArea\Models\WriteMessageViewModel.cs" />
     <Compile Include="Areas\WebFormArea\WebFormAreaAreaRegistration.cs" />
     <Compile Include="Controllers\AppContent.cs" />
+    <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\IndexPubController.cs" />
     <Compile Include="Controllers\publicController.cs" />
     <Compile Include="Filters\AdminLoginAttribute.cs" />
