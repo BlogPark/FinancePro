@@ -113,7 +113,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Areas\AdminArea\AdminAreaAreaRegistration.cs" />
-    <Compile Include="Areas\AdminArea\Controllers\ApplyPOSController.cs" />
+    <Compile Include="Areas\AdminArea\Controllers\ApplyPOSController.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Areas\AdminArea\Controllers\DefaultController.cs" />
     <Compile Include="Areas\AdminArea\Controllers\MemberCapitalController.cs" />
     <Compile Include="Areas\AdminArea\Controllers\MemberCashOrderController.cs" />
@@ -123,7 +125,9 @@
     <Compile Include="Areas\AdminArea\Models\AddMemberViewModel.cs" />
     <Compile Include="Areas\AdminArea\Models\AddPermissionsViewModel.cs" />
     <Compile Include="Areas\AdminArea\Models\AdminUserViewModel.cs" />
-    <Compile Include="Areas\AdminArea\Models\ApplyPOSIndexViewModel.cs" />
+    <Compile Include="Areas\AdminArea\Models\ApplyPOSIndexViewModel.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Areas\AdminArea\Models\DefaultViewModel.cs" />
     <Compile Include="Areas\AdminArea\Models\EditMemberViewModel.cs" />
     <Compile Include="Areas\AdminArea\Models\FormCurreyDetailViewModel.cs" />
