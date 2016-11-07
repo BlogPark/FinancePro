@@ -204,3 +204,14 @@ function activemember(id) {
         }
     });
 }
+function updatepwd() {
+    var newpwd = $("#newpwd").val();
+    var cnewpwd = $("#cnewpwd").val();
+    if (newpwd == cnewpwd) {
+    }
+    else {
+        $("#pwderror").html();
+    }
+}
+function updatesecpwd() {
+}
