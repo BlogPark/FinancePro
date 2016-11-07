@@ -308,6 +308,7 @@ namespace FinancePro.BLLData
             int gameProportion = SystemConfigsBLL.GetConfigsValueByID(19).ParseToInt(0);//静态分配游戏币占比(%)
             int baseProportion = SystemConfigsBLL.GetConfigsValueByID(17).ParseToInt(300);//一期网站计算基数
             decimal syscost = SystemConfigsBLL.GetConfigsValueByID(11).ParseToDecimal(0);//平台管理费用
+            decimal maxcommery = SystemConfigsBLL.GetConfigsValueByID(5).ParseToDecimal(0);//平台管理费用
             #endregion
             #region 读取会员信息
             MemberInfoModel member = MemberDAL.GetBriefSingleMemberModel(memberid);//该会员信息
@@ -432,6 +433,7 @@ namespace FinancePro.BLLData
                 //}
                 //更改释放状态
                 rowcount = DynamicRewardDAL.UpdateDynamicRewardStatus(memberid);
+                rowcount =MemberDAL.AddNewMemberInfoByDynamicReward(memberid, maxcommery);
                 //if (rowcount < 1)
                 //{
                 //    return "操作失败";
@@ -521,7 +523,7 @@ namespace FinancePro.BLLData
         /// </summary>
         /// <param name="membercode"></param>
         /// <returns></returns>
-        public  List<MemberInfoModel> GetChildCountListBySourceMemberCode(string membercode)
+        public List<MemberInfoModel> GetChildCountListBySourceMemberCode(string membercode)
         {
             return MemberDAL.GetChildCountListBySourceMemberCode(membercode);
         }

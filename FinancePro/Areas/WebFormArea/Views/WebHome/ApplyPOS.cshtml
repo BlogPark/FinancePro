@@ -26,7 +26,8 @@
                     <td>&nbsp;</td>
                 </tr>
             </table>
-            <table width="96%" border="1" cellpadding="5" cellspacing="0" bordercolor="#ABC9EF" style="border-collapse:collapse;">
+            @using (Html.BeginForm("ApplyPOS", "WebHome", new { area = "WebFormArea" }, FormMethod.Post))
+            { <table width="96%" border="1" cellpadding="5" cellspacing="0" bordercolor="#ABC9EF" style="border-collapse:collapse;">
                 <tr>
                     <td width="20%" height="28" align="center">申请注意事项</td>
                     <td width="80%" style="line-height:22px;">
@@ -37,11 +38,11 @@
                 </tr>
                 <tr>
                     <td height="28" align="center">手机号</td>
-                    <td><input type="text" name="textfield32" /></td>
+                    <td>@Html.TextBoxFor(m=>m.applymodel.MemberPhone)</td>
                 </tr>
                 <tr>
                     <td height="28" align="center">身份证号</td>
-                    <td><input name="textfield322" type="text" size="32" maxlength="16" /></td>
+                    <td>@Html.TextBoxFor(m => m.applymodel.MemberIDNumber, new { @size = "32" })</td>
                 </tr>
                 <tr>
                     <td height="203" colspan="2" align="center">
@@ -53,7 +54,7 @@
                                         <i class="icon-plus icon-white"></i>
                                         <span>&nbsp;上传图片&nbsp;</span>
                                         <input id="fileupload" type="file" name="files[]" data-url="@Url.Action("UploadFiles", "public", new { area = "" })">
-                                        @Html.HiddenFor(m=>m.applymodel.IDNumberFrontPath)
+                                        @Html.HiddenFor(m => m.applymodel.IDNumberFrontPath)
                                     </span>
                                     <p id="erridfpic" class="text-danger"></p>
                                 </td>
@@ -101,11 +102,14 @@
                         </table>
                     </td>
                 </tr>
-
                 <tr>
                     <td height="28" align="center">收货地址</td>
-                    <td><input name="textfield32" type="text" size="40" /></td>
+                    <td>@Html.TextBoxFor(m => m.applymodel.ReceiveAddress)</td>
                 </tr>
+                  <tr>
+                      <td height="28" align="center">备注</td>
+                      <td>@Html.TextBoxFor(m => m.applymodel.ApplyRemark)</td>
+                  </tr>
                 <tr>
                     <td height="28" colspan="2" align="left">
                         <label>
@@ -115,6 +119,7 @@
                     </td>
                 </tr>
             </table>
+            }
             <table width="97%" border="0" cellspacing="0" cellpadding="0">
                 <tr>
                     <td>&nbsp;</td>
@@ -123,6 +128,7 @@
         </td>
     </tr>
 </table>
+
 @section mycss{
     <link rel="stylesheet" href="@Url.Content("/js/jquery-upload/css/jquery.fileupload.css")">
     <link rel="stylesheet" href="@Url.Content("/js/jquery-upload/css/jquery.fileupload-ui.css")">

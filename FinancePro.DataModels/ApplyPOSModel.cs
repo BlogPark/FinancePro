@@ -155,5 +155,22 @@ namespace FinancePro.DataModels
         } 
         #endregion
 
+        #region 扩展字段
+        /// <summary>
+        /// 页索引
+        /// </summary>
+        [DataMember]
+        public int PageIndex { get; set; }
+        /// <summary>
+        /// 页容量
+        /// </summary>
+        [DataMember]
+        public int PageSize { get; set; }
+        /// <summary>
+        /// 状态名称
+        /// </summary>
+        [DataMember]
+        public string PStatusName { get; set; }
+        #endregion
     }
 }

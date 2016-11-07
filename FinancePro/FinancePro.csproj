@@ -113,6 +113,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Areas\AdminArea\AdminAreaAreaRegistration.cs" />
+    <Compile Include="Areas\AdminArea\Controllers\ApplyPOSController.cs" />
     <Compile Include="Areas\AdminArea\Controllers\DefaultController.cs" />
     <Compile Include="Areas\AdminArea\Controllers\MemberCapitalController.cs" />
     <Compile Include="Areas\AdminArea\Controllers\MemberCashOrderController.cs" />
@@ -122,6 +123,7 @@
     <Compile Include="Areas\AdminArea\Models\AddMemberViewModel.cs" />
     <Compile Include="Areas\AdminArea\Models\AddPermissionsViewModel.cs" />
     <Compile Include="Areas\AdminArea\Models\AdminUserViewModel.cs" />
+    <Compile Include="Areas\AdminArea\Models\ApplyPOSIndexViewModel.cs" />
     <Compile Include="Areas\AdminArea\Models\DefaultViewModel.cs" />
     <Compile Include="Areas\AdminArea\Models\EditMemberViewModel.cs" />
     <Compile Include="Areas\AdminArea\Models\FormCurreyDetailViewModel.cs" />
@@ -780,6 +782,9 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Areas\WebFormArea\Views\WebHome\ApplyPOS.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Areas\AdminArea\Views\ApplyPOS\Index.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

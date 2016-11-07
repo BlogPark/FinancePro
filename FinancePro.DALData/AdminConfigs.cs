@@ -12,5 +12,10 @@ namespace FinancePro.DALData
         /// 系统数据库连接字符串
         /// </summary>
         public static string Superstr = System.Configuration.ConfigurationManager.AppSettings["connectstr"];
+
+        /// <summary>
+        /// 图片域名
+        /// </summary>
+        public static string ImgDoMain = System.Configuration.ConfigurationManager.AppSettings["imgdomain"];
     }
 }

@@ -13,5 +13,9 @@ namespace FinancePro.Areas.WebFormArea.Models
     {
         [DataMember]
         public ApplyPOSModel applymodel { get; set; }
+
+
+        [DataMember]
+        public string ErrorStr { get; set; }
     }
 }

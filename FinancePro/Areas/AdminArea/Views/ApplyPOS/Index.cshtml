@@ -1,0 +1,207 @@
+﻿@using Webdiyer.WebControls.Mvc
+@model FinancePro.Areas.AdminArea.Models.ApplyPOSIndexViewModel
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/_AdminLayout.cshtml";
+}
+<!-- SAMPLE BOX CONFIGURATION MODAL FORM-->
+<div class="bootbox modal fade in" id="box-config" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content modal-form">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">查看图片信息</h4>
+            </div>
+            <div class="modal-body">
+                <div class="bootbox-body">
+                    <img style="width:500px" class="img-thumbnail" id="image1">
+                    <img style="width:500px" class="img-thumbnail" id="image2">
+                    <img style="width:500px" class="img-thumbnail" id="image3">
+                    <img style="width:500px" class="img-thumbnail" id="image4">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-dismiss="modal">确 定</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- /SAMPLE BOX CONFIGURATION MODAL FORM-->
+<div class="container">
+    <div class="row">
+        <div id="content" class="col-lg-12">
+            <!-- PAGE HEADER-->
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="page-header">
+                        <!-- BREADCRUMBS -->
+                        <ul class="breadcrumb">
+                            <li>
+                                <i class="fa fa-home"></i>
+                                <a href="index.html">Home</a>
+                            </li>
+                            <li>
+                                <a href="#">单据管理</a>
+                            </li>
+                            <li>POS机申请列表</li>
+                        </ul>
+                        <!-- /BREADCRUMBS -->
+                        <div class="clearfix">
+                            <h3 class="content-title pull-left">POS机申请列表</h3>
+                        </div>
+                        <div class="description"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="well well-sm">
+                <div class="row">
+                    <div class="col-sm-12">
+                        @using (Html.BeginForm("Index", "ApplyPOS", FormMethod.Get, new { @id = "form1" }))
+                        {
+                            <div class="form-group">
+                                <label class="pull-left control-label">申请单状态</label>
+                                <div class="col-sm-2">
+                                    @Html.DropDownListFor(m => m.applymodel.PStatus, null, new { @class = "form-control" })
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="pull-left control-label">会员姓名</label>
+                                <div class="col-sm-2">
+                                    @Html.TextBoxFor(m => m.applymodel.MemberName, new { @class = "form-control" })
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="pull-left control-label">会员编号</label>
+                                <div class="col-sm-2">
+                                    @Html.TextBoxFor(m => m.applymodel.MemberCode, new { @class = "form-control" })
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="pull-left control-label">手机号码</label>
+                                <div class="col-sm-2">
+                                    @Html.TextBoxFor(m => m.applymodel.MemberPhone, new { @class = "form-control" })
+                                </div>
+                            </div>
+                            <div class="btn-group pull-right invoice-btn-group">
+                                <p class="btn-toolbar">
+                                    <button class="btn btn-primary" type="submit"><i class="fa fa-search"></i>&nbsp;搜&nbsp;索</button>
+                                </p>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <div class="row" id="tabdiv">
+                        <table class="table table-striped table-bordered" id="menutab">
+                            <thead>
+                                <tr>
+                                    <th class="text-center">
+                                        <input type="checkbox" id="chk_all" />
+                                    </th>
+                                    <th class="text-center">会员编号</th>
+                                    <th class="text-center">真实姓名</th>
+                                    <th class="text-center">手机号</th>
+                                    <th class="text-center">收货地址</th>
+                                    <th class="text-center">备注</th>
+                                    <th class="text-center">图片资料</th>
+                                    <th class="text-center">申请状态</th>
+                                    <th class="text-center">申请时间</th>
+                                    <th class="text-center">操        作</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @if (Model.ApplyList != null)
+                                {
+                                    foreach (var item in Model.ApplyList)
+                                    {
+                                        <tr id="tr@(item.ID)" class="text-center">
+                                            <td>
+                                                <input type="checkbox" name="proList" value="@item.ID" />
+                                            </td>
+                                            <td>@item.MemberCode</td>
+                                            <td>@item.MemberName</td>
+                                            <td>@item.MemberPhone</td>
+                                            <td>@item.ReceiveAddress</td>
+                                            <td>@item.ApplyRemark</td>
+                                            <td><a class="btn btn-success" data-toggle="modal" href="#box-config" onclick="showimage(@item.ID)">查看图片</a></td>
+                                            <td>@item.PStatusName</td>
+                                            <td>@item.AddTime.ToString("yyyy-MM-dd HH:mm")</td>
+                                            <td>
+                                                <p class="btn-toolbar">
+                                                    @if (item.PStatus == 1)
+                                                    {
+                                                        <a class="btn btn-success" data-toggle="modal" href="#box-config" onclick="updatesta(@item.ID,2)"><i class="fa fa-times-circle"></i>&nbsp; 审&nbsp;&nbsp;核</a>
+                                                        <a class="btn btn-danger" data-toggle="modal" href="#box-config1" onclick="updatesta(@item.ID,4)"><i class="fa fa-times-circle"></i>&nbsp; 审核失败</a>
+                                                    }
+                                                    else
+                                                    {
+                                                        <a class="btn btn-success" data-toggle="modal" href="#box-config" onclick="updatesta(@item.ID,3)"><i class="fa fa-times-circle"></i>&nbsp; 发&nbsp;&nbsp;货</a>
+                                                    }
+                                                </p>
+                                            </td>
+                                        </tr>
+                                    }
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="row center col-xs-12 mycss">
+                        @Html.Pager(Model.ApplyList, new PagerOptions { PageIndexParameterName = "page", ShowPageIndexBox = false, PageIndexBoxType = PageIndexBoxType.DropDownList, ShowGoButton = false })
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@section scriptfiles{
+    <script src="@Url.Content("/js/bootbox/bootbox.min.js")"></script>
+}
+@section myscript{
+    <script type="text/javascript">
+        $(function () {
+            App.init(); //Initialise plugins and elements
+            //全选
+            $("#chk_all").click(function () {
+                if ($("#chk_all").is(":checked")) {
+                    $("input[type='checkbox'][name='proList']").prop("checked", true);
+                }
+                else {
+                    $("input[type='checkbox'][name='proList']").prop("checked", false);
+                }
+            });
+        });
+        function showimage(id) {
+            //奖励
+            $.ajax({
+                url: '@Url.Action("Getimagelist", "ApplyPOS", new { area = "AdminArea" })',
+                dataType: 'Json',
+                data: { 'id': id },
+                type: 'POST',
+                success: function (data) {
+                    $("#image1").attr("src", data[0]);
+                    $("#image2").attr("src", data[1]);
+                    $("#image3").attr("src", data[2]);
+                    $("#image4").attr("src", data[3]);
+                }
+            });
+        }
+        function updatesta(id, stasus) {
+            $.ajax({
+                url: '@Url.Action("updatestatus", "ApplyPOS", new { area = "AdminArea" })',
+                dataType: 'Json',
+                data: { 'id': id, 'sta': stasus },
+                type: 'POST',
+                success: function (data) {
+                    if (data == "1") {
+                        location.reload();
+                    }
+                    else {
+                        bootbox.alert("操作失败");
+                    }
+                }
+            });
+        }
+    </script>
+}

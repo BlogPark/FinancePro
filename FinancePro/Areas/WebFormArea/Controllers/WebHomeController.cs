@@ -23,6 +23,7 @@ namespace FinancePro.Areas.WebFormArea.Controllers
         private MemberTransferOrderBLL tranferbll = new MemberTransferOrderBLL();
         private OperateLogBLL logbll = new OperateLogBLL();
         private MemberCashOrderBLL cashbll = new MemberCashOrderBLL();
+        private ApplyPOSBLL applybll = new ApplyPOSBLL();
         private int PageSize = 20;
         //首页
         public ActionResult Index()
@@ -328,8 +329,37 @@ namespace FinancePro.Areas.WebFormArea.Controllers
         //申请POS
         public ActionResult ApplyPOS()
         {
+            MemberInfoModel logmember = Session[AppContent.SESSION_WEB_LOGIN] as MemberInfoModel;
+            if (logmember == null)
+            {
+                return RedirectToAction("Index", "Login", new { area = "WebFormArea" });
+            }
             ApplyPOSViewModel model = new ApplyPOSViewModel();
             return View(model);
+        }
+        [HttpPost]
+        public ActionResult ApplyPOS(ApplyPOSModel applymodel)
+        {
+            MemberInfoModel logmember = Session[AppContent.SESSION_WEB_LOGIN] as MemberInfoModel;
+            if (logmember == null)
+            {
+                return RedirectToAction("Index", "Login", new { area = "WebFormArea" });
+            }
+            ApplyPOSViewModel viewmodel = new ApplyPOSViewModel();
+            ApplyPOSModel model = applymodel;
+            model.MemberID = logmember.ID;
+            model.MemberName = logmember.MemberName;
+            model.MemberCode = logmember.MemberCode;
+            string result = applybll.AddNewApplyPOS(model);
+            if (result == "1")
+            {
+                viewmodel.ErrorStr = "";
+            }
+            else
+            {
+                viewmodel.ErrorStr = result;
+            }
+            return View(viewmodel);
         }
         // 激活会员
         [HttpPost]

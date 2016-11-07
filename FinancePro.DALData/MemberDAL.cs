@@ -682,11 +682,127 @@ WHERE  SourceMemberCode=@sourcecode";
             }
             return list;
         }
-
-        public static int AddNewMemberInfoByDynamicReward(int memberid)
+        /// <summary>
+        /// 批量创建终极账户
+        /// </summary>
+        /// <param name="memberid"></param>
+        /// <param name="maxcommeurry"></param>
+        /// <returns></returns>
+        public static int AddNewMemberInfoByDynamicReward(int memberid,decimal maxcommeurry)
         {
             int result = 0;
-            string sqltxt = @"";
+            string sqltxt = @"SELECT  A.MemberID
+        INTO    #t1
+        FROM    dbo.MemberCapitalDetail A
+        INNER JOIN dbo.DynamicReward B ON A.MemberID=B.MemberID
+        WHERE B.SourceMemberID=@memberid AND  ISNULL(ISCreadChild, 0) = 0
+                AND A.CompoundCurrency >= @maxcomf
+INSERT  INTO dbo.MemberInfo
+                ( MemberName ,
+                  MemberCode ,
+                  MemberSex ,
+                  MemberPhone ,
+                  MemberEmail ,
+                  MemberIDNumber ,
+                  MemberProvince ,
+                  MemberCity ,
+                  MemberArea ,
+                  MemberAddress ,
+                  MemberBankName ,
+                  MemberBankCode ,
+                  MemberLogPwd ,
+                  MemberStatus ,
+                  MemberType ,
+                  IsFinalMember ,
+                  IsDerivativeMember ,
+                  IsSpecialMember ,
+                  IsReportMember ,
+                  AddTime ,
+                  SourceMemberCode ,
+                  MemberSecondPwd ,
+                  MemberBankUserName
+                )
+                SELECT  MemberName ,
+                        MemberCode + '-1' ,
+                        MemberSex ,
+                        MemberPhone ,
+                        MemberEmail ,
+                        MemberIDNumber ,
+                        MemberProvince ,
+                        MemberCity ,
+                        MemberArea ,
+                        MemberAddress ,
+                        MemberBankName ,
+                        MemberBankCode ,
+                        MemberLogPwd ,
+                        1 ,
+                        3 ,
+                        1 ,
+                        0 ,
+                        0 ,
+                        0 ,
+                        GETDATE() ,
+                        MemberCode ,
+                        MemberSecondPwd ,
+                        MemberBankUserName
+                FROM    dbo.MemberInfo
+                WHERE   id IN ( SELECT  memberid
+                                FROM    #t1 )
+                        AND ISNULL(IsFinalMember, 0) = 0
+             
+              INSERT  INTO dbo.MemberCapitalDetail
+                ( MemberID ,
+                  MemberName ,
+                  MemberCode ,
+                  GameCurrency ,
+                  SharesCurrency ,
+                  ShoppingCurrency ,
+                  MemberPoints ,
+                  CompoundCurrency ,
+                  ISCreadChild ,
+                  TotalAssignedPoints ,
+                  ISDeSysCost ,
+                  DeSysCost
+                )
+                SELECT  ID ,
+                        MemberName ,
+                        MemberCode  ,
+                        0 ,
+                        0 ,
+                        0 ,
+                        0 ,
+                        0 ,
+                        0 ,
+                        0 ,
+                        0 ,
+                        0
+                FROM    dbo.MemberInfo
+                WHERE   SourceMemberCode IN ( SELECT  MemberCode
+                                FROM    #t1 A INNER JOIN dbo.MemberInfo B ON A.MemberID=B.ID )
+                        AND ISNULL(IsFinalMember, 0) = 1
+                        
+        INSERT  INTO dbo.MemberExtendInfo
+                ( MemberID ,
+                  MemberName ,
+                  MemberCode ,
+                  FormCurreyNum
+                )
+                SELECT  ID ,
+                        MemberName ,
+                        MemberCode + '-1' ,
+                        0
+                FROM    dbo.MemberInfo
+                WHERE   SourceMemberCode IN ( SELECT  MemberCode
+                                FROM    #t1 A INNER JOIN dbo.MemberInfo B ON A.MemberID=B.ID )
+                        AND ISNULL(IsFinalMember, 0) = 1
+                     
+        UPDATE A                
+       SET ISCreadChild=1
+       FROM dbo.MemberCapitalDetail A
+       INNER JOIN dbo.MemberInfo C ON C.ID = A.MemberID
+       INNER JOIN #t1 B ON A.MemberID=B.MemberID AND  ISNULL(C.IsFinalMember, 0) = 0 ";
+            SqlParameter[] paramter = { new SqlParameter("@memberid", memberid), new SqlParameter("@maxcomf", maxcommeurry) };
+            result = helper.ExecuteSql(sqltxt,paramter);
             return result;
         }
     }
