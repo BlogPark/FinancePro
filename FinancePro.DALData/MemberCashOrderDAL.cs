@@ -24,9 +24,9 @@ namespace FinancePro.DALData
         {
             StringBuilder strSql = new StringBuilder();
             strSql.Append("insert into MemberCashOrder(");
-            strSql.Append("CashOrderCode,CashBankCode,MemberID,MemberName,MemberCode,CashNum,FinishCashNum,CStatus,AddTime,CashBankName,CommissionNum,CashBankUserName");
+            strSql.Append("CashOrderCode,CashBankCode,MemberID,MemberName,MemberCode,CashNum,FinishCashNum,CStatus,AddTime,CashBankName,CommissionNum,CashBankUserName,CashOrderRemark");
             strSql.Append(") values (");
-            strSql.Append("@CashOrderCode,@CashBankCode,@MemberID,@MemberName,@MemberCode,@CashNum,@FinishCashNum,1,GETDATE(),@CashBankName,@CommissionNum,@CashBankUserName");
+            strSql.Append("@CashOrderCode,@CashBankCode,@MemberID,@MemberName,@MemberCode,@CashNum,@FinishCashNum,1,GETDATE(),@CashBankName,@CommissionNum,@CashBankUserName,@CashOrderRemark");
             strSql.Append(") ");
             SqlParameter[] parameters = {
 			            new SqlParameter("@CashOrderCode", SqlDbType.NVarChar) ,            
@@ -38,7 +38,8 @@ namespace FinancePro.DALData
                         new SqlParameter("@FinishCashNum", SqlDbType.Decimal) ,         
                         new SqlParameter("@CashBankName", SqlDbType.NVarChar),
                         new SqlParameter("@CommissionNum",SqlDbType.Decimal),
-                        new SqlParameter("@CashBankUserName",SqlDbType.NVarChar)
+                        new SqlParameter("@CashBankUserName",SqlDbType.NVarChar),
+                        new SqlParameter("@CashOrderRemark",SqlDbType.NVarChar)
             };
             parameters[0].Value = model.CashOrderCode;
             parameters[1].Value = model.CashBankCode;
@@ -50,6 +51,7 @@ namespace FinancePro.DALData
             parameters[7].Value = model.CashBankName;
             parameters[8].Value = model.CommissionNum;
             parameters[9].Value = model.CashBankUserName;
+            parameters[10].Value = model.CashOrderRemark;
             return helper.ExecuteSql(strSql.ToString(), parameters);
         }
         /// <summary>
@@ -75,7 +77,7 @@ WHERE   ID = @id";
         public static List<MemberCashOrderModel> GetAllMemberCashByPage(MemberCashOrderModel model, out int totalrowcount)
         {
             List<MemberCashOrderModel> list = new List<MemberCashOrderModel>();
-            string columms = @"ID ,CashOrderCode ,MemberID ,MemberName ,MemberCode ,CashNum ,FinishCashNum ,CStatus ,CASE CStatus WHEN 1 THEN '新申请'  WHEN 2 THEN '已打款'  WHEN 3 THEN '已驳回' END AS CStatusName , AddTime , CashBankName ,CashBankCode,CashBankUserName,DATEDIFF(DAY,AddTime,GETDATE()) diffday";
+            string columms = @"ID ,CashOrderCode ,MemberID ,MemberName ,MemberCode ,CashNum ,FinishCashNum ,CStatus ,CASE CStatus WHEN 1 THEN '新申请'  WHEN 2 THEN '已打款'  WHEN 3 THEN '已驳回' END AS CStatusName , AddTime , CashBankName ,CashBankCode,CashBankUserName,DATEDIFF(DAY,AddTime,GETDATE()) diffday,CommissionNum,CashOrderRemark";
             string where = "";
             if (model != null)
             {
@@ -143,6 +145,8 @@ WHERE   ID = @id";
                 membercashordermodel.CashBankUserName = item["CashBankUserName"].ToString();
                 membercashordermodel.CStatusName = item["CStatusName"].ToString();
                 membercashordermodel.DiffDay = item["diffday"].ToString().ParseToInt(0);
+                membercashordermodel.CommissionNum = item["CommissionNum"].ToString().ParseToDecimal(0);
+                membercashordermodel.CashOrderRemark = item["CashOrderRemark"].ToString();
                 list.Add(membercashordermodel);
             }
             return list;
@@ -155,7 +159,7 @@ WHERE   ID = @id";
         public static MemberCashOrderModel GetLastMemberCashOrderByMemberId(int memberid)
         {
             StringBuilder strSql = new StringBuilder();
-            strSql.Append("select  TOP 1 ID, CashBankName, CashBankCode, CashOrderCode, MemberID, MemberName, MemberCode, CashNum, FinishCashNum, CStatus, AddTime,DATEDIFF(DAY, AddTime, GETDATE()) diffDay  ");
+            strSql.Append("select  TOP 1 ID, CashBankName, CashBankCode, CashOrderCode, MemberID, MemberName, MemberCode, CashNum, FinishCashNum, CStatus, AddTime,DATEDIFF(DAY, AddTime, GETDATE()) diffDay,CommissionNum  ");
             strSql.Append("  from MemberCashOrder ");
             strSql.Append(" where MemberID = @memberid AND CStatus <> 3 ORDER BY ID DESC");
             SqlParameter[] parameters = {
@@ -178,6 +182,7 @@ WHERE   ID = @id";
                 model.CStatus = int.Parse(ds.Tables[0].Rows[0]["CStatus"].ToString());
                 model.AddTime = ds.Tables[0].Rows[0]["AddTime"].ToString().ParseToDateTime(DateTime.MinValue);
                 model.DiffDay = ds.Tables[0].Rows[0]["diffDay"].ToString().ParseToInt(0);
+                model.CommissionNum = ds.Tables[0].Rows[0]["CommissionNum"].ToString().ParseToDecimal(0);
                 return model;
             }
             else
@@ -194,7 +199,7 @@ WHERE   ID = @id";
         public static List<MemberCashOrderModel> GetMemberCashByMemberId(int memberid, int pageindex, int pagesize, out int totalrowcount)
         {
             List<MemberCashOrderModel> list = new List<MemberCashOrderModel>();
-            string columms = @"ID ,CashOrderCode ,MemberID ,MemberName ,MemberCode ,CashNum ,FinishCashNum ,CStatus ,CASE CStatus WHEN 1 THEN '新申请'  WHEN 2 THEN '已打款'  WHEN 3 THEN '已驳回' END AS CStatusName , AddTime , CashBankName ,CashBankCode,CashBankUserName,DATEDIFF(DAY,AddTime,GETDATE()) diffday";
+            string columms = @"ID ,CashOrderCode ,MemberID ,MemberName ,MemberCode ,CashNum ,FinishCashNum ,CStatus ,CASE CStatus WHEN 1 THEN '新申请'  WHEN 2 THEN '已打款'  WHEN 3 THEN '已驳回' END AS CStatusName , AddTime , CashBankName ,CashBankCode,CashBankUserName,DATEDIFF(DAY,AddTime,GETDATE()) diffday,CommissionNum,CashOrderRemark";
             string where = "";
             if (memberid > 0)
             {
@@ -243,6 +248,8 @@ WHERE   ID = @id";
                 membercashordermodel.CashBankUserName = item["CashBankUserName"].ToString();
                 membercashordermodel.CStatusName = item["CStatusName"].ToString();
                 membercashordermodel.DiffDay = item["diffday"].ToString().ParseToInt(0);
+                membercashordermodel.CommissionNum = item["CommissionNum"].ToString().ParseToDecimal(0);
+                membercashordermodel.CashOrderRemark = item["CashOrderRemark"].ToString();
                 list.Add(membercashordermodel);
             }
             return list;

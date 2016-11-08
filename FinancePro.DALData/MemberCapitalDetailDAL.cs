@@ -343,7 +343,7 @@ WHERE   MemberID = @memberid";
         public static List<MemberCapitalDetailModel> GetMemberCapitalDetailForPage(MemberCapitalDetailModel searchmodel, out int totalrowcount)
         {
             List<MemberCapitalDetailModel> list = new List<MemberCapitalDetailModel>();
-            string columms = @" ID,MemberID,MemberName,MemberCode,GameCurrency,SharesCurrency,ShoppingCurrency,(MemberPoints-ISNULL(DeSysCost,0)) AS MemberPoints,CompoundCurrency ";
+            string columms = @" ID,MemberID,MemberName,MemberCode,GameCurrency,SharesCurrency,ShoppingCurrency,MemberPoints,CompoundCurrency,ISNULL(DeSysCost,0) DeSysCost  ";
             string where = "";
             if (searchmodel != null)
             {
@@ -386,8 +386,9 @@ WHERE   MemberID = @memberid";
                     model.GameCurrency = item["GameCurrency"].ToString().ParseToDecimal(0);
                     model.SharesCurrency = item["SharesCurrency"].ToString().ParseToDecimal(0);
                     model.ShoppingCurrency = item["ShoppingCurrency"].ToString().ParseToDecimal(0);
-                    model.MemberPoints = item["MemberPoints"].ToString().ParseToDecimal(0);
+                    model.MemberPoints = item["MemberPoints"].ToString().ParseToDecimal(0) - item["DeSysCost"].ToString().ParseToDecimal(0);
                     model.CompoundCurrency = item["CompoundCurrency"].ToString().ParseToDecimal(0);
+                    model.DeSysCost = item["DeSysCost"].ToString().ParseToDecimal(0);
                     list.Add(model);
                 }
                 return list;

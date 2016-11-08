@@ -159,13 +159,13 @@ function cashvaluechange() {
         alert("提现金额小于平台限定值");
         return;
     }
-    var max = memberpoints * feenum / 100;
+    var max = memberpoints * maxnum / 100;
     if (cashnum > max) {
-        return "提现金额超出平台限定值";
+        alert("提现金额超出平台限定值");
         return;
     }
     var fee = cashnum * feenum / 100;
-    $("#cashorder_CashNum").val(fee);
+    $("#cashorder_CommissionNum").val(fee);
 }
 function webchang(id, control) {
     $.ajax({

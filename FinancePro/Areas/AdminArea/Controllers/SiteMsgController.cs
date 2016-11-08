@@ -7,10 +7,12 @@ using FinancePro.Areas.AdminArea.Models;
 using FinancePro.BLLData;
 using FinancePro.Controllers;
 using FinancePro.DataModels;
+using FinancePro.Filters;
 using FinancePro.Models;
 
 namespace FinancePro.Areas.AdminArea.Controllers
 {
+     [AdminLoginAttribute]
     public class SiteMsgController : Controller
     {
         //

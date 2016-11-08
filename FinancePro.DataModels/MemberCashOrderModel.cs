@@ -142,7 +142,17 @@ namespace FinancePro.DataModels
         {
             get { return _cashbankusername; }
             set { _cashbankusername = value; }
-        }        
+        }
+        private string _cashorderremark;
+        /// <summary>
+        /// 提现备注
+        /// </summary>		
+        [DataMember]
+        public string CashOrderRemark
+        {
+            get { return _cashorderremark; }
+            set { _cashorderremark = value; }
+        }       
         #endregion
 
         #region 扩展字段

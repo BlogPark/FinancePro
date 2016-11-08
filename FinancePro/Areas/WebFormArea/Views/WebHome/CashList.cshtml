@@ -30,10 +30,10 @@
             <table width="96%" border="1" cellpadding="5" cellspacing="0" bordercolor="#666666" style="border-collapse:collapse;">
                 <tr>
                     <td width="4%" height="28" align="center">&nbsp;</td>
-                    <td width="8%" align="center"><strong>提现类型</strong></td>
-                    <td width="8%" align="center"><strong>收款银行</strong></td>
-                    <td width="9%" align="center"><strong>银行卡号</strong></td>
-                    <td width="21%" align="center"><strong>开户行</strong></td>
+                    <td width="8%" align="center"><strong>单据编号</strong></td>
+                    <td width="8%" align="center"><strong>开户银行</strong></td>
+                    <td width="9%" align="center"><strong>开户姓名</strong></td>
+                    <td width="21%" align="center"><strong>银行卡号</strong></td>
                     <td width="7%" align="center"><strong>提现金额</strong></td>
                     <td width="7%" align="center"><strong>手续费</strong></td>
                     <td width="7%" align="center"><strong>实付金额</strong></td>
@@ -52,9 +52,9 @@
                         <td height="22">@item.CashNum</td>
                         <td height="22">@item.CommissionNum</td>
                         <td height="22">@item.FinishCashNum</td>
-                        <td height="22">@item.DiffDay</td>
+                        <td height="22">@item.CashOrderRemark</td>
                         <td>@item.CStatusName</td>
-                        <td>@item.AddTime.ToString("yyyy-MM-dd HH:mm")</td>
+                        <td>@item.AddTime.ToString("yyyy-MM-dd")</td>
                     </tr>
                 }
 

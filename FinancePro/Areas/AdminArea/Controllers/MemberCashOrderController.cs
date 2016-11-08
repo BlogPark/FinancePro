@@ -6,10 +6,12 @@ using System.Web.Mvc;
 using FinancePro.Areas.AdminArea.Models;
 using FinancePro.BLLData;
 using FinancePro.DataModels;
+using FinancePro.Filters;
 using Webdiyer.WebControls.Mvc;
 
 namespace FinancePro.Areas.AdminArea.Controllers
 {
+     [AdminLoginAttribute]
     public class MemberCashOrderController : Controller
     {
         //会员提现管理

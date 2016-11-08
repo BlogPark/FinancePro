@@ -8,10 +8,12 @@ using FinancePro.BLLData;
 using FinancePro.Common;
 using FinancePro.Controllers;
 using FinancePro.DataModels;
+using FinancePro.Filters;
 using FinancePro.Models;
 
 namespace FinancePro.Areas.AdminArea.Controllers
 {
+     [AdminLoginAttribute]
     public class SysSettingsController : Controller
     {
         //

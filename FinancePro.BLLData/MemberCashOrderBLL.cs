@@ -34,9 +34,12 @@ namespace FinancePro.BLLData
             MemberCapitalDetailModel capitalDetail = MemberCapitalDetailDAL.GetMemberCapitalDetailByMemberID(Ordermodel.MemberID);//会员的资产信息
             #endregion
             #region 验证信息
-            if (LastCashorder.DiffDay < mindiffday)
+            if (LastCashorder != null)
             {
-                return "提现过于频繁！";
+                if (LastCashorder.DiffDay < mindiffday)
+                {
+                    return "提现过于频繁！";
+                }
             }
             if (Ordermodel.CashNum < mincashmoney)
             {
@@ -54,6 +57,7 @@ namespace FinancePro.BLLData
             #region 开始写入信息
             using (TransactionScope scope = new TransactionScope())
             {
+                Ordermodel.CashOrderCode = CreateCashOrderCode(Ordermodel.MemberID);
                 //扣减会员相应积分
                 int rowcount = MemberCapitalDetailDAL.UpdateMemberPoints(0 - Ordermodel.CashNum, "申请提现" + Ordermodel.CashNum + "元", Ordermodel.MemberID);
                 if (rowcount < 1)
@@ -61,7 +65,7 @@ namespace FinancePro.BLLData
                     return "操作失败";
                 }
                 Ordermodel.CommissionNum = Ordermodel.CashNum * commission / 100;//提现手续费用
-                Ordermodel.CashNum = Ordermodel.CashNum - (Ordermodel.CashNum * commission / 100);//修改提现金额
+                Ordermodel.FinishCashNum = Ordermodel.CashNum - (Ordermodel.CashNum * commission / 100);//修改提现金额
                 //添加数据信息
                 rowcount = MemberCashOrderDAL.AddNewMemberCashOrder(Ordermodel);
                 if (rowcount < 1)
@@ -135,6 +139,16 @@ namespace FinancePro.BLLData
         public List<MemberCashOrderModel> GetMemberCashByMemberId(int memberid, int pageindex, int pagesize, out int totalrowcount)
         {
             return MemberCashOrderDAL.GetMemberCashByMemberId(memberid, pageindex, pagesize, out totalrowcount);
+        }
+        /// <summary>
+        /// 生成提现编号
+        /// </summary>
+        /// <param name="memberid"></param>
+        /// <returns></returns>
+        private string CreateCashOrderCode(int memberid)
+        {
+            string date = DateTime.Now.ToString("yyyyMMdd");
+            return "C" + date + memberid;
         }
     }
 }

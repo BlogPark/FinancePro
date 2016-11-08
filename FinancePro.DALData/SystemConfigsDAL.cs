@@ -102,7 +102,6 @@ WHERE   ID = @id";
             List<SystemConfigsModel> list = new List<SystemConfigsModel>();
             string sqltxt = @"SELECT  ID ,
         ConfigName ,
-        ConfigFID ,
         ConfigValue ,
         ConfigRemark ,
         AddTime ,

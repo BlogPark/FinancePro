@@ -10,7 +10,7 @@ namespace FinancePro.Filters
     [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method, AllowMultiple = false, Inherited = true)]
     public class AdminLoginAttribute : System.Web.Mvc.ActionFilterAttribute
     {
-        public override void OnActionExecuted(ActionExecutedContext ctx)
+        public override void OnActionExecuting(ActionExecutingContext ctx)
         {
             //登录模式不做验证
             if (ctx.ActionDescriptor.ControllerDescriptor.ControllerName == "Login")
@@ -28,5 +28,6 @@ namespace FinancePro.Filters
                 return;
             }
         }
+
     }
 }

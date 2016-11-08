@@ -12,7 +12,7 @@ namespace FinancePro.Filters
     [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method, AllowMultiple = false, Inherited = true)]
     public class WebLoginAttribute : System.Web.Mvc.ActionFilterAttribute
     {
-        public override void OnActionExecuted(ActionExecutedContext ctx)
+        public override void OnActionExecuting(ActionExecutingContext ctx)
         {
             //部分视图不做验证
             if (ctx.IsChildAction)

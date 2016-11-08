@@ -62,7 +62,7 @@
                         <td height="49" align="left">
                             手续费用：
                             <label>
-                                @Html.TextBoxFor(m => m.cashorder.CashNum, new { @disable = "disable" })
+                                @Html.TextBoxFor(m => m.cashorder.CommissionNum, new { @readonly = "readonly" })
                             </label>
                         </td>
                     </tr>
@@ -93,6 +93,16 @@
                             开户银行卡号：
                             <label>
                                 @Html.TextBoxFor(m => m.cashorder.CashBankCode, new { @size = "20" })
+                            </label>
+                        </td>
+                    </tr>
+                </table>
+                <table width="97%" border="0" cellspacing="0" cellpadding="0">
+                    <tr>
+                        <td height="49" align="left">
+                            备注：
+                            <label>
+                                @Html.TextBoxFor(m => m.cashorder.CashOrderRemark, new { @size = "20" })
                             </label>
                         </td>
                     </tr>
