@@ -462,14 +462,28 @@ namespace FinancePro.BLLData
             return MemberDAL.GetMemberListForPage(searchmodel, out totalrowcount);
         }
         /// <summary>
-        /// 更改会员的登陆面膜
+        /// 更改会员的登陆密码
         /// </summary>
         /// <param name="memberid">会员ID</param>
         /// <param name="logpwd">登陆密码</param>
         /// <returns></returns>
         public int UpdateMemberLogpwd(int memberid, string logpwd)
         {
+            string secrectstr = SystemConfigsBLL.GetConfigsValueByID(16);//网站加密字符串
+            logpwd = DESEncrypt.Encrypt(logpwd, secrectstr);
             return MemberDAL.UpdateMemberLogpwd(memberid, logpwd);
+        }
+        /// <summary>
+        /// 更改会员的二级密码
+        /// </summary>
+        /// <param name="memberid">会员ID</param>
+        /// <param name="logpwd">登陆密码</param>
+        /// <returns></returns>
+        public int UpdateMemberMemberSecondPwd(int memberid, string secpwd)
+        {
+            string secrectstr = SystemConfigsBLL.GetConfigsValueByID(16);//网站加密字符串
+            secpwd = DESEncrypt.Encrypt(secpwd, secrectstr);
+            return MemberDAL.UpdateMemberMemberSecondPwd(memberid, secpwd);
         }
         /// <summary>
         /// 更改会员的状态信息

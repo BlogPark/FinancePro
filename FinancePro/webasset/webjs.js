@@ -208,10 +208,45 @@ function updatepwd() {
     var newpwd = $("#newpwd").val();
     var cnewpwd = $("#cnewpwd").val();
     if (newpwd == cnewpwd) {
+        $.ajax({
+            url: '/WebFormArea/WebHome/UpdateLogpwd',
+            dataType: 'Json',
+            data: { 'newpwd': cnewpwd },
+            type: 'POST',
+            success: function (data) {
+                if (data == '1') {
+                    $("#pwderror").html("操作成功");
+                }
+                else {
+                    alert("操作失败！");
+                }
+            }
+        });
     }
     else {
-        $("#pwderror").html();
+        $("#pwderror").html("两次密码输入不一致");
     }
 }
 function updatesecpwd() {
+    var newpwd = $("#newsecpwd").val();
+    var cnewpwd = $("#cnewsecpwd").val();
+    if (newpwd == cnewpwd) {
+        $.ajax({
+            url: '/WebFormArea/WebHome/UpdateSecpwd',
+            dataType: 'Json',
+            data: { 'newpwd': cnewpwd },
+            type: 'POST',
+            success: function (data) {
+                if (data == '1') {
+                    $("#scpwderror").html("操作成功");
+                }
+                else {
+                    alert("操作失败！");
+                }
+            }
+        });
+    }
+    else {
+        $("#scpwderror").html("两次密码输入不一致");
+    }
 }

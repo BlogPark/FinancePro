@@ -48,7 +48,7 @@ namespace FinancePro.Areas.WebFormArea.Controllers
             {
                 return RedirectToAction("Index", "Login", new { area = "WebFormArea" });
             }
-            MemberCodeModel codemodel = MemberCodeBLL.GetMemberCode();            
+            MemberCodeModel codemodel = MemberCodeBLL.GetMemberCode();
             AddMemberViewModel model = new AddMemberViewModel();
             model.member = new MemberInfoModel();
             model.member.MemberType = 2;
@@ -314,6 +314,8 @@ namespace FinancePro.Areas.WebFormArea.Controllers
             {
                 return RedirectToAction("Index", "Login", new { area = "WebFormArea" });
             }
+            UserInfoViewModel model = new UserInfoViewModel();
+
             return View();
         }
         //修改密码
@@ -325,6 +327,34 @@ namespace FinancePro.Areas.WebFormArea.Controllers
                 return RedirectToAction("Index", "Login", new { area = "WebFormArea" });
             }
             return View();
+        }
+        [HttpPost]
+        public ActionResult UpdateLogpwd(string newpwd)
+        {
+            MemberInfoModel logmember = Session[AppContent.SESSION_WEB_LOGIN] as MemberInfoModel;
+            if (logmember == null)
+            {
+                return RedirectToAction("Index", "Login", new { area = "WebFormArea" });
+            }
+            int result = memberbll.UpdateMemberLogpwd(logmember.ID,newpwd);;
+            if (result == 0)
+                return Json("0");
+            else
+                return Json("1");
+        }
+        [HttpPost]
+        public ActionResult UpdateSecpwd(string newpwd)
+        {
+            MemberInfoModel logmember = Session[AppContent.SESSION_WEB_LOGIN] as MemberInfoModel;
+            if (logmember == null)
+            {
+                return RedirectToAction("Index", "Login", new { area = "WebFormArea" });
+            }
+            int result = memberbll.UpdateMemberMemberSecondPwd(logmember.ID,newpwd);
+            if (result == 0)
+                return Json("0");
+            else
+                return Json("1");
         }
         //申请POS
         public ActionResult ApplyPOS()

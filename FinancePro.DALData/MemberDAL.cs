@@ -472,6 +472,26 @@ namespace FinancePro.DALData
             return helper.ExecuteSql(strSql.ToString(), parameters);
         }
         /// <summary>
+        /// 更新会员的二级密码
+        /// </summary>
+        /// <param name="memberid"></param>
+        /// <param name="logpwd"></param>
+        /// <returns></returns>
+        public static int UpdateMemberMemberSecondPwd(int memberid, string secpwd)
+        {
+            StringBuilder strSql = new StringBuilder();
+            strSql.Append("update MemberInfo set ");
+            strSql.Append(" MemberSecondPwd = @MemberSecondPwd  ");
+            strSql.Append(" where ID=@ID ");
+            SqlParameter[] parameters = {
+			            new SqlParameter("@ID", SqlDbType.Int) ,          
+                        new SqlParameter("@MemberSecondPwd", SqlDbType.NVarChar)  
+            };
+            parameters[0].Value = memberid;
+            parameters[1].Value = secpwd;
+            return helper.ExecuteSql(strSql.ToString(), parameters);
+        }
+        /// <summary>
         /// 查询会员是否报单中心
         /// </summary>
         /// <param name="memberid"></param>
