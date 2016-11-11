@@ -315,8 +315,8 @@ namespace FinancePro.Areas.WebFormArea.Controllers
                 return RedirectToAction("Index", "Login", new { area = "WebFormArea" });
             }
             UserInfoViewModel model = new UserInfoViewModel();
-
-            return View();
+            model.userinfo = logmember;
+            return View(model);
         }
         //修改密码
         public ActionResult UpdatePwd()
