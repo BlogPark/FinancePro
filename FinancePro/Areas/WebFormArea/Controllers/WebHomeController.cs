@@ -270,7 +270,29 @@ namespace FinancePro.Areas.WebFormArea.Controllers
             {
                 return RedirectToAction("Index", "Login", new { area = "WebFormArea" });
             }
-            return View();
+            MemberMapViewModel model = new MemberMapViewModel();
+            int count = memberbll.recommendint(logmember.ID);
+            model.member = logmember;
+            model.childcount = count;
+            model.isParent = count > 0;
+            return View(model);
+        }
+        /// <summary>
+        /// 查询子节点
+        /// </summary>
+        /// <param name="memberid"></param>
+        /// <returns></returns>
+        [HttpGet]
+        public ActionResult getchildnote(int id)
+        {
+            List<RecommendMap> list = memberbll.GetRecommendListByRecommendMemberId2(id);
+            return Json(list, JsonRequestBehavior.AllowGet);
+        }
+        [HttpGet]
+        public ActionResult getmemberinfo(int id)
+        {
+            MemberInfoModel model = memberbll.GetSingleMemberModel(id);
+            return Json(model, JsonRequestBehavior.AllowGet);
         }
         //写消息
         public ActionResult WriteMessage()

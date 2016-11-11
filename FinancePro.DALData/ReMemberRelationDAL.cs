@@ -339,5 +339,47 @@ WHERE   ID IN ( SELECT  BeRecommMemberID
             }
             return list;
         }
+        /// <summary>
+        /// 根据推荐人正向查找直推会员
+        /// </summary>
+        /// <param name="memberid"></param>
+        /// <returns></returns>
+        public static List<RecommendMap> GetRecommendListByRecommendMemberId2(int memberid)
+        {
+            List<RecommendMap> list = new List<RecommendMap>();
+            string sqltxt = @"SELECT  a.RecommendMemberID AS pid ,
+        a.BeRecommMemberID AS id ,
+        ( b.MemberCode + '(' + b.MemberName + ')' ) AS name ,
+        ( SELECT    COUNT(0)
+          FROM      dbo.ReMemberRelation C
+                    INNER JOIN dbo.MemberInfo D ON C.RecommendMemberID = D.ID
+                                                   AND D.MemberStatus <> 3
+          WHERE     RecommendMemberID = A.BeRecommMemberID
+                    AND RecommendStatus = 1
+        ) AS childcount
+FROM    dbo.ReMemberRelation A
+        INNER JOIN dbo.MemberInfo B ON A.BeRecommMemberID = B.ID
+                                       AND B.MemberStatus <> 3
+WHERE   A.RecommendMemberID = @memberid
+        AND RecommendStatus = 1";
+            SqlParameter[] paramter = { new SqlParameter("@memberid", memberid) };
+            DataTable dt = helper.Query(sqltxt, paramter).Tables[0];
+            if (dt.Rows.Count > 0)
+            {
+                foreach (DataRow item in dt.Rows)
+                {
+                    list.Add(new RecommendMap()
+                    {
+                        id = item["ID"].ToString().ParseToInt(0),
+                        pid = item["pid"].ToString().ParseToInt(0),
+                        name = item["name"].ToString(),
+                        childcount = item["childcount"].ToString().ParseToInt(0),
+                        isParent = item["childcount"].ToString().ParseToInt(0) > 0
+                    });
+                }
+            }
+            return list;
+        }
+
     }
 }

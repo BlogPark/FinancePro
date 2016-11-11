@@ -433,7 +433,7 @@ namespace FinancePro.BLLData
                 //}
                 //更改释放状态
                 rowcount = DynamicRewardDAL.UpdateDynamicRewardStatus(memberid);
-                rowcount =MemberDAL.AddNewMemberInfoByDynamicReward(memberid, maxcommery);
+                rowcount = MemberDAL.AddNewMemberInfoByDynamicReward(memberid, maxcommery);
                 //if (rowcount < 1)
                 //{
                 //    return "操作失败";
@@ -522,7 +522,6 @@ namespace FinancePro.BLLData
         {
             return MemberExtendInfoDAL.GetMemberExtendInfoByMemberID(memberid).FormCurreyNum;
         }
-
         /// <summary>
         /// 根据推荐人正向查找直推会员
         /// </summary>
@@ -533,6 +532,15 @@ namespace FinancePro.BLLData
             return ReMemberRelationDAL.GetRecommendListByRecommendMemberId(memberid);
         }
         /// <summary>
+        /// 根据推荐人正向查找直推会员
+        /// </summary>
+        /// <param name="memberid"></param>
+        /// <returns></returns>
+        public List<RecommendMap> GetRecommendListByRecommendMemberId2(int memberid)
+        {
+            return ReMemberRelationDAL.GetRecommendListByRecommendMemberId2(memberid);
+        }
+        /// <summary>
         /// 按照来源会员编号查询会员信息
         /// </summary>
         /// <param name="membercode"></param>
@@ -540,6 +548,15 @@ namespace FinancePro.BLLData
         public List<MemberInfoModel> GetChildCountListBySourceMemberCode(string membercode)
         {
             return MemberDAL.GetChildCountListBySourceMemberCode(membercode);
+        }
+        /// <summary>
+        /// 查询会员的直推人数
+        /// </summary>
+        /// <param name="memberid"></param>
+        /// <returns></returns>
+        public int recommendint(int memberid)
+        {
+            return ReMemberRelationDAL.GetReMemberRelationCountByMemberid(memberid);
         }
     }
 }

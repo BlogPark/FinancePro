@@ -151,6 +151,7 @@
     <Compile Include="Areas\WebFormArea\Models\CashListViewModel.cs" />
     <Compile Include="Areas\WebFormArea\Models\MemberChildListViewModel.cs" />
     <Compile Include="Areas\WebFormArea\Models\MemberListViewModel.cs" />
+    <Compile Include="Areas\WebFormArea\Models\MemberMapViewModel.cs" />
     <Compile Include="Areas\WebFormArea\Models\MemberTransferViewModel.cs" />
     <Compile Include="Areas\WebFormArea\Models\MessageListViewModel.cs" />
     <Compile Include="Areas\WebFormArea\Models\RegisterViewModel.cs" />

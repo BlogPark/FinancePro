@@ -2,7 +2,6 @@
     ViewBag.Title = "会员图谱";
     Layout = "~/Views/_WebFormLayout.cshtml";
 }
-
 <table width="871" border="0" cellspacing="0" cellpadding="0">
     <tr>
         <td width="11" align="left"><img src="/webasset/images/index-2-l.jpg" width="11" height="36" /></td>
@@ -22,7 +21,7 @@
         <td width="643" align="center" valign="top">
             <table width="97%" border="0" cellspacing="0" cellpadding="0">
                 <tr>
-                    <td>&nbsp;</td>
+                    <td><ul id="treeDemo" class="ztree"></ul></td>
                 </tr>
             </table>
             <table width="97%" border="0" cellspacing="0" cellpadding="0">
@@ -33,4 +32,101 @@
         </td>
     </tr>
 </table>
+@section mycss{
+    <link href="@Url.Content("/js/ztree/css/zTreeStyle/zTreeStyle.css")" rel="stylesheet">
+}
+@section scriptfiles{
+    <script type="text/javascript" src="@Url.Content("/js/ztree/js/jquery.ztree.core.js")"></script>
+}
+@section scriptcontent{
+    <script type="text/javascript">
+        var setting = {
+            async: {
+                enable: true,
+                type: "get",
+                url: getUrl
+            },
+            check: {
+                enable: true
+            },
+            data: {
+                key: {
+                    name: "name"
+                },
+                simpleData: {
+                    enable: true,
+                    idKey: "id",
+                    pIdKey: "pid",
+                    rootPId: 0
+                }
+            },
+            view: {
+                expandSpeed: ""
+            },
+            callback: {
+                beforeExpand: beforeExpand,
+                onAsyncSuccess: onAsyncSuccess,
+                onAsyncError: onAsyncError,
+                onClick: function (event, treeId, treeNode) {
+                    $.ajax({
+                        url: '@Url.Action("getmemberinfo", "WebHome", new { area = "WebFormArea" })',
+                        dataType: 'Json',
+                        Type: 'get',
+                        data: { 'id': treeNode.id },
+                        success: function (data) {
+                          
+                        }
+                    });
+                }
+            }
+        };
+        var zNodes = [
+			{ id: parseInt(@Model.member.ID), pid: 0, name: "@(Model.member.MemberCode + "(" + Model.member.MemberName + ")")", childcount: parseInt(@Model.childcount), isParent: new Boolean("@Model.isParent.ToString()") }
+        ];
+
+        var perTime = 100;
+        function getUrl(treeId, treeNode) {
+            return "/WebFormArea/WebHome/getchildnote?id=" + treeNode.id;
+        }
+        function beforeExpand(treeId, treeNode) {
+            if (!treeNode.isAjaxing) {
+                ajaxGetNodes(treeNode, "refresh");
+                return true;
+            } else {
+                alert("zTree 正在下载数据中，请稍后展开节点。。。");
+                return false;
+            }
+        }
+        function onAsyncSuccess(event, treeId, treeNode, msg) {
+            if (!msg || msg.length == 0) {
+                return;
+            }
+            var zTree = $.fn.zTree.getZTreeObj("treeDemo"),
+			totalCount = treeNode.childcount;
+            if (treeNode.children.length < totalCount) {
+                setTimeout(function () { ajaxGetNodes(treeNode); }, perTime);
+            } else {
+                treeNode.icon = "";
+                zTree.updateNode(treeNode);
+                zTree.selectNode(treeNode.children[0]);
+            }
+        }
+        function onAsyncError(event, treeId, treeNode, XMLHttpRequest, textStatus, errorThrown) {
+            var zTree = $.fn.zTree.getZTreeObj("treeDemo");
+            alert("异步获取数据出现异常。");
+            treeNode.icon = "";
+            zTree.updateNode(treeNode);
+        }
+        function ajaxGetNodes(treeNode, reloadType) {
+            var zTree = $.fn.zTree.getZTreeObj("treeDemo");
+            if (reloadType == "refresh") {
+                zTree.updateNode(treeNode);
+            }
+            zTree.reAsyncChildNodes(treeNode, reloadType, true);
+        }
+        $(document).ready(function () {
+            $.fn.zTree.init($("#treeDemo"), setting, zNodes);
+        });
+    </script>
+}
 
