@@ -456,7 +456,7 @@ WHERE   MemberID IN (SELECT MemberID FROM dbo.DynamicReward WHERE SourceMemberID
                                           new SqlParameter("@remark","扣减平台管理费用"),
                                           new SqlParameter("@memberid",memberid)
                                       };
-            return helper.ExecuteSql(sqltxt);
+            return helper.ExecuteSql(sqltxt,paramter);
         }
     }
 }

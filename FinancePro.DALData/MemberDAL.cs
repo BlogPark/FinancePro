@@ -411,44 +411,24 @@ namespace FinancePro.DALData
         {
             StringBuilder strSql = new StringBuilder();
             strSql.Append("update MemberInfo set ");
-            strSql.Append(" MemberAddress = @MemberAddress , ");
             strSql.Append(" MemberBankName = @MemberBankName , ");
             strSql.Append(" MemberBankCode = @MemberBankCode , ");
+            strSql.Append(" MemberBankUserName = @MemberBankUserName , ");
             strSql.Append(" MemberName = @MemberName , ");
-            strSql.Append(" MemberCode = @MemberCode , ");
-            strSql.Append(" MemberSex = @MemberSex , ");
             strSql.Append(" MemberPhone = @MemberPhone , ");
+            strSql.Append(" MemberIDNumber = @MemberIDNumber , ");
             strSql.Append(" MemberEmail = @MemberEmail , ");
-            strSql.Append(" MemberProvince = @MemberProvince , ");
-            strSql.Append(" MemberCity = @MemberCity , ");
-            strSql.Append(" MemberArea = @MemberArea  ");
             strSql.Append(" where ID=@ID ");
             SqlParameter[] parameters = {
-			            new SqlParameter("@ID", SqlDbType.Int) ,            
-                        new SqlParameter("@MemberAddress", SqlDbType.NVarChar) ,            
-                        new SqlParameter("@MemberBankName", SqlDbType.NVarChar) ,            
-                        new SqlParameter("@MemberBankCode", SqlDbType.NVarChar) , 
-                        new SqlParameter("@MemberName", SqlDbType.NVarChar) ,        
-                        new SqlParameter("@MemberCode", SqlDbType.NVarChar) ,            
-                        new SqlParameter("@MemberSex", SqlDbType.Int) ,            
-                        new SqlParameter("@MemberPhone", SqlDbType.NVarChar) ,            
-                        new SqlParameter("@MemberEmail", SqlDbType.NVarChar) ,            
-                        new SqlParameter("@MemberProvince", SqlDbType.NVarChar) ,            
-                        new SqlParameter("@MemberCity", SqlDbType.NVarChar) ,            
-                        new SqlParameter("@MemberArea", SqlDbType.NVarChar)   
+			            new SqlParameter("@ID", model.ID) ,               
+                        new SqlParameter("@MemberBankName", model.MemberBankName) ,            
+                        new SqlParameter("@MemberBankCode", model.MemberBankCode) , 
+                        new SqlParameter("@MemberName", model.MemberName) ,        
+                        new SqlParameter("@MemberIDNumber", model.MemberIDNumber) ,            
+                        new SqlParameter("@MemberBankUserName", model.MemberBankUserName) ,            
+                        new SqlParameter("@MemberPhone", model.MemberPhone) ,            
+                        new SqlParameter("@MemberEmail", model.MemberEmail) 
             };
-            parameters[0].Value = model.ID;
-            parameters[1].Value = model.MemberAddress;
-            parameters[2].Value = model.MemberBankName;
-            parameters[3].Value = model.MemberBankCode;
-            parameters[4].Value = model.MemberName;
-            parameters[5].Value = model.MemberCode;
-            parameters[6].Value = model.MemberSex;
-            parameters[7].Value = model.MemberPhone;
-            parameters[8].Value = model.MemberEmail;
-            parameters[9].Value = model.MemberProvince;
-            parameters[10].Value = model.MemberCity;
-            parameters[11].Value = model.MemberArea;
             return helper.ExecuteSql(strSql.ToString(), parameters);
         }
         /// <summary>

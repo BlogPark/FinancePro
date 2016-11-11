@@ -55,102 +55,102 @@ namespace FinancePro.DataModels
             get { return _membercode; }
             set { _membercode = value; }
         }
-        private int _bmemberpoints;
+        private decimal _bmemberpoints;
         /// <summary>
         /// 变动前积分
         /// </summary>		
         [DataMember]
-        public int BMemberPoints
+        public decimal BMemberPoints
         {
             get { return _bmemberpoints; }
             set { _bmemberpoints = value; }
         }
-        private int _nmemberpoints;
+        private decimal _nmemberpoints;
         /// <summary>
         /// 最新积分
         /// </summary>		
         [DataMember]
-        public int NMemberPoints
+        public decimal NMemberPoints
         {
             get { return _nmemberpoints; }
             set { _nmemberpoints = value; }
         }
-        private int _bgamecurrency;
+        private decimal _bgamecurrency;
         /// <summary>
         /// 变动前游戏币
         /// </summary>		
         [DataMember]
-        public int BGameCurrency
+        public decimal BGameCurrency
         {
             get { return _bgamecurrency; }
             set { _bgamecurrency = value; }
         }
-        private int _ngamecurrency;
+        private decimal _ngamecurrency;
         /// <summary>
         /// 最新游戏币
         /// </summary>		
         [DataMember]
-        public int NGameCurrency
+        public decimal NGameCurrency
         {
             get { return _ngamecurrency; }
             set { _ngamecurrency = value; }
         }
-        private int _bsharescurrency;
+        private decimal _bsharescurrency;
         /// <summary>
         /// 变动前股权币
         /// </summary>		
         [DataMember]
-        public int BSharesCurrency
+        public decimal BSharesCurrency
         {
             get { return _bsharescurrency; }
             set { _bsharescurrency = value; }
         }
-        private int _nsharescurrency;
+        private decimal _nsharescurrency;
         /// <summary>
         /// 最新股权币
         /// </summary>		
         [DataMember]
-        public int NSharesCurrency
+        public decimal NSharesCurrency
         {
             get { return _nsharescurrency; }
             set { _nsharescurrency = value; }
         }
-        private int _bshoppingcurrency;
+        private decimal _bshoppingcurrency;
         /// <summary>
         /// 变动前购物币
         /// </summary>		
         [DataMember]
-        public int BShoppingCurrency
+        public decimal BShoppingCurrency
         {
             get { return _bshoppingcurrency; }
             set { _bshoppingcurrency = value; }
         }
-        private int _nshoppingcurrency;
+        private decimal _nshoppingcurrency;
         /// <summary>
         /// 最新购物币
         /// </summary>		
         [DataMember]
-        public int NShoppingCurrency
+        public decimal NShoppingCurrency
         {
             get { return _nshoppingcurrency; }
             set { _nshoppingcurrency = value; }
         }
-        private int _bcompoundcurrency;
+        private decimal _bcompoundcurrency;
         /// <summary>
         /// 变动前复利币(报单币)
         /// </summary>		
         [DataMember]
-        public int BCompoundCurrency
+        public decimal BCompoundCurrency
         {
             get { return _bcompoundcurrency; }
             set { _bcompoundcurrency = value; }
         }
-        private int _ncompoundcurrency;
+        private decimal _ncompoundcurrency;
         /// <summary>
         /// 最新复利币(报单币)
         /// </summary>		
         [DataMember]
-        public int NCompoundCurrency
+        public decimal NCompoundCurrency
         {
             get { return _ncompoundcurrency; }
             set { _ncompoundcurrency = value; }

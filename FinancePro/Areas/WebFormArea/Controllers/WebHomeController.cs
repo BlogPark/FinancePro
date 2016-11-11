@@ -318,6 +318,26 @@ namespace FinancePro.Areas.WebFormArea.Controllers
             model.userinfo = logmember;
             return View(model);
         }
+        /// <summary>
+        /// 用户修改信息
+        /// </summary>
+        /// <returns></returns>
+        [HttpPost]
+        public ActionResult UserInfo(MemberInfoModel userinfo)
+        {
+            int result = memberbll.UpdateMemberInfoByMemberID(userinfo);
+            if (result > 0)
+            {
+                ViewData["errorstr"] = "修改成功";
+            }
+            else
+            {
+                ViewData["errorstr"] = "操作失败";
+            }
+            UserInfoViewModel model = new UserInfoViewModel();
+            model.userinfo = userinfo;
+            return View(model);
+        }
         //修改密码
         public ActionResult UpdatePwd()
         {
@@ -336,7 +356,7 @@ namespace FinancePro.Areas.WebFormArea.Controllers
             {
                 return RedirectToAction("Index", "Login", new { area = "WebFormArea" });
             }
-            int result = memberbll.UpdateMemberLogpwd(logmember.ID,newpwd);;
+            int result = memberbll.UpdateMemberLogpwd(logmember.ID, newpwd); ;
             if (result == 0)
                 return Json("0");
             else
@@ -350,7 +370,7 @@ namespace FinancePro.Areas.WebFormArea.Controllers
             {
                 return RedirectToAction("Index", "Login", new { area = "WebFormArea" });
             }
-            int result = memberbll.UpdateMemberMemberSecondPwd(logmember.ID,newpwd);
+            int result = memberbll.UpdateMemberMemberSecondPwd(logmember.ID, newpwd);
             if (result == 0)
                 return Json("0");
             else
