@@ -309,6 +309,7 @@ namespace FinancePro.BLLData
             int baseProportion = SystemConfigsBLL.GetConfigsValueByID(17).ParseToInt(300);//一期网站计算基数
             decimal syscost = SystemConfigsBLL.GetConfigsValueByID(11).ParseToDecimal(0);//平台管理费用
             decimal maxcommery = SystemConfigsBLL.GetConfigsValueByID(5).ParseToDecimal(0);//平台管理费用
+            string isautosoon = SystemConfigsBLL.GetConfigsValueByID(26);//是否立即返还会员的金钱
             #endregion
             #region 读取会员信息
             MemberInfoModel member = MemberDAL.GetBriefSingleMemberModel(memberid);//该会员信息
@@ -438,15 +439,17 @@ namespace FinancePro.BLLData
                 //{
                 //    return "操作失败";
                 //}
-                //计算静态资金并返还
-                decimal gamecurrey = baseProportion * pointProportion / 100;
-                decimal commingProportion = baseProportion * gameProportion / 100;
-                rowcount = MemberCapitalDetailDAL.UpdateCompoundCurrencyAndGameCurrency(gamecurrey, commingProportion, "注册返还静态奖励金额", memberid);
-                if (rowcount < 1)
+                if (isautosoon == "1")
                 {
-                    return "操作失败";
+                    //计算静态资金并返还
+                    decimal gamecurrey = baseProportion * pointProportion / 100;
+                    decimal commingProportion = baseProportion * gameProportion / 100;
+                    rowcount = MemberCapitalDetailDAL.UpdateCompoundCurrencyAndGameCurrency(gamecurrey, commingProportion, "注册返还静态奖励金额", memberid);
+                    if (rowcount < 1)
+                    {
+                        return "操作失败";
+                    }
                 }
-
                 scope.Complete();
             }
             return result;
