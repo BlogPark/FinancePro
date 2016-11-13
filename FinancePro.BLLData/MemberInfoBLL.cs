@@ -356,13 +356,16 @@ namespace FinancePro.BLLData
                         {
                             return "操作失败";
                         }
-                        //计算子账户的返还信息(游戏币和复利币)
-                        decimal Cgamecurrey = baseProportion * pointProportion / 100;
-                        decimal CcommingProportion = baseProportion * gameProportion / 100;
-                        rowcount = MemberCapitalDetailDAL.UpdateCompoundCurrencyAndGameCurrency(Cgamecurrey, CcommingProportion, "注册返还静态奖励金额", ChildMemberInfo.ID);
-                        if (rowcount < 1)
+                        if (isautosoon == "1")
                         {
-                            return "操作失败";
+                            //计算子账户的返还信息(游戏币和复利币)
+                            decimal Cgamecurrey = baseProportion * pointProportion / 100;
+                            decimal CcommingProportion = baseProportion * gameProportion / 100;
+                            rowcount = MemberCapitalDetailDAL.UpdateCompoundCurrencyAndGameCurrency(Cgamecurrey, CcommingProportion, "注册返还静态奖励金额", ChildMemberInfo.ID);
+                            if (rowcount < 1)
+                            {
+                                return "操作失败";
+                            }
                         }
                     }
                 }

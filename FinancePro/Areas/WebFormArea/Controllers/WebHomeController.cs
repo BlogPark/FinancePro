@@ -72,7 +72,6 @@ namespace FinancePro.Areas.WebFormArea.Controllers
                 return RedirectToAction("Index", "Login", new { area = "WebFormArea" });
             }
             AddMemberViewModel model = new AddMemberViewModel();
-            model.member = member;
             string result = memberbll.AddNewMemberInfo(member, member.MemberType);
             if (result == "1")
             {
@@ -82,6 +81,9 @@ namespace FinancePro.Areas.WebFormArea.Controllers
             {
                 model.ErrorStr = result;
             }
+            model.member = member;
+            model.regintable = ReginTableBLL.GetReginTableListModel(1);
+            model.member.IsDerivativeMember = 1;           
             return View(model);
         }
         //会员列表

@@ -260,7 +260,7 @@ namespace FinancePro.DALData
             strSql.Append("  from MemberInfo ");
             strSql.Append(" where SourceMemberCode = @sourcemembercode AND MemberType = 3");
             SqlParameter[] parameters = {
-					new SqlParameter("@sourcemembercode", SqlDbType.Int)
+					new SqlParameter("@sourcemembercode", SqlDbType.NVarChar)
 			};
             parameters[0].Value = sourcemembercode;
             MemberInfoModel model = new MemberInfoModel();
