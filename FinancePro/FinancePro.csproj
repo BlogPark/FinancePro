@@ -146,6 +146,7 @@
     <Compile Include="Areas\WebFormArea\Controllers\WebHomeController.cs" />
     <Compile Include="Areas\WebFormArea\Models\AddMemberViewModel.cs" />
     <Compile Include="Areas\WebFormArea\Models\ApplyCashViewModel.cs" />
+    <Compile Include="Areas\WebFormArea\Models\ApplyPOSListViewModel.cs" />
     <Compile Include="Areas\WebFormArea\Models\ApplyPOSViewModel.cs" />
     <Compile Include="Areas\WebFormArea\Models\CapitalDetailLogViewModel.cs" />
     <Compile Include="Areas\WebFormArea\Models\CashListViewModel.cs" />
@@ -794,6 +795,7 @@
     <Content Include="Areas\AdminArea\Views\ApplyPOS\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Areas\WebFormArea\Views\WebHome\ApplyPOSList.cshtml" />
     <None Include="Properties\PublishProfiles\finance.pubxml" />
   </ItemGroup>
   <PropertyGroup>

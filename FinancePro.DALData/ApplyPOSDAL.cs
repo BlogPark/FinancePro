@@ -207,5 +207,63 @@ WHERE   ID = @id";
             }
             return imagelist;
         }
+        /// <summary>
+        /// 根据会员查询申请单信息
+        /// </summary>
+        /// <param name="memberid"></param>
+        /// <returns></returns>
+        public static List<ApplyPOSModel> GetApplyPosOrderByMemberid(int memberid)
+        {
+            List<ApplyPOSModel> list = new List<ApplyPOSModel>();
+            string sqltxt = @"SELECT  MemberID ,
+        MemberCode ,
+        MemberName ,
+        MemberPhone ,
+        MemberIDNumber ,
+        PStatus ,
+        CASE PStatus
+          WHEN 1 THEN '新申请'
+          WHEN 2 THEN '审核通过'
+          WHEN 3 THEN '发货途中'
+          WHEN 4 THEN '审核失败'
+        END AS PStatusName ,
+        ApplyRemark ,
+        AddTime
+FROM    dbo.ApplyPOS
+WHERE   MemberID = @memberid";
+            SqlParameter[] paramter={new SqlParameter("@memberid",memberid)};
+            DataTable dt = helper.Query(sqltxt, paramter).Tables[0];
+            if (dt.Rows.Count > 0)
+            {
+                foreach (DataRow item in dt.Rows)
+                {
+                    ApplyPOSModel model = new ApplyPOSModel();
+                    if (item["PStatus"].ToString() != "")
+                    {
+                        model.PStatus = int.Parse(item["PStatus"].ToString());
+                    }
+                    model.ApplyRemark = item["ApplyRemark"].ToString();
+                    if (item["AddTime"].ToString() != "")
+                    {
+                        model.AddTime = DateTime.Parse(item["AddTime"].ToString());
+                    }
+                    if (item["MemberID"].ToString() != "")
+                    {
+                        model.MemberID = int.Parse(item["MemberID"].ToString());
+                    }
+                    model.MemberCode = item["MemberCode"].ToString();
+                    model.MemberName = item["MemberName"].ToString();
+                    model.MemberPhone = item["MemberPhone"].ToString();
+                    model.MemberIDNumber = item["MemberIDNumber"].ToString();
+                    model.PStatusName = item["PStatusName"].ToString();
+                    list.Add(model);
+                }
+                return list;
+            }
+            else
+            {
+                return null;
+            }
+        }
     }
 }

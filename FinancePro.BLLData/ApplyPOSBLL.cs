@@ -59,5 +59,14 @@ namespace FinancePro.BLLData
         {
             return ApplyPOSDAL.GetApplyPOSImageByID(id);
         }
+         /// <summary>
+        /// 根据会员查询申请单信息
+        /// </summary>
+        /// <param name="memberid"></param>
+        /// <returns></returns>
+        public List<ApplyPOSModel> GetApplyPosOrderByMemberid(int memberid)
+        {
+            return ApplyPOSDAL.GetApplyPosOrderByMemberid(memberid);
+        }
     }
 }

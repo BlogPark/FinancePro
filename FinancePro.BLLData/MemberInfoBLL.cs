@@ -373,7 +373,7 @@ namespace FinancePro.BLLData
                 #region 计算信息
                 if (memberextendinfo != null)
                 {
-                    if (memberextendinfo.FormCurreyNum > 100 && memberCapital.GameCurrency > 200)//当会员的相关信息足够时
+                    if (memberextendinfo.FormCurreyNum >= 100 && memberCapital.GameCurrency >= 200)//当会员的相关信息足够时
                     {
                         //扣减报单币
                         rowcount = MemberExtendInfoDAL.UpdateMemberFormCurrey(0 - 100, memberextendinfo.MemberID, "激活会员消耗100报单币");
@@ -388,7 +388,7 @@ namespace FinancePro.BLLData
                             return "操作失败";
                         }
                     }
-                    else if (memberextendinfo.FormCurreyNum < 100 || memberCapital.GameCurrency < 200)
+                    else if (memberextendinfo.FormCurreyNum <= 100 || memberCapital.GameCurrency <= 200)
                     {
                         decimal Surplus = 0;
                         if (memberextendinfo.FormCurreyNum < 100)
@@ -405,7 +405,7 @@ namespace FinancePro.BLLData
                         }
                         if (memberextendinfo.FormCurreyNum > 0)
                         {
-                            rowcount = MemberExtendInfoDAL.UpdateMemberFormCurrey(0 - 100, memberextendinfo.MemberID, "激活会员消耗100报单币");
+                            rowcount = MemberExtendInfoDAL.UpdateMemberFormCurrey(0 - memberextendinfo.FormCurreyNum, memberextendinfo.MemberID, "激活会员消耗100报单币");
                             if (rowcount < 1)
                             {
                                 return "操作失败";
@@ -413,7 +413,7 @@ namespace FinancePro.BLLData
                         }
                         if (memberCapital.GameCurrency > 0)
                         {
-                            rowcount = MemberCapitalDetailDAL.UpdateGameCurrency(0 - 200, "激活会员消耗", memberextendinfo.MemberID);
+                            rowcount = MemberCapitalDetailDAL.UpdateGameCurrency(0 - memberCapital.GameCurrency, "激活会员消耗", memberextendinfo.MemberID);
                             if (rowcount < 1)
                             {
                                 return "操作失败";

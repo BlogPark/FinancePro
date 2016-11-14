@@ -435,6 +435,18 @@ namespace FinancePro.Areas.WebFormArea.Controllers
             }
             return View(viewmodel);
         }
+        //申请POS列表
+        public ActionResult ApplyPOSList()
+        {
+            MemberInfoModel logmember = Session[AppContent.SESSION_WEB_LOGIN] as MemberInfoModel;
+            if (logmember == null)
+            {
+                return RedirectToAction("Index", "Login", new { area = "WebFormArea" });
+            }
+            ApplyPOSListViewModel model = new ApplyPOSListViewModel();
+            model.ApplyList = applybll.GetApplyPosOrderByMemberid(logmember.ID);
+            return View(model);
+        }
         // 激活会员
         [HttpPost]
         public ActionResult ActiveMember(int memberid)

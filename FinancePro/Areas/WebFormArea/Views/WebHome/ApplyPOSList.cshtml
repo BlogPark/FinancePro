@@ -1,0 +1,63 @@
+﻿@using Webdiyer.WebControls.Mvc
+@model FinancePro.Areas.WebFormArea.Models.ApplyPOSListViewModel
+@{
+    ViewBag.Title = "申请单列表";
+    Layout = "~/Views/_WebFormLayout.cshtml";
+}
+
+<table width="871" border="0" cellspacing="0" cellpadding="0">
+    <tr>
+        <td width="11" align="left"><img src="/webasset/images/index-2-l.jpg" width="11" height="36" /></td>
+        <td width="204" align="left" background="/webasset/images/index-2-bj.jpg"><strong><font style="font-size:14px" color="#000000">财务管理</font></strong></td>
+        <td width="17" align="left"><img src="/webasset/images/index-2-2.jpg" width="17" height="36" /></td>
+        <td align="left" background="/webasset/images/index-2-bj.jpg"><strong><font style="font-size:14px" color="#000000">申请列表</font></strong></td>
+        <td width="10" align="right"><img src="/webasset/images/index-2-3.jpg" width="10" height="36" /></td>
+    </tr>
+</table>
+<table width="871" height="303" border="0" cellpadding="0" cellspacing="0" background="/webasset/images/bj2.jpg">
+    <tr>
+        <td width="11">&nbsp;</td>
+        <td width="204" align="left" valign="top">
+            @Html.Action("LeftWebMenu", "IndexPub", new { area = "", type = 4 })
+        </td>
+        <td width="13" align="left" valign="top">&nbsp;</td>
+        <td width="643" align="center" valign="top">
+            <table width="97%" border="0" cellspacing="0" cellpadding="0">
+                <tr>
+                    <td>&nbsp;</td>
+                </tr>
+            </table>
+            <table width="96%" border="1" cellpadding="5" cellspacing="0" bordercolor="#666666" style="border-collapse:collapse;">
+                <tr>
+                    <td width="4%" height="28" align="center">&nbsp;</td>
+                    <td width="8%" align="center"><strong>会员编号</strong></td>
+                    <td width="14%" align="center"><strong>会员名字</strong></td>
+                    <td width="9%" align="center"><strong>会员电话</strong></td>
+                    <td width="25%" align="center"><strong>身份证编号</strong></td>
+                    <td width="10%" align="center"><strong>申请状态</strong></td>
+                    <td width="17%" align="center"><strong>申请备注</strong></td>
+                    <td width="13%" align="center"><strong>申请时间</strong></td>
+                </tr>
+                @foreach (var item in Model.ApplyList)
+                {
+                    <tr>
+                        <td height="22">@item.MemberCode</td>
+                        <td height="22">@item.MemberName</td>
+                        <td height="22">@item.MemberPhone</td>
+                        <td height="22">@item.MemberIDNumber</td>
+                        <td height="22">@item.PStatusName</td>
+                        <td height="22">@item.ApplyRemark</td>
+                        <td height="22">@item.AddTime.ToString("yyyy-MM-dd")</td>
+                    </tr>
+                }           
+            </table>
+            <table width="97%" border="0" cellspacing="0" cellpadding="0">
+                <tr>
+                    <td height="49" align="right">&nbsp;</td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+</table>
+
+
