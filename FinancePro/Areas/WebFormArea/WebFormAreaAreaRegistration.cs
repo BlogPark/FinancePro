@@ -45,6 +45,21 @@ namespace FinancePro.Areas.WebFormArea
          new { controller = "WebHome", action = "MemberMap", id = UrlParameter.Optional }
      );
             context.MapRoute(
+        "web_formdetaillist_p",
+        "formdetaillist_{page}.html",
+        new { controller = "WebHome", action = "FormCurryDetailLog", page = 1, id = UrlParameter.Optional }
+    );
+            context.MapRoute(
+        "web_formdetaillist",
+        "formdetaillist.html",
+        new { controller = "WebHome", action = "FormCurryDetailLog", id = UrlParameter.Optional }
+    );
+            context.MapRoute(
+       "web_detaillist_p",
+       "detaillist_{page}.html",
+       new { controller = "WebHome", action = "CapitalDetailLog", page = 1, id = UrlParameter.Optional }
+   );
+            context.MapRoute(
          "web_detaillist",
          "detaillist.html",
          new { controller = "WebHome", action = "CapitalDetailLog", id = UrlParameter.Optional }

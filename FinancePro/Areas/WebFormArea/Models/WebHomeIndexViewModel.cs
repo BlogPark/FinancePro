@@ -32,5 +32,10 @@ namespace FinancePro.Areas.WebFormArea.Models
         /// </summary>
         [DataMember]
         public int FormCurreyCount { get; set; }
+        /// <summary>
+        /// 会员直推人数
+        /// </summary>
+        [DataMember]
+        public int recommendnumber { get; set; }
     }
 }

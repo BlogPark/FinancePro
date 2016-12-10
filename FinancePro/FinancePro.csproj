@@ -150,6 +150,7 @@
     <Compile Include="Areas\WebFormArea\Models\ApplyPOSViewModel.cs" />
     <Compile Include="Areas\WebFormArea\Models\CapitalDetailLogViewModel.cs" />
     <Compile Include="Areas\WebFormArea\Models\CashListViewModel.cs" />
+    <Compile Include="Areas\WebFormArea\Models\FormCurryDetailLogViewModel.cs" />
     <Compile Include="Areas\WebFormArea\Models\MemberChildListViewModel.cs" />
     <Compile Include="Areas\WebFormArea\Models\MemberListViewModel.cs" />
     <Compile Include="Areas\WebFormArea\Models\MemberMapViewModel.cs" />
@@ -796,6 +797,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Areas\WebFormArea\Views\WebHome\ApplyPOSList.cshtml" />
+    <Content Include="Areas\WebFormArea\Views\WebHome\FormCurryDetailLog.cshtml" />
     <None Include="Properties\PublishProfiles\finance.pubxml" />
   </ItemGroup>
   <PropertyGroup>

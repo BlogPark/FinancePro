@@ -24,12 +24,18 @@ namespace FinancePro.BLLData
             string result = "";
             #region 验证信息
             int feetype = SystemConfigsBLL.GetConfigsValueByID(25).ParseToInt(0);
+            decimal transfernumber = 0;
             if (feetype == model.TransferType)
             {
-                if (model.CounterFee != (model.TransferNumber * (decimal)0.3))
+                if (model.CounterFee != (model.Transfernum * (decimal)0.3))
                 {
                     return "手续费用计算不正确";
                 }
+                transfernumber = model.Transfernum;
+            }
+            else
+            {
+                transfernumber = model.TransferNumber;
             }
             if (string.IsNullOrWhiteSpace(model.ReceiveMemberCode))
             {
@@ -43,6 +49,10 @@ namespace FinancePro.BLLData
             if (receivemember == null)
             {
                 return "没有找到接受会员";
+            }
+            if (model.LaunchMemberID == receivemember.ID)
+            {
+                return "不能为自己转账";
             }
             if (model.TransferType == 1)
             {
@@ -58,31 +68,31 @@ namespace FinancePro.BLLData
                 switch (model.TransferType)
                 {
                     case 2://积分
-                        if (sourcemembercapital.MemberPoints < model.TransferNumber)
+                        if (sourcemembercapital.MemberPoints < transfernumber)
                         {
                             return "账户余额不足";
                         }
                         break;
                     case 3://购物
-                        if (sourcemembercapital.ShoppingCurrency < model.TransferNumber)
+                        if (sourcemembercapital.ShoppingCurrency < transfernumber)
                         {
                             return "账户余额不足";
                         }
                         break;
                     case 4://股权
-                        if (sourcemembercapital.SharesCurrency < model.TransferNumber)
+                        if (sourcemembercapital.SharesCurrency < transfernumber)
                         {
                             return "账户余额不足";
                         }
                         break;
                     case 5://复利
-                        if (sourcemembercapital.CompoundCurrency < model.TransferNumber)
+                        if (sourcemembercapital.CompoundCurrency < transfernumber)
                         {
                             return "账户余额不足";
                         }
                         break;
                     case 6://游戏
-                        if (sourcemembercapital.GameCurrency < model.TransferNumber)
+                        if (sourcemembercapital.GameCurrency < transfernumber)
                         {
                             return "账户余额不足";
                         }
@@ -101,7 +111,7 @@ namespace FinancePro.BLLData
                 switch (model.TransferType)
                 {
                     case 1://报单币
-                        rowcount = MemberExtendInfoDAL.UpdateMemberFormCurrey((0 - model.TransferNumber), receivemember.ID, "转账支出" + model.TransferNumber + "个报单币");
+                        rowcount = MemberExtendInfoDAL.UpdateMemberFormCurrey((0 - transfernumber), model.LaunchMemberID, "转账支出" + transfernumber + "个报单币");
                         if (rowcount < 1)
                         {
                             return "操作失败";
@@ -113,7 +123,7 @@ namespace FinancePro.BLLData
                         }
                         break;
                     case 2://积分
-                        rowcount = MemberCapitalDetailDAL.UpdateMemberPoints(0 - model.TransferNumber, "转账支出" + model.TransferNumber + "个积分", receivemember.ID);
+                        rowcount = MemberCapitalDetailDAL.UpdateMemberPoints(0 - transfernumber, "转账支出" + transfernumber + "个积分", model.LaunchMemberID);
                         if (rowcount < 1)
                         {
                             return "操作失败";
@@ -125,7 +135,7 @@ namespace FinancePro.BLLData
                         }
                         break;
                     case 3://购物
-                        rowcount = MemberCapitalDetailDAL.UpdateShoppingCurrency(0 - model.TransferNumber, "转账支出" + model.TransferNumber + "个购物币", receivemember.ID);
+                        rowcount = MemberCapitalDetailDAL.UpdateShoppingCurrency(0 - transfernumber, "转账支出" + transfernumber + "个购物币", model.LaunchMemberID);
                         if (rowcount < 1)
                         {
                             return "操作失败";
@@ -137,7 +147,7 @@ namespace FinancePro.BLLData
                         }
                         break;
                     case 4://股权
-                        rowcount = MemberCapitalDetailDAL.UpdateSharesCurrency(0 - model.TransferNumber, "转账支出" + model.TransferNumber + "个股权币", receivemember.ID);
+                        rowcount = MemberCapitalDetailDAL.UpdateSharesCurrency(0 - transfernumber, "转账支出" + transfernumber + "个股权币", model.LaunchMemberID);
                         if (rowcount < 1)
                         {
                             return "操作失败";
@@ -149,7 +159,7 @@ namespace FinancePro.BLLData
                         }
                         break;
                     case 5://复利
-                        rowcount = MemberCapitalDetailDAL.UpdateCompoundCurrency(0 - model.TransferNumber, "转账支出" + model.TransferNumber + "个复利币", receivemember.ID);
+                        rowcount = MemberCapitalDetailDAL.UpdateCompoundCurrency(0 - transfernumber, "转账支出" + transfernumber + "个复利币", model.LaunchMemberID);
                         if (rowcount < 1)
                         {
                             return "操作失败";
@@ -161,7 +171,7 @@ namespace FinancePro.BLLData
                         }
                         break;
                     case 6://游戏
-                        rowcount = MemberCapitalDetailDAL.UpdateGameCurrency(0 - model.TransferNumber, "转账支出" + model.TransferNumber + "个游戏币", receivemember.ID);
+                        rowcount = MemberCapitalDetailDAL.UpdateGameCurrency(0 - transfernumber, "转账支出" + transfernumber + "个游戏币", model.LaunchMemberID);
                         if (rowcount < 1)
                         {
                             return "操作失败";
@@ -183,6 +193,7 @@ namespace FinancePro.BLLData
                     return "追加单据日志失败";
                 }
                 #endregion
+                scope.Complete();
             }
             return result;
         }

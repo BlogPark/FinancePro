@@ -390,39 +390,47 @@ namespace FinancePro.BLLData
                     }
                     else if (memberextendinfo.FormCurreyNum <= 100 || memberCapital.GameCurrency <= 200)
                     {
-                        decimal Surplus = 0;
-                        if (memberextendinfo.FormCurreyNum < 100)
+                        //游戏币200  不够扣报单币  报单币100  不够扣积分 都不够积分补充
+                        decimal Surplus = 0;//应扣除积分金额
+                        decimal baodan = 100;//应扣除报单币金额
+                        decimal gnum = 200;//应扣除游戏币金额
+                        if (memberCapital.GameCurrency < 200)//若游戏币不足200 游戏币数量等于会员拥有数 报单币数量追加差额
                         {
-                            Surplus += 100 - memberextendinfo.FormCurreyNum;
+                            gnum = memberCapital.GameCurrency;
+                            baodan += 200 - memberCapital.GameCurrency;
                         }
-                        if (memberCapital.GameCurrency < 200)
+                        if (memberextendinfo.FormCurreyNum < baodan)//若报单币数量不足应扣额度  报单币数量等于会员拥有数  积分数量追加差额
                         {
-                            Surplus += 200 - memberCapital.GameCurrency;
+                            Surplus += baodan - memberextendinfo.FormCurreyNum;
+                            baodan = memberextendinfo.FormCurreyNum;
                         }
                         if (memberCapital.MemberPoints < Surplus)
                         {
                             return "操作失败";
                         }
-                        if (memberextendinfo.FormCurreyNum > 0)
+                        if (baodan > 0)
                         {
-                            rowcount = MemberExtendInfoDAL.UpdateMemberFormCurrey(0 - memberextendinfo.FormCurreyNum, memberextendinfo.MemberID, "激活会员消耗100报单币");
+                            rowcount = MemberExtendInfoDAL.UpdateMemberFormCurrey(0 - baodan, memberextendinfo.MemberID, "激活会员消耗" + baodan + "报单币");
                             if (rowcount < 1)
                             {
                                 return "操作失败";
                             }
                         }
-                        if (memberCapital.GameCurrency > 0)
+                        if (gnum > 0)
                         {
-                            rowcount = MemberCapitalDetailDAL.UpdateGameCurrency(0 - memberCapital.GameCurrency, "激活会员消耗", memberextendinfo.MemberID);
+                            rowcount = MemberCapitalDetailDAL.UpdateGameCurrency(0 - gnum, "激活会员消耗", memberextendinfo.MemberID);
                             if (rowcount < 1)
                             {
                                 return "操作失败";
                             }
                         }
-                        rowcount = MemberCapitalDetailDAL.UpdateMemberPoints(0 - Surplus, "激活会员消耗", memberextendinfo.MemberID);
-                        if (rowcount < 1)
+                        if (Surplus > 0)
                         {
-                            return "操作失败";
+                            rowcount = MemberCapitalDetailDAL.UpdateMemberPoints(0 - Surplus, "激活会员消耗", memberextendinfo.MemberID);
+                            if (rowcount < 1)
+                            {
+                                return "操作失败";
+                            }
                         }
                     }
                 }

@@ -125,12 +125,22 @@ namespace FinancePro.DataModels
         {
             get { return _transferresult; }
             set { _transferresult = value; }
-        } 
+        }
         #endregion
 
         #region 扩展字段
         [DataMember]
         public string TransferTypeName { get; set; }
+        /// <summary>
+        /// 源转账金额
+        /// </summary>
+        public decimal _Transfernum = 0;
+        [DataMember]
+        public decimal Transfernum
+        {
+            get { return _Transfernum; }
+            set { _Transfernum = value; }
+        }
         #endregion
     }
 }

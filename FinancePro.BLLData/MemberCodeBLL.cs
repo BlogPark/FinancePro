@@ -33,9 +33,8 @@ namespace FinancePro.BLLData
                 for (int i = 0; i < 60000; i++)
                 {
                     MemberCodeModel model = new MemberCodeModel();
-                    model.MemberCode = basenum;
+                    model.MemberCode = new Random().Next(basenum, basenum + 60000);
                     MemberCodeDAL.AddNewMemberCode(model);
-                    basenum++;
                 }
             }
             catch

@@ -175,7 +175,6 @@
                         <table class="table table-striped table-bordered" id="menutab">
                             <thead>
                                 <tr>
-                                    <th class="text-center">配置项编号</th>
                                     <th class="text-center">配置项名称</th>
                                     <th class="text-center">配置项值</th>
                                     <th class="text-center">配置项备注</th>
@@ -187,7 +186,6 @@
                                 @foreach (SystemConfigsModel item in Model.Allconfigs)
                                 {
                                     <tr id="tr@(item.ID)">
-                                        <td>@item.ID</td>
                                         <td>@item.ConfigName</td>
                                         <td>@item.ConfigValue</td>
                                         <td>@item.ConfigRemark</td>

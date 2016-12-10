@@ -19,7 +19,7 @@ namespace System
         {
             if (string.IsNullOrWhiteSpace(soucenum))
             {
-                return 0;
+                return defaultnum;
             }
             int parse = 0;
             if (!int.TryParse(soucenum, out parse))
@@ -38,7 +38,7 @@ namespace System
         {
             if (string.IsNullOrWhiteSpace(soucedecimal))
             {
-                return 0;
+                return defaultnum;
             }
             decimal parse = 0;
             if (!decimal.TryParse(soucedecimal, out parse))

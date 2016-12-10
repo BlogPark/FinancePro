@@ -106,23 +106,23 @@ namespace FinancePro.DALData
                     }
                     if (item["NSharesCurrency"].ToString() != "")
                     {
-                        logmodel.NSharesCurrency = int.Parse(item["NSharesCurrency"].ToString());
+                        logmodel.NSharesCurrency = item["NSharesCurrency"].ToString().ParseToDecimal(0);
                     }
                     if (item["BShoppingCurrency"].ToString() != "")
                     {
-                        logmodel.BShoppingCurrency = int.Parse(item["BShoppingCurrency"].ToString());
+                        logmodel.BShoppingCurrency = item["BShoppingCurrency"].ToString().ParseToDecimal(0);
                     }
                     if (item["NShoppingCurrency"].ToString() != "")
                     {
-                        logmodel.NShoppingCurrency = int.Parse(item["NShoppingCurrency"].ToString());
+                        logmodel.NShoppingCurrency = item["NShoppingCurrency"].ToString().ParseToDecimal(0);
                     }
                     if (item["BCompoundCurrency"].ToString() != "")
                     {
-                        logmodel.BCompoundCurrency = int.Parse(item["BCompoundCurrency"].ToString());
+                        logmodel.BCompoundCurrency = item["BCompoundCurrency"].ToString().ParseToDecimal(0);
                     }
                     if (item["NCompoundCurrency"].ToString() != "")
                     {
-                        logmodel.NCompoundCurrency = int.Parse(item["NCompoundCurrency"].ToString());
+                        logmodel.NCompoundCurrency = item["NCompoundCurrency"].ToString().ParseToDecimal(0);
                     }
                     logmodel.LogRemark = item["LogRemark"].ToString();
                     if (item["AddTime"].ToString() != "")
@@ -137,23 +137,23 @@ namespace FinancePro.DALData
                     logmodel.MemberCode = item["MemberCode"].ToString();
                     if (item["BMemberPoints"].ToString() != "")
                     {
-                        logmodel.BMemberPoints = int.Parse(item["BMemberPoints"].ToString());
+                        logmodel.BMemberPoints = item["BMemberPoints"].ToString().ParseToDecimal(0);
                     }
                     if (item["NMemberPoints"].ToString() != "")
                     {
-                        logmodel.NMemberPoints = int.Parse(item["NMemberPoints"].ToString());
+                        logmodel.NMemberPoints = item["NMemberPoints"].ToString().ParseToDecimal(0);
                     }
                     if (item["BGameCurrency"].ToString() != "")
                     {
-                        logmodel.BGameCurrency = int.Parse(item["BGameCurrency"].ToString());
+                        logmodel.BGameCurrency = item["BGameCurrency"].ToString().ParseToDecimal(0);
                     }
                     if (item["NGameCurrency"].ToString() != "")
                     {
-                        logmodel.NGameCurrency = int.Parse(item["NGameCurrency"].ToString());
+                        logmodel.NGameCurrency = item["NGameCurrency"].ToString().ParseToDecimal(0);
                     }
                     if (item["BSharesCurrency"].ToString() != "")
                     {
-                        logmodel.BSharesCurrency = int.Parse(item["BSharesCurrency"].ToString());
+                        logmodel.BSharesCurrency = item["BSharesCurrency"].ToString().ParseToDecimal(0);
                     }
                     list.Add(logmodel);
                 }

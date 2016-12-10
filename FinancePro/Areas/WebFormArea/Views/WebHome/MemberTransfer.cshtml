@@ -51,19 +51,19 @@
                         </td>
                     </tr>
                     <tr>
-                        <td height="44" align="center">转账金额</td>
+                        <td height="44" align="center" >转账金额</td>
                         <td height="44" align="left">
-                            &nbsp;&nbsp;<input name="transfernum" id="transfernum" type="number" step="0.1" size="10" value="0" onchange="valuechang()" />
+                            &nbsp;&nbsp; @Html.TextBoxFor(m => m.transfer.Transfernum, new { @size="10",@value="0", @onchange="valuechang()" }) 
                            @Html.HiddenFor(m=>m.feetype)
                         </td>
                     </tr>
                     <tr>
                         <td height="44" align="center">转账手续费</td>
-                        <td height="44" align="left">&nbsp;&nbsp;@Html.TextBoxFor(m => m.transfer.CounterFee, new { @disabled = "disabled" })
+                        <td height="44" align="left">&nbsp;&nbsp;@Html.TextBoxFor(m => m.transfer.CounterFee, new { @readonly = "readonly" })
                     </tr>
                     <tr>
                         <td height="44" align="center">实际转账金额</td>
-                        <td height="44" align="left">&nbsp;&nbsp;@Html.TextBoxFor(m => m.transfer.TransferNumber, new { @disabled = "disabled" })</td>
+                        <td height="44" align="left">&nbsp;&nbsp;@Html.TextBoxFor(m => m.transfer.TransferNumber, new { @readonly = "readonly" })</td>
                     </tr>
                     <tr>
                         <td height="44" align="center">备注</td>
@@ -72,7 +72,7 @@
                     <tr>
                         <td height="44" colspan="2" align="center">
                             <label>
-                                <input type="submit" name="Submit" value="确定转账" /><span style="color:red">@Model.ErrorText</span>
+                                <input type="submit" name="Submit" value="确定转账"  /><span style="color:red">@Model.ErrorText</span>
                             </label>
                         </td>
                     </tr>

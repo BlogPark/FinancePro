@@ -127,7 +127,7 @@ $(function () {
     });
 });
 function valuechang() {
-    var transfernum = $("#transfernum").val();
+    var transfernum = $("#transfer_Transfernum").val();
     var feetype = $("#feetype").val();
     var typenum = $("#transfer_TransferType").val();
     var feenum = 0;

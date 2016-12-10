@@ -38,6 +38,7 @@ namespace FinancePro.Areas.WebFormArea.Controllers
             model.AdminSiteNews = sitenewsbll.GetModelListByUserID(logmember.ID, 8);
             model.CapitalDetail = capitaldetailbll.GetMemberCapitalDetailByMemberID(logmember.ID);
             model.FormCurreyCount = memberbll.GetMemberFormCurreyNum(logmember.ID);
+            model.recommendnumber = memberbll.recommendint(logmember.ID);
             return View(model);
         }
         //添加会员
@@ -260,6 +261,25 @@ namespace FinancePro.Areas.WebFormArea.Controllers
             if (list != null)
             {
                 pagelist = new PagedList<MemberCapitalLogModel>(list, page, PageSize, totalrowcount);
+            }
+            model.loglist = pagelist;
+            return View(model);
+        }
+        //报单币明细日志
+        public ActionResult FormCurryDetailLog(int page = 1)
+        {
+            MemberInfoModel logmember = Session[AppContent.SESSION_WEB_LOGIN] as MemberInfoModel;
+            if (logmember == null)
+            {
+                return RedirectToAction("Index", "Login", new { area = "WebFormArea" });
+            }
+            FormCurryDetailLogViewModel model = new FormCurryDetailLogViewModel();
+            int totalrowcount = 0;
+            List<MemberFormCurreyLogModel> list = logbll.GetMemberFormCurreyLogByMemberID(logmember.ID, page, PageSize, out totalrowcount);
+            PagedList<MemberFormCurreyLogModel> pagelist = null;
+            if (list != null)
+            {
+                pagelist = new PagedList<MemberFormCurreyLogModel>(list, page, PageSize, totalrowcount);
             }
             model.loglist = pagelist;
             return View(model);

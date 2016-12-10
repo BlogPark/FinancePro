@@ -22,17 +22,19 @@ namespace FinancePro.DALData
         /// <returns></returns>
         public static int AddNewMemberCode(MemberCodeModel model)
         {
-            StringBuilder strSql = new StringBuilder();
-            strSql.Append("insert into MemberCode(");
-            strSql.Append("MemberCode,CStatus");
-            strSql.Append(") values (");
-            strSql.Append("@MemberCode,1");
-            strSql.Append(") ");
+            string sqltxt = @"IF NOT EXISTS ( SELECT  1
+                FROM    dbo.MemberCode
+                WHERE   MemberCode = @MemberCode )
+    BEGIN 
+        INSERT  INTO dbo.MemberCode
+                ( MemberCode, CStatus )
+        VALUES  ( @MemberCode, 1 )
+    END";
             SqlParameter[] parameters = {       
                         new SqlParameter("@MemberCode", SqlDbType.Int)    
             };
             parameters[0].Value = model.MemberCode;
-            object obj = helper.GetSingle(strSql.ToString(), parameters);
+            object obj = helper.GetSingle(sqltxt, parameters);
             if (obj == null)
             {
                 return 0;
@@ -54,7 +56,6 @@ namespace FinancePro.DALData
             strSql.Append("  from MemberCode ");
             strSql.Append(" where  CStatus=1");
             DataTable dt = helper.Query(strSql.ToString()).Tables[0];
-            Dictionary<int, string> dic = new Dictionary<int, string>();
             if (dt.Rows.Count > 0)
             {
                 model.ID=dt.Rows[0]["ID"].ToString().ParseToInt(0);
@@ -69,7 +70,7 @@ namespace FinancePro.DALData
         public static int GetMaxMemberCode()
         {
             StringBuilder strSql = new StringBuilder();
-            strSql.Append("select MAX(MemberCode)  ");
+            strSql.Append("select ISNULL(MAX(MemberCode),0)  ");
             strSql.Append("  from MemberCode ");
             return helper.GetSingle(strSql.ToString()).ToString().ParseToInt(0);
         }

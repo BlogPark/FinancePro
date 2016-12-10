@@ -1,7 +1,7 @@
 ﻿@using Webdiyer.WebControls.Mvc
-@model FinancePro.Areas.WebFormArea.Models.CapitalDetailLogViewModel
+@model FinancePro.Areas.WebFormArea.Models.FormCurryDetailLogViewModel
 @{
-    ViewBag.Title = "资产收益明细";
+    ViewBag.Title = "报单币收益明细";
     Layout = "~/Views/_WebFormLayout.cshtml";
 }
 
@@ -29,30 +29,22 @@
             </table>
             <table width="96%" border="1" cellpadding="5" cellspacing="0" bordercolor="#666666" style="border-collapse:collapse;">
                 <tr>
-                    <td width="18%" align="center"><strong>结算时间</strong></td>
-                    <td width="23%" align="center"><strong>变动描述</strong></td>
-                    <td width="9%" align="center"><strong>所属会员</strong></td>
-                    <td width="10%" align="center"><strong>积分币</strong></td>
-                    <td width="10%" align="center"><strong>复利币</strong></td>
-                    <td width="10%" align="center"><strong>游戏币</strong></td>
-                    <td width="10%" align="center"><strong>购物币</strong></td>
-                    <td width="10%" align="center"><strong>购股币</strong></td>
+                    <td width="23%" align="center"><strong>结算时间</strong></td>
+                    <td width="38%" align="center"><strong>变动描述</strong></td>
+                    <td width="9%" align="center"><strong>变动数量</strong></td>
+                    <td width="15%" align="center"><strong>变动前</strong></td>
+                    <td width="15%" align="center"><strong>最终数量</strong></td>
                 </tr>
                 @foreach (var item in Model.loglist)
                 {
                     <tr>
-                        <td height="22">@item.AddTime.ToString("MM-dd HH:mm")</td>
-                        <td height="22">@item.LogRemark</td>
-                        <td height="22">@item.MemberName</td>
-                        <td height="22">@((item.NMemberPoints - item.BMemberPoints) > 0 ? "+" + (item.NMemberPoints - item.BMemberPoints) : (item.NMemberPoints - item.BMemberPoints).ToString())</td>
-                        <td height="22">@((item.NCompoundCurrency - item.BCompoundCurrency) > 0 ? "+" + (item.NCompoundCurrency - item.BCompoundCurrency) : (item.NCompoundCurrency - item.BCompoundCurrency).ToString())</td>
-                        <td height="22">@((item.NGameCurrency - item.BGameCurrency) > 0 ? "+" + (item.NGameCurrency - item.BGameCurrency) : (item.NGameCurrency - item.BGameCurrency).ToString())</td>
-                        <td height="22">@((item.NShoppingCurrency - item.BShoppingCurrency) > 0 ? "+" + (item.NShoppingCurrency - item.BShoppingCurrency) : (item.NShoppingCurrency - item.BShoppingCurrency).ToString())</td>
-                        <td>@((item.NSharesCurrency - item.BSharesCurrency) > 0 ? "+" + (item.NSharesCurrency - item.BSharesCurrency) : (item.NSharesCurrency - item.BSharesCurrency).ToString())</td>
+                        <td height="22">@item.AddTime.ToString("yyyy-MM-dd HH:mm")</td>
+                        <td height="22">@item.Remark</td>
+                        <td height="22">@((item.NFormCurreyNum-item.BFormCurreyNum)>0?"+"+(item.NFormCurreyNum-item.BFormCurreyNum):(item.NFormCurreyNum-item.BFormCurreyNum).ToString())</td>
+                        <td height="22">@item.BFormCurreyNum</td>
+                        <td height="22">@item.NFormCurreyNum</td>
                     </tr>
                 }
-
-                
                 <tr>
                     <td height="28" colspan="10" align="right">
                         <label></label>
