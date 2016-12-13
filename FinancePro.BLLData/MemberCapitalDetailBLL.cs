@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -184,7 +185,7 @@ namespace FinancePro.BLLData
                         break;
                     default:
                         break;
-                } 
+                }
                 #endregion
                 #region 加入单据记录
                 rowcount = MemberTransferOrderDAL.AddNewMemberTransferOrder(model);
@@ -627,6 +628,102 @@ namespace FinancePro.BLLData
         public MemberCapitalDetailModel GetMemberCapitalDetailByMemberID(int memberID)
         {
             return MemberCapitalDetailDAL.GetMemberCapitalDetailByMemberID(memberID);
+        }
+        /// <summary>
+        /// 动态分配领导奖金
+        /// </summary>
+        /// <returns></returns>
+        public string DistributeDynamicBonus()
+        {
+            int baseProportion = SystemConfigsBLL.GetConfigsValueByID(17).ParseToInt(300);//一期网站计算基数
+            string distributionList = SystemConfigsBLL.GetConfigsValueByID(7);//动态分配比例值(%)
+            int recommendProportion = SystemConfigsBLL.GetConfigsValueByID(2).ParseToInt(0);//推荐奖比例(%)
+            int leaderProportion = SystemConfigsBLL.GetConfigsValueByID(3).ParseToInt(0);//领导奖比例(%)
+            int reportProportion = SystemConfigsBLL.GetConfigsValueByID(4).ParseToInt(0);//报单奖比例(%)
+            decimal syscost = SystemConfigsBLL.GetConfigsValueByID(11).ParseToDecimal(0);//平台管理费用
+            decimal maxcommery = SystemConfigsBLL.GetConfigsValueByID(5).ParseToDecimal(0);//自动创建账户封顶复利币
+            //查询所有的常规会员
+            DataTable dt = MemberDAL.GetAllSimpleMembers();
+            if (dt.Rows.Count < 1)
+            {
+                return "没有需要处理的会员";
+            }
+            //循环会员直行分配
+            foreach (DataRow subitem in dt.Rows)
+            {
+                try
+                {
+                    using (TransactionScope scope = new TransactionScope())
+                    {
+                        int memberid = subitem["ID"].ToString().ParseToInt(0);
+                        string membercode = subitem["MemberCode"].ToString();
+                        string membername = subitem["MemberName"].ToString();
+                        List<MemberIterationInfoModel> recommendlist = MemberIterationInfoDAL.GetMemberIterationInfoByMemberId(memberid);
+                        bool isreport = true;
+                        if (recommendlist != null)
+                        {
+                            foreach (MemberIterationInfoModel item in recommendlist)
+                            {
+                                decimal totalnum = 0;
+                                //查询是否报单中心
+                                bool report = MemberDAL.GetMemberIsReportMember(item.SuperiorMemberID);
+                                //查询会员的直推人数
+                                int linerecommend = ReMemberRelationDAL.GetReMemberRelationCountByMemberid(item.SuperiorMemberID);
+                                if (linerecommend < item.GenerationNum)
+                                {
+                                    continue;//若直推人数小于当前世代数，则无权拿到本次奖励
+                                }
+                                if (item.GenerationNum == 1)//若为第一代，则需要计算推荐奖
+                                {
+                                    totalnum += (baseProportion * 0.015 * recommendProportion / 100).ToString().ParseToDecimal(0);
+                                }
+                                totalnum += (baseProportion * 0.015 * leaderProportion / 100).ToString().ParseToDecimal(0);
+                                if (report && isreport)
+                                {
+                                    totalnum += (baseProportion * 0.015 * reportProportion / 100).ToString().ParseToDecimal(0);
+                                    isreport = false;
+                                }
+                                if (totalnum > 0)
+                                {
+                                    string[] listarry = distributionList.TrimEnd(',').Split(',');//依次为(积分,游戏币,购物币,股权币,复利币)
+                                    if (listarry.Length < 5)
+                                    {
+                                        return "操作失败";
+                                    }
+                                    DynamicRewardModel dynamicmodel = new DynamicRewardModel();
+                                    dynamicmodel.CompoundCurrency = totalnum * listarry[4].ParseToDecimal(0) / 100;
+                                    dynamicmodel.GameCurrency = totalnum * listarry[1].ParseToDecimal(0) / 100;
+                                    dynamicmodel.LStatus = 1;
+                                    dynamicmodel.MemberID = item.SuperiorMemberID;
+                                    dynamicmodel.MemberName = item.SuperiorMemberName;
+                                    dynamicmodel.MemberPoints = totalnum * listarry[0].ParseToDecimal(0) / 100;
+                                    dynamicmodel.SharesCurrency = totalnum * listarry[3].ParseToDecimal(0) / 100;
+                                    dynamicmodel.ShoppingCurrency = totalnum * listarry[2].ParseToDecimal(0) / 100;
+                                    dynamicmodel.SourceMemberID = memberid;
+                                    dynamicmodel.SourceMemberName = membername;
+                                    //加入待充值表
+                                    int drows = DynamicRewardDAL.AddNewDynamicReward(dynamicmodel);
+                                    if (drows < 1)
+                                    {
+                                        return "操作失败";
+                                    }
+                                }
+                            }
+                            //释放动态奖金
+                            int rowcount = DynamicRewardDAL.ReleaseDynamicReward(memberid, "得到来自会员的注册激活动态奖励");
+                            //扣减平台管理费
+                            rowcount = MemberCapitalDetailDAL.UpdateMemberISDeSysCostFromDynamicReward(memberid, syscost);                          
+                            //更改释放状态
+                            rowcount = DynamicRewardDAL.UpdateDynamicRewardStatus(memberid);
+                            //创建终极账户
+                            rowcount = MemberDAL.AddNewMemberInfoByDynamicReward(memberid, maxcommery);
+                        }
+                        scope.Complete();
+                    }
+                }
+                catch { continue; }
+            }
+            return "1";
         }
     }
 }

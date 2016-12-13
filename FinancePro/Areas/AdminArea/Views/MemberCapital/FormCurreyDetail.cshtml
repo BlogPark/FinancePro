@@ -78,6 +78,7 @@
                     </div>
                     <div class="col-sm-6">
                         <a class="btn btn-lg btn-primary" onclick="create()"><i class="fa fa-plus"></i>&nbsp;生成系统报单币</a>
+                        <a id="distributebtn" class="btn btn-lg btn-primary" onclick="distribute()"><i class="fa fa-plus"></i>&nbsp;派发动态奖励</a>
                     </div>
                 </div>
             </div>
@@ -205,6 +206,23 @@
                      }
                  }
              });
+        }
+        function distribute() {
+            $("#distributebtn").html("系统派发中，请稍等.....");
+            $("#distributebtn").attr('disabled', 'disabled');
+            $.ajax({
+                url: '@Url.Action("distributedynamicbonus", "MemberCapital", new { area = "AdminArea" })',
+                dataType: 'Json',
+                type: 'POST',
+                success: function (data) {
+                    if (data == "1") {
+                        location.reload();
+                    }
+                    else {
+                        bootbox.alert("操作失败");
+                    }
+                }
+            });
         }
     </script>
 }

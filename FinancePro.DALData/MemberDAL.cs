@@ -697,8 +697,14 @@ WHERE  SourceMemberCode=@sourcecode";
         INTO    #t1
         FROM    dbo.MemberCapitalDetail A
         INNER JOIN dbo.DynamicReward B ON A.MemberID=B.MemberID
-        WHERE B.SourceMemberID=@memberid AND  ISNULL(ISCreadChild, 0) = 0
+        WHERE B.SourceMemberID=@memberid 
                 AND A.CompoundCurrency >= @maxcomf
+        DECLARE @mytablevar TABLE
+            (
+              ID INT ,
+              MemberName VARCHAR(50) ,
+              MemberCode VARCHAR(50)
+            )
 INSERT  INTO dbo.MemberInfo
                 ( MemberName ,
                   MemberCode ,
@@ -724,8 +730,17 @@ INSERT  INTO dbo.MemberInfo
                   MemberSecondPwd ,
                   MemberBankUserName
                 )
+          OUTPUT  INSERTED.ID ,
+                 INSERTED.MemberName,
+                INSERTED.MemberCode
+                INTO @mytablevar
                 SELECT  MemberName ,
-                        MemberCode + '-1' ,
+                        MemberCode + '-'
+                        + CONVERT(NVARCHAR(10), ( SELECT    ISNULL(ISCreadChild,
+                                                              0) + 1
+                                                  FROM      dbo.MemberCapitalDetail
+                                                  WHERE     MemberID = A.ID
+                                                )) ,
                         MemberSex ,
                         MemberPhone ,
                         MemberEmail ,
@@ -747,7 +762,7 @@ INSERT  INTO dbo.MemberInfo
                         MemberCode ,
                         MemberSecondPwd ,
                         MemberBankUserName
-                FROM    dbo.MemberInfo
+                FROM    dbo.MemberInfo A
                 WHERE   id IN ( SELECT  memberid
                                 FROM    #t1 )
                         AND ISNULL(IsFinalMember, 0) = 0
@@ -778,10 +793,7 @@ INSERT  INTO dbo.MemberInfo
                         0 ,
                         0 ,
                         0
-                FROM    dbo.MemberInfo
-                WHERE   SourceMemberCode IN ( SELECT  MemberCode
-                                FROM    #t1 A INNER JOIN dbo.MemberInfo B ON A.MemberID=B.ID )
-                        AND ISNULL(IsFinalMember, 0) = 1
+               FROM    @mytablevar
                         
         INSERT  INTO dbo.MemberExtendInfo
                 ( MemberID ,
@@ -791,21 +803,38 @@ INSERT  INTO dbo.MemberInfo
                 )
                 SELECT  ID ,
                         MemberName ,
-                        MemberCode + '-1' ,
+                        MemberCode ,
                         0
-                FROM    dbo.MemberInfo
-                WHERE   SourceMemberCode IN ( SELECT  MemberCode
-                                FROM    #t1 A INNER JOIN dbo.MemberInfo B ON A.MemberID=B.ID )
-                        AND ISNULL(IsFinalMember, 0) = 1
+               FROM    @mytablevar
                      
         UPDATE A                
-       SET ISCreadChild=1
+       SET ISCreadChild=ISNULL(ISCreadChild,0)+1
        FROM dbo.MemberCapitalDetail A
        INNER JOIN dbo.MemberInfo C ON C.ID = A.MemberID
-       INNER JOIN #t1 B ON A.MemberID=B.MemberID AND  ISNULL(C.IsFinalMember, 0) = 0 ";
+       INNER JOIN #t1 B ON A.MemberID=B.MemberID AND  ISNULL(C.IsFinalMember, 0) = 0 
+
+        UPDATE  A
+        SET     CompoundCurrency = CompoundCurrency - @maxcomf
+        FROM    dbo.MemberCapitalDetail A
+                INNER JOIN #t1 B ON A.MemberID = B.MemberID
+";
             SqlParameter[] paramter = { new SqlParameter("@memberid", memberid), new SqlParameter("@maxcomf", maxcommeurry) };
             result = helper.ExecuteSql(sqltxt,paramter);
             return result;
+        }
+        /// <summary>
+        /// 查询所有的常规会员
+        /// </summary>
+        /// <returns></returns>
+        public static DataTable GetAllSimpleMembers()
+        {
+            string sqltxt = @"SELECT  ID ,
+        MemberName ,
+        MemberCode
+FROM    dbo.MemberInfo
+WHERE   MemberType = 1 AND MemberStatus=2";
+            DataTable dt = helper.Query(sqltxt).Tables[0];
+            return dt;
         }
     }
 }

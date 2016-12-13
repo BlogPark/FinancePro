@@ -127,5 +127,15 @@ namespace FinancePro.Areas.AdminArea.Controllers
             else
                 return Json("操作失败");
         }
+        /// <summary>
+        /// 动态分配领导奖
+        /// </summary>
+        /// <returns></returns>
+        [HttpPost]
+        public ActionResult distributedynamicbonus()
+        {
+            string result = membercapitalbll.DistributeDynamicBonus();
+            return Json(result);
+        }
     }
 }
