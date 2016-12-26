@@ -33,8 +33,8 @@ namespace FinancePro.DALData
 			            new SqlParameter("@MemberID", SqlDbType.Int) ,            
                         new SqlParameter("@MemberName", SqlDbType.NVarChar) ,            
                         new SqlParameter("@MemberCode", SqlDbType.NVarChar) ,            
-                        new SqlParameter("@BFormCurreyNum", SqlDbType.Int) ,            
-                        new SqlParameter("@NFormCurreyNum", SqlDbType.Int) ,            
+                        new SqlParameter("@BFormCurreyNum", SqlDbType.Decimal) ,            
+                        new SqlParameter("@NFormCurreyNum", SqlDbType.Decimal) ,            
                         new SqlParameter("@Remark", SqlDbType.NVarChar) ,            
                         new SqlParameter("@AddTime", SqlDbType.DateTime)             
               
@@ -97,11 +97,11 @@ namespace FinancePro.DALData
                     model.MemberCode = item["MemberCode"].ToString();
                     if (item["BFormCurreyNum"].ToString() != "")
                     {
-                        model.BFormCurreyNum = int.Parse(item["BFormCurreyNum"].ToString());
+                        model.BFormCurreyNum = decimal.Parse(item["BFormCurreyNum"].ToString());
                     }
                     if (item["NFormCurreyNum"].ToString() != "")
                     {
-                        model.NFormCurreyNum = int.Parse(item["NFormCurreyNum"].ToString());
+                        model.NFormCurreyNum = decimal.Parse(item["NFormCurreyNum"].ToString());
                     }
                     model.Remark = item["Remark"].ToString();
                     if (item["AddTime"].ToString() != "")

@@ -205,7 +205,7 @@ namespace FinancePro.BLLData
         /// <param name="acceptmemberid">接收账户</param>
         /// <param name="count">数量</param>
         /// <returns></returns>
-        public string MemberTransferFormCurreyNum(int sourcememberid, int acceptmemberid, int count)
+        public string MemberTransferFormCurreyNum(int sourcememberid, int acceptmemberid, decimal count)
         {
             string result = "1";
             #region 查询会员拥有资产信息
@@ -219,7 +219,7 @@ namespace FinancePro.BLLData
             #endregion
             using (TransactionScope scope = new TransactionScope())
             {
-                int rowcount = MemberExtendInfoDAL.UpdateMemberFormCurrey(0 - count, sourcememberid, "转账支出" + count + "个报单币");
+                int rowcount = MemberExtendInfoDAL.UpdateMemberFormCurrey((decimal)0 - count, sourcememberid, "转账支出" + count + "个报单币");
                 if (rowcount < 1)
                 {
                     return "操作失败";
@@ -489,7 +489,7 @@ namespace FinancePro.BLLData
         /// <param name="membercode"></param>
         /// <param name="count"></param>
         /// <returns></returns>
-        public string SystemDistributeFormCurrey(int memberid, int count)
+        public string SystemDistributeFormCurrey(int memberid, decimal count)
         {
             string result = "1";
             #region 查询会员信息
@@ -673,10 +673,10 @@ namespace FinancePro.BLLData
                                 {
                                     continue;//若直推人数小于当前世代数，则无权拿到本次奖励
                                 }
-                                if (item.GenerationNum == 1)//若为第一代，则需要计算推荐奖
-                                {
-                                    totalnum += (baseProportion * 0.015 * recommendProportion / 100).ToString().ParseToDecimal(0);
-                                }
+                                //if (item.GenerationNum == 1)//若为第一代，则需要计算推荐奖//推荐奖在激活的时候返还
+                                //{
+                                //    totalnum += (baseProportion * 0.015 * recommendProportion / 100).ToString().ParseToDecimal(0);
+                                //}
                                 totalnum += (baseProportion * 0.015 * leaderProportion / 100).ToString().ParseToDecimal(0);
                                 if (report && isreport)
                                 {
@@ -701,6 +701,7 @@ namespace FinancePro.BLLData
                                     dynamicmodel.ShoppingCurrency = totalnum * listarry[2].ParseToDecimal(0) / 100;
                                     dynamicmodel.SourceMemberID = memberid;
                                     dynamicmodel.SourceMemberName = membername;
+                                    dynamicmodel.Ltype = 2;
                                     //加入待充值表
                                     int drows = DynamicRewardDAL.AddNewDynamicReward(dynamicmodel);
                                     if (drows < 1)
@@ -710,11 +711,11 @@ namespace FinancePro.BLLData
                                 }
                             }
                             //释放动态奖金
-                            int rowcount = DynamicRewardDAL.ReleaseDynamicReward(memberid, "得到来自会员的注册激活动态奖励");
+                            int rowcount = DynamicRewardDAL.ReleaseDynamicRewardByType(memberid, 2, "得到来自会员的注册激活动态奖励");
                             //扣减平台管理费
-                            rowcount = MemberCapitalDetailDAL.UpdateMemberISDeSysCostFromDynamicReward(memberid, syscost);                          
+                            rowcount = MemberCapitalDetailDAL.UpdateMemberISDeSysCostFromDynamicReward(memberid, syscost);
                             //更改释放状态
-                            rowcount = DynamicRewardDAL.UpdateDynamicRewardStatus(memberid);
+                            rowcount = DynamicRewardDAL.UpdateDynamicRewardStatusByType(memberid, 2);
                             //创建终极账户
                             rowcount = MemberDAL.AddNewMemberInfoByDynamicReward(memberid, maxcommery);
                         }

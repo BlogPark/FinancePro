@@ -225,58 +225,50 @@ namespace FinancePro.BLLData
                     }
                 }
                 #region 计算动态的资金分配，记入DynamicReward表 （更改为手动派发）
-                //List<MemberIterationInfoModel> recommendlist = MemberIterationInfoDAL.GetMemberIterationInfoByMemberId(memberid);
-                //bool isreport = true;
-                //if (recommendlist != null)
-                //{
-                //    foreach (MemberIterationInfoModel item in recommendlist)
-                //    {
-                //        decimal totalnum = 0;
-                //        //查询是否报单中心
-                //        bool report = MemberDAL.GetMemberIsReportMember(item.SuperiorMemberID);
-                //        //查询会员的直推人数
-                //        int linerecommend = ReMemberRelationDAL.GetReMemberRelationCountByMemberid(item.SuperiorMemberID);
-                //        if (linerecommend < item.GenerationNum)
-                //        {
-                //            continue;//若直推人数小于当前世代数，则无权拿到本次奖励
-                //        }
-                //        if (item.GenerationNum == 1)//若为第一代，则需要计算推荐奖
-                //        {
-                //            totalnum += baseProportion * recommendProportion / 100;
-                //        }
-                //        totalnum += baseProportion * leaderProportion / 100;
-                //        if (report && isreport)
-                //        {
-                //            totalnum += baseProportion * reportProportion / 100;
-                //            isreport = false;
-                //        }
-                //        if (totalnum > 0)
-                //        {
-                //            string[] listarry = distributionList.TrimEnd(',').Split(',');//依次为(积分,游戏币,购物币,股权币,复利币)
-                //            if (listarry.Length < 5)
-                //            {
-                //                return "操作失败";
-                //            }
-                //            DynamicRewardModel dynamicmodel = new DynamicRewardModel();
-                //            dynamicmodel.CompoundCurrency = totalnum * listarry[4].ParseToDecimal(0) / 100;
-                //            dynamicmodel.GameCurrency = totalnum * listarry[1].ParseToDecimal(0) / 100;
-                //            dynamicmodel.LStatus = 1;
-                //            dynamicmodel.MemberID = item.SuperiorMemberID;
-                //            dynamicmodel.MemberName = item.SuperiorMemberName;
-                //            dynamicmodel.MemberPoints = totalnum * listarry[0].ParseToDecimal(0) / 100;
-                //            dynamicmodel.SharesCurrency = totalnum * listarry[3].ParseToDecimal(0) / 100;
-                //            dynamicmodel.ShoppingCurrency = totalnum * listarry[2].ParseToDecimal(0) / 100;
-                //            dynamicmodel.SourceMemberID = memberid;
-                //            dynamicmodel.SourceMemberName = model.MemberName;
-                //            //加入待充值表
-                //            int drows = DynamicRewardDAL.AddNewDynamicReward(dynamicmodel);
-                //            if (drows < 1)
-                //            {
-                //                return "操作失败";
-                //            }
-                //        }
-                //    }
-                //}
+                List<MemberIterationInfoModel> recommendlist = MemberIterationInfoDAL.GetMemberIterationInfoByMemberId(memberid);               
+                if (recommendlist != null)
+                {
+                    foreach (MemberIterationInfoModel item in recommendlist)
+                    {
+                        decimal totalnum = 0;                      
+                        //查询会员的直推人数
+                        int linerecommend = ReMemberRelationDAL.GetReMemberRelationCountByMemberid(item.SuperiorMemberID);
+                        if (linerecommend < item.GenerationNum)
+                        {
+                            continue;//若直推人数小于当前世代数，则无权拿到本次奖励
+                        }
+                        if (item.GenerationNum == 1)//若为第一代，则需要计算推荐奖
+                        {
+                            totalnum += baseProportion * recommendProportion / 100;
+                        }                      
+                        if (totalnum > 0)
+                        {
+                            string[] listarry = distributionList.TrimEnd(',').Split(',');//依次为(积分,游戏币,购物币,股权币,复利币)
+                            if (listarry.Length < 5)
+                            {
+                                return "操作失败";
+                            }
+                            DynamicRewardModel dynamicmodel = new DynamicRewardModel();
+                            dynamicmodel.CompoundCurrency = totalnum * listarry[4].ParseToDecimal(0) / 100;
+                            dynamicmodel.GameCurrency = totalnum * listarry[1].ParseToDecimal(0) / 100;
+                            dynamicmodel.LStatus = 1;
+                            dynamicmodel.MemberID = item.SuperiorMemberID;
+                            dynamicmodel.MemberName = item.SuperiorMemberName;
+                            dynamicmodel.MemberPoints = totalnum * listarry[0].ParseToDecimal(0) / 100;
+                            dynamicmodel.SharesCurrency = totalnum * listarry[3].ParseToDecimal(0) / 100;
+                            dynamicmodel.ShoppingCurrency = totalnum * listarry[2].ParseToDecimal(0) / 100;
+                            dynamicmodel.SourceMemberID = memberid;
+                            dynamicmodel.SourceMemberName = model.MemberName;
+                            dynamicmodel.Ltype = 1;
+                            //加入待充值表
+                            int drows = DynamicRewardDAL.AddNewDynamicReward(dynamicmodel);
+                            if (drows < 1)
+                            {
+                                return "操作失败";
+                            }
+                        }
+                    }
+                }
                 #endregion
                 //更改会员编号的状态为已使用
                 rowcount = MemberCodeBLL.UpdateMemberCodeStatus(model.MemberCodeID);
@@ -398,7 +390,7 @@ namespace FinancePro.BLLData
                         if (memberCapital.GameCurrency < 200)//若游戏币不足200 游戏币数量等于会员拥有数 报单币数量追加差额
                         {
                             gnum = memberCapital.GameCurrency;
-                            baodan += 200 - memberCapital.GameCurrency;
+                            baodan += (decimal)200.00 - memberCapital.GameCurrency;
                         }
                         if (memberextendinfo.FormCurreyNum < baodan)//若报单币数量不足应扣额度  报单币数量等于会员拥有数  积分数量追加差额
                         {
@@ -411,7 +403,7 @@ namespace FinancePro.BLLData
                         }
                         if (baodan > 0)
                         {
-                            rowcount = MemberExtendInfoDAL.UpdateMemberFormCurrey(0 - baodan, memberextendinfo.MemberID, "激活会员消耗" + baodan + "报单币");
+                            rowcount = MemberExtendInfoDAL.UpdateMemberFormCurrey((decimal)0 - baodan, memberextendinfo.MemberID, "激活会员消耗" + baodan + "报单币");
                             if (rowcount < 1)
                             {
                                 return "操作失败";
@@ -419,7 +411,7 @@ namespace FinancePro.BLLData
                         }
                         if (gnum > 0)
                         {
-                            rowcount = MemberCapitalDetailDAL.UpdateGameCurrency(0 - gnum, "激活会员消耗", memberextendinfo.MemberID);
+                            rowcount = MemberCapitalDetailDAL.UpdateGameCurrency((decimal)0 - gnum, "激活会员消耗", memberextendinfo.MemberID);
                             if (rowcount < 1)
                             {
                                 return "操作失败";
@@ -427,7 +419,7 @@ namespace FinancePro.BLLData
                         }
                         if (Surplus > 0)
                         {
-                            rowcount = MemberCapitalDetailDAL.UpdateMemberPoints(0 - Surplus, "激活会员消耗", memberextendinfo.MemberID);
+                            rowcount = MemberCapitalDetailDAL.UpdateMemberPoints((decimal)0 - Surplus, "激活会员消耗", memberextendinfo.MemberID);
                             if (rowcount < 1)
                             {
                                 return "操作失败";
@@ -439,16 +431,16 @@ namespace FinancePro.BLLData
 
                 #region 释放动态奖励（已改为手动派发）
                 //释放动态奖金
-                //rowcount = DynamicRewardDAL.ReleaseDynamicReward(memberid, "得到来自会员的注册激活动态奖励");
+                rowcount = DynamicRewardDAL.ReleaseDynamicRewardByType(memberid, 1,"得到来自会员的注册激活推荐奖");
                 //扣减平台管理费
-                //rowcount = MemberCapitalDetailDAL.UpdateMemberISDeSysCostFromDynamicReward(memberid, syscost);
+                rowcount = MemberCapitalDetailDAL.UpdateMemberISDeSysCostFromDynamicReward(memberid, syscost);
                 //if (rowcount < 1)
                 //{
                 //    return "操作失败";
                 //}
                 //更改释放状态
-                //rowcount = DynamicRewardDAL.UpdateDynamicRewardStatus(memberid);
-                //rowcount = MemberDAL.AddNewMemberInfoByDynamicReward(memberid, maxcommery);
+                rowcount = DynamicRewardDAL.UpdateDynamicRewardStatusByType(memberid,1);
+                rowcount = MemberDAL.AddNewMemberInfoByDynamicReward(memberid, maxcommery);
                 //if (rowcount < 1)
                 //{
                 //    return "操作失败";
@@ -536,7 +528,7 @@ namespace FinancePro.BLLData
         /// </summary>
         /// <param name="memberid"></param>
         /// <returns></returns>
-        public int GetMemberFormCurreyNum(int memberid)
+        public decimal GetMemberFormCurreyNum(int memberid)
         {
             return MemberExtendInfoDAL.GetMemberExtendInfoByMemberID(memberid).FormCurreyNum;
         }

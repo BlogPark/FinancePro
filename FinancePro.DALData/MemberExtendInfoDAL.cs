@@ -33,7 +33,7 @@ namespace FinancePro.DALData
 			            new SqlParameter("@MemberID", SqlDbType.Int) ,            
                         new SqlParameter("@MemberName", SqlDbType.NVarChar) ,            
                         new SqlParameter("@MemberCode", SqlDbType.NVarChar) ,            
-                        new SqlParameter("@FormCurreyNum", SqlDbType.Int)  
+                        new SqlParameter("@FormCurreyNum", SqlDbType.Decimal)  
             };
             parameters[0].Value = model.MemberID;
             parameters[1].Value = model.MemberName;
@@ -73,7 +73,7 @@ namespace FinancePro.DALData
                 model.MemberID = ds.Tables[0].Rows[0]["MemberID"].ToString().ParseToInt(0);
                 model.MemberName = ds.Tables[0].Rows[0]["MemberName"].ToString();
                 model.MemberCode = ds.Tables[0].Rows[0]["MemberCode"].ToString();
-                model.FormCurreyNum = ds.Tables[0].Rows[0]["FormCurreyNum"].ToString().ParseToInt(0);
+                model.FormCurreyNum = ds.Tables[0].Rows[0]["FormCurreyNum"].ToString().ParseToDecimal(0);
                 return model;
             }
             else
@@ -157,7 +157,7 @@ WHERE   MemberID = @memberid";
                     model.MemberID = item["MemberID"].ToString().ParseToInt(0);
                     model.MemberName = item["MemberName"].ToString();
                     model.MemberCode = item["MemberCode"].ToString();
-                    model.FormCurreyNum = item["FormCurreyNum"].ToString().ParseToInt(0);
+                    model.FormCurreyNum = item["FormCurreyNum"].ToString().ParseToDecimal(0);
                     list.Add(model);
                 }
                 return list;

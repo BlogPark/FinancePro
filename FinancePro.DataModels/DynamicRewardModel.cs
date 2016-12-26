@@ -122,7 +122,18 @@ namespace FinancePro.DataModels
         {
             get { return _lstatus; }
             set { _lstatus = value; }
-        } 
+        }
+
+        private int ltype;
+        /// <summary>
+        /// 奖励类型（1 推荐奖  2 动态计算奖）
+        /// </summary>
+        [DataMember]
+        public int Ltype
+        {
+            get { return ltype; }
+            set { ltype = value; }
+        }
         #endregion
 
     }

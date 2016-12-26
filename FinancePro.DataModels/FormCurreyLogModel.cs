@@ -56,12 +56,12 @@ namespace FinancePro.DataModels
             get { return _membercode; }
             set { _membercode = value; }
         }
-        private int _formcurreynum;
+        private decimal _formcurreynum;
         /// <summary>
         /// 分配个数
         /// </summary>		
         [DataMember]
-        public int FormCurreyNum
+        public decimal FormCurreyNum
         {
             get { return _formcurreynum; }
             set { _formcurreynum = value; }

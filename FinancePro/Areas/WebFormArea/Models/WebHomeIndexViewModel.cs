@@ -31,7 +31,7 @@ namespace FinancePro.Areas.WebFormArea.Models
         /// 报单币数量
         /// </summary>
         [DataMember]
-        public int FormCurreyCount { get; set; }
+        public decimal FormCurreyCount { get; set; }
         /// <summary>
         /// 会员直推人数
         /// </summary>

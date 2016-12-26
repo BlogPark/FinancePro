@@ -121,13 +121,13 @@ WHERE   MemberID = @memberid";
         /// </summary>
         /// <param name="memberid"></param>
         /// <returns></returns>
-        public static int GetMemberFormCurrey(int memberid)
+        public static decimal GetMemberFormCurrey(int memberid)
         {
             string sqltxt = @"SELECT  ISNULL(FormCurreyNum, 0) FormCurreyNum
 FROM    dbo.MemberExtendInfo
 WHERE   MemberID = @memberid";
             SqlParameter[] paramter = { new SqlParameter("@memberid",memberid)};
-            return helper.GetSingle(sqltxt, paramter).ToString().ParseToInt(0);
+            return helper.GetSingle(sqltxt, paramter).ToString().ParseToDecimal(0);
         }
     }
 }
