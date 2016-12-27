@@ -35,15 +35,18 @@
                     <td width="15%" align="center"><strong>变动前</strong></td>
                     <td width="15%" align="center"><strong>最终数量</strong></td>
                 </tr>
-                @foreach (var item in Model.loglist)
+                @if (Model.loglist != null)
                 {
-                    <tr>
-                        <td height="22">@item.AddTime.ToString("yyyy-MM-dd HH:mm")</td>
-                        <td height="22">@item.Remark</td>
-                        <td height="22">@((item.NFormCurreyNum-item.BFormCurreyNum)>0?"+"+(item.NFormCurreyNum-item.BFormCurreyNum):(item.NFormCurreyNum-item.BFormCurreyNum).ToString())</td>
-                        <td height="22">@item.BFormCurreyNum</td>
-                        <td height="22">@item.NFormCurreyNum</td>
-                    </tr>
+                    foreach (var item in Model.loglist)
+                    {
+                        <tr>
+                            <td height="22">@item.AddTime.ToString("yyyy-MM-dd HH:mm")</td>
+                            <td height="22">@item.Remark</td>
+                            <td height="22">@((item.NFormCurreyNum - item.BFormCurreyNum) > 0 ? "+" + (item.NFormCurreyNum - item.BFormCurreyNum) : (item.NFormCurreyNum - item.BFormCurreyNum).ToString())</td>
+                            <td height="22">@item.BFormCurreyNum</td>
+                            <td height="22">@item.NFormCurreyNum</td>
+                        </tr>
+                    }
                 }
                 <tr>
                     <td height="28" colspan="10" align="right">
@@ -60,4 +63,3 @@
         </td>
     </tr>
 </table>
-

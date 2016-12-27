@@ -38,21 +38,23 @@
                     <td width="10%" align="center"><strong>购物币</strong></td>
                     <td width="10%" align="center"><strong>购股币</strong></td>
                 </tr>
-                @foreach (var item in Model.loglist)
+                @if (Model.loglist != null)
                 {
-                    <tr>
-                        <td height="22">@item.AddTime.ToString("MM-dd HH:mm")</td>
-                        <td height="22">@item.LogRemark</td>
-                        <td height="22">@item.MemberName</td>
-                        <td height="22">@((item.NMemberPoints - item.BMemberPoints) > 0 ? "+" + (item.NMemberPoints - item.BMemberPoints) : (item.NMemberPoints - item.BMemberPoints).ToString())</td>
-                        <td height="22">@((item.NCompoundCurrency - item.BCompoundCurrency) > 0 ? "+" + (item.NCompoundCurrency - item.BCompoundCurrency) : (item.NCompoundCurrency - item.BCompoundCurrency).ToString())</td>
-                        <td height="22">@((item.NGameCurrency - item.BGameCurrency) > 0 ? "+" + (item.NGameCurrency - item.BGameCurrency) : (item.NGameCurrency - item.BGameCurrency).ToString())</td>
-                        <td height="22">@((item.NShoppingCurrency - item.BShoppingCurrency) > 0 ? "+" + (item.NShoppingCurrency - item.BShoppingCurrency) : (item.NShoppingCurrency - item.BShoppingCurrency).ToString())</td>
-                        <td>@((item.NSharesCurrency - item.BSharesCurrency) > 0 ? "+" + (item.NSharesCurrency - item.BSharesCurrency) : (item.NSharesCurrency - item.BSharesCurrency).ToString())</td>
-                    </tr>
-                }
+                    foreach (var item in Model.loglist)
+                    {
+                        <tr>
+                            <td height="22">@item.AddTime.ToString("MM-dd HH:mm")</td>
+                            <td height="22">@item.LogRemark</td>
+                            <td height="22">@item.MemberName</td>
+                            <td height="22">@((item.NMemberPoints - item.BMemberPoints) > 0 ? "+" + (item.NMemberPoints - item.BMemberPoints) : (item.NMemberPoints - item.BMemberPoints).ToString())</td>
+                            <td height="22">@((item.NCompoundCurrency - item.BCompoundCurrency) > 0 ? "+" + (item.NCompoundCurrency - item.BCompoundCurrency) : (item.NCompoundCurrency - item.BCompoundCurrency).ToString())</td>
+                            <td height="22">@((item.NGameCurrency - item.BGameCurrency) > 0 ? "+" + (item.NGameCurrency - item.BGameCurrency) : (item.NGameCurrency - item.BGameCurrency).ToString())</td>
+                            <td height="22">@((item.NShoppingCurrency - item.BShoppingCurrency) > 0 ? "+" + (item.NShoppingCurrency - item.BShoppingCurrency) : (item.NShoppingCurrency - item.BShoppingCurrency).ToString())</td>
+                            <td>@((item.NSharesCurrency - item.BSharesCurrency) > 0 ? "+" + (item.NSharesCurrency - item.BSharesCurrency) : (item.NSharesCurrency - item.BSharesCurrency).ToString())</td>
+                        </tr>
+                    }
 
-                
+                }
                 <tr>
                     <td height="28" colspan="10" align="right">
                         <label></label>
@@ -68,4 +70,3 @@
         </td>
     </tr>
 </table>
-

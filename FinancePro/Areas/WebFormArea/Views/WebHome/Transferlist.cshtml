@@ -38,19 +38,22 @@
                     <td width="13%" align="center"><strong>转账备注</strong></td>
                     <td width="13%" align="center"><strong>转账时间</strong></td>
                 </tr>
-                @foreach (var item in Model.transferlist)
+                @if (Model.transferlist != null)
                 {
-                    <tr>
-                        <td height="22" align="center">@item.ID</td>
-                        <td height="22">@item.LaunchMemberCode</td>
-                        <td height="22">@item.ReceiveMemberCode</td>
-                        <td height="22">@item.TransferNumber</td>
-                        <td height="22">@item.CounterFee</td>
-                        <td height="22">@item.TransferTypeName</td>
-                        <td height="22">@item.TransferRemark</td>
-                        <td height="22">@item.AddTime.ToString("yyyy-MM-dd")</td>
-                    </tr>
-                }                
+                    foreach (var item in Model.transferlist)
+                    {
+                        <tr>
+                            <td height="22" align="center">@item.ID</td>
+                            <td height="22">@item.LaunchMemberCode</td>
+                            <td height="22">@item.ReceiveMemberCode</td>
+                            <td height="22">@item.TransferNumber</td>
+                            <td height="22">@item.CounterFee</td>
+                            <td height="22">@item.TransferTypeName</td>
+                            <td height="22">@item.TransferRemark</td>
+                            <td height="22">@item.AddTime.ToString("yyyy-MM-dd")</td>
+                        </tr>
+                    }
+                }
                 <tr>
                     <td height="28" colspan="8" align="right">
                         <label></label>
@@ -66,4 +69,3 @@
         </td>
     </tr>
 </table>
-

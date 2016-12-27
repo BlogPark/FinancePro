@@ -58,7 +58,9 @@ namespace FinancePro.DALData
             DataTable dt = helper.Query(strSql.ToString()).Tables[0];
             if (dt.Rows.Count > 0)
             {
-                model.ID=dt.Rows[0]["ID"].ToString().ParseToInt(0);
+                int id=dt.Rows[0]["ID"].ToString().ParseToInt(0);
+                UpdateMemberCodeTempStatus(id);
+                model.ID=id;
                 model.MemberCode = dt.Rows[0]["MemberCode"].ToString().ParseToInt(0);
             }
             return model;
@@ -85,6 +87,19 @@ namespace FinancePro.DALData
   SET CStatus=0
   WHERE ID=@id";
             SqlParameter[] paramter = { new SqlParameter("@id",id)};
+            return helper.ExecuteSql(sqltxt, paramter);
+        }
+        /// <summary>
+        /// 更改数据临时状态
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public static int UpdateMemberCodeTempStatus(int id)
+        {
+            string sqltxt = @" UPDATE dbo.MemberCode
+  SET CStatus=2
+  WHERE ID=@id";
+            SqlParameter[] paramter = { new SqlParameter("@id", id) };
             return helper.ExecuteSql(sqltxt, paramter);
         }
         /// <summary>

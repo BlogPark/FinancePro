@@ -32,17 +32,20 @@
                     <td width="33%" align="center"><strong>内容</strong></td>
                     <td width="17%" align="center"><strong>时间</strong></td>
                     <td width="33%" align="center"><strong>回复内容</strong></td>
-                    
+
                 </tr>
-                @foreach (var item in Model.WebContactList)
+                @if (Model.WebContactList != null)
                 {
-                    <tr>
-                        <td height="28" align="center">@item.MessageTitle</td>
-                        <td align="center">@item.MessageContent</td>
-                        <td align="center">@item.AddTime.ToString("yyyy-MM-dd")</td>
-                        <td align="center">@item.ReplyContent</td>
-                    </tr>
-                }              
+                    foreach (var item in Model.WebContactList)
+                    {
+                        <tr>
+                            <td height="28" align="center">@item.MessageTitle</td>
+                            <td align="center">@item.MessageContent</td>
+                            <td align="center">@item.AddTime.ToString("yyyy-MM-dd")</td>
+                            <td align="center">@item.ReplyContent</td>
+                        </tr>
+                    }
+                }
             </table>
             <table width="97%" border="0" cellspacing="0" cellpadding="0">
                 <tr>
@@ -52,4 +55,3 @@
         </td>
     </tr>
 </table>
-

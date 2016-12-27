@@ -36,29 +36,32 @@
                     <td width="12%" align="center"><strong>注册时间</strong></td>
                     <td width="15%" align="center"><strong>操作</strong></td>
                 </tr>
-                @foreach (var item in Model.memberlist)
+                @if (Model.memberlist != null)
                 {
-                    <tr>
-                        <td height="22">@item.MemberCode</td>
-                        <td height="22">@item.MemberName</td>
-                        <td height="22">@item.MemberPhone</td>
-                        <td height="22">@item.MemberIDNumber</td>
-                        <td height="22">@item.MemberStatusName</td>
-                        <td height="22">@item.AddTime.ToString("yyyy-MM-dd HH:mm")</td>
-                        <td height="22" align="center">
-                            @if (item.MemberStatus == 1)
-                            {
-                                if (item.MemberType == 2)
+                    foreach (var item in Model.memberlist)
+                    {
+                        <tr>
+                            <td height="22">@item.MemberCode</td>
+                            <td height="22">@item.MemberName</td>
+                            <td height="22">@item.MemberPhone</td>
+                            <td height="22">@item.MemberIDNumber</td>
+                            <td height="22">@item.MemberStatusName</td>
+                            <td height="22">@item.AddTime.ToString("yyyy-MM-dd HH:mm")</td>
+                            <td height="22" align="center">
+                                @if (item.MemberStatus == 1)
                                 {
-                                    <input type="button" name="Submit2" onclick="activemember(@item.ID)" value="激活" />
+                                    if (item.MemberType == 2)
+                                    {
+                                        <input type="button" name="Submit2" onclick="activemember(@item.ID)" value="激活" />
+                                    }
+                                    else if (item.MemberType == 3)
+                                    {
+                                        <a name="Submit2" href="@Url.Action("AddMember", "WebHome", new { area = "WebFormArea" })">去激活>></a>
+                                    }
                                 }
-                                else if (item.MemberType == 3)
-                                {
-                                    <a name="Submit2" href="@Url.Action("AddMember", "WebHome", new { area = "WebFormArea" })">去激活>></a>
-                                }
-                            }
-                        </td>
-                    </tr>
+                            </td>
+                        </tr>
+                    }
                 }
             </table>
             <table width="97%" border="0" cellspacing="0" cellpadding="0">

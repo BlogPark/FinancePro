@@ -41,24 +41,26 @@
                     <td width="8%" align="center"><strong>状态</strong></td>
                     <td width="13%" align="center"><strong>申请时间</strong></td>
                 </tr>
-                @foreach (var item in Model.cashlist)
+                @if (Model.cashlist != null)
                 {
-                    <tr>
-                        <td height="22" align="center">@item.ID</td>
-                        <td height="22">@item.CashOrderCode</td>
-                        <td height="22">@item.CashBankName</td>
-                        <td height="22">@item.CashBankUserName</td>
-                        <td height="22">@item.CashBankCode</td>
-                        <td height="22">@item.CashNum</td>
-                        <td height="22">@item.CommissionNum</td>
-                        <td height="22">@item.FinishCashNum</td>
-                        <td height="22">@item.CashOrderRemark</td>
-                        <td>@item.CStatusName</td>
-                        <td>@item.AddTime.ToString("yyyy-MM-dd")</td>
-                    </tr>
+                    foreach (var item in Model.cashlist)
+                    {
+                        <tr>
+                            <td height="22" align="center">@item.ID</td>
+                            <td height="22">@item.CashOrderCode</td>
+                            <td height="22">@item.CashBankName</td>
+                            <td height="22">@item.CashBankUserName</td>
+                            <td height="22">@item.CashBankCode</td>
+                            <td height="22">@item.CashNum</td>
+                            <td height="22">@item.CommissionNum</td>
+                            <td height="22">@item.FinishCashNum</td>
+                            <td height="22">@item.CashOrderRemark</td>
+                            <td>@item.CStatusName</td>
+                            <td>@item.AddTime.ToString("yyyy-MM-dd")</td>
+                        </tr>
+                    }
                 }
 
-                
                 <tr>
                     <td height="28" colspan="11" align="right">
                         <label></label>
@@ -74,4 +76,3 @@
         </td>
     </tr>
 </table>
-

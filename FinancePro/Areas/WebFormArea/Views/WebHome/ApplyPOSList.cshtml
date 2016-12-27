@@ -38,18 +38,21 @@
                     <td width="17%" align="center"><strong>申请备注</strong></td>
                     <td width="13%" align="center"><strong>申请时间</strong></td>
                 </tr>
-                @foreach (var item in Model.ApplyList)
+                @if (Model.ApplyList != null)
                 {
-                    <tr>
-                        <td height="22">@item.MemberCode</td>
-                        <td height="22">@item.MemberName</td>
-                        <td height="22">@item.MemberPhone</td>
-                        <td height="22">@item.MemberIDNumber</td>
-                        <td height="22">@item.PStatusName</td>
-                        <td height="22">@item.ApplyRemark</td>
-                        <td height="22">@item.AddTime.ToString("yyyy-MM-dd")</td>
-                    </tr>
-                }           
+                    foreach (var item in Model.ApplyList)
+                    {
+                        <tr>
+                            <td height="22">@item.MemberCode</td>
+                            <td height="22">@item.MemberName</td>
+                            <td height="22">@item.MemberPhone</td>
+                            <td height="22">@item.MemberIDNumber</td>
+                            <td height="22">@item.PStatusName</td>
+                            <td height="22">@item.ApplyRemark</td>
+                            <td height="22">@item.AddTime.ToString("yyyy-MM-dd")</td>
+                        </tr>
+                    }
+                }
             </table>
             <table width="97%" border="0" cellspacing="0" cellpadding="0">
                 <tr>
@@ -59,5 +62,3 @@
         </td>
     </tr>
 </table>
-
-
