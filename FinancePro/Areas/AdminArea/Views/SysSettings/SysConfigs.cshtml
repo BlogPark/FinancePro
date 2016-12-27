@@ -186,6 +186,7 @@
                                 @foreach (SystemConfigsModel item in Model.Allconfigs)
                                 {
                                     <tr id="tr@(item.ID)">
+                                        <td style="display:none">@item.ID</td>
                                         <td>@item.ConfigName</td>
                                         <td>@item.ConfigValue</td>
                                         <td>@item.ConfigRemark</td>
