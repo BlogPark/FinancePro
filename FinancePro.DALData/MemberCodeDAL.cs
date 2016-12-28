@@ -51,15 +51,18 @@ namespace FinancePro.DALData
         public static MemberCodeModel GetMemberCode()
         {
             MemberCodeModel model = new MemberCodeModel();
-            StringBuilder strSql = new StringBuilder();
-            strSql.Append("select TOP 1 ID,MemberCode  ");
-            strSql.Append("  from MemberCode ");
-            strSql.Append(" where  CStatus=1");
-            DataTable dt = helper.Query(strSql.ToString()).Tables[0];
+            string sqltxt = @"update top (1)  A  
+  set cstatus=2
+  output deleted.MemberCode,deleted.ID
+  from FinanceProData.dbo.MemberCode A where cstatus=1";
+            //StringBuilder strSql = new StringBuilder();
+            //strSql.Append("select TOP 1 ID,MemberCode  ");
+            //strSql.Append("  from MemberCode ");
+            //strSql.Append(" where  CStatus=1");
+            DataTable dt = helper.Query(sqltxt).Tables[0];
             if (dt.Rows.Count > 0)
             {
-                int id=dt.Rows[0]["ID"].ToString().ParseToInt(0);
-                UpdateMemberCodeTempStatus(id);
+                int id=dt.Rows[0]["ID"].ToString().ParseToInt(0);               
                 model.ID=id;
                 model.MemberCode = dt.Rows[0]["MemberCode"].ToString().ParseToInt(0);
             }
