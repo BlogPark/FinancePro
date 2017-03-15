@@ -77,7 +77,7 @@ namespace FinancePro.Areas.AdminArea.Controllers
             }
             else if (type == 5)//重置密码
             {
-                string pwd = DESEncrypt.Encrypt("666666", AppContent.SecrectStr);
+                string pwd = "666666";// DESEncrypt.Encrypt("666666", AppContent.SecrectStr);//方法内部已加密，此处无需加密字符串
                 result = memberbll.UpdateMemberLogpwd(id, pwd).ToString();
             }
             else
