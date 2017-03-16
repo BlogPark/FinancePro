@@ -31,7 +31,7 @@
                 <table width="96%" border="1" cellpadding="5" cellspacing="0" bordercolor="#ABC9EF" style="border-collapse:collapse;">
                     <tr>
                         <td width="14%" height="28" align="center">会员编号</td>
-                        <td>@Model.userinfo.MemberCode<label></label>@Html.HiddenFor(m=>m.userinfo.ID)</td>
+                        <td>@Html.TextBoxFor(m => m.userinfo.MemberCode, new { @style="border:0px",@readonly="readonly"})<label></label>@Html.HiddenFor(m=>m.userinfo.ID)</td>
                     </tr>
                     <tr>
                         <td height="28" align="center">真实姓名</td>

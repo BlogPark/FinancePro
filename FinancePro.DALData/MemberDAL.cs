@@ -167,7 +167,7 @@ namespace FinancePro.DALData
         public static MemberInfoModel GetBriefSingleMemberModelForLogin(string membercode)
         {
             StringBuilder strSql = new StringBuilder();
-            strSql.Append(@"select ID, MemberBankName, MemberBankCode, MemberStatus, MemberType, IsFinalMember, IsDerivativeMember, IsSpecialMember, IsReportMember, MemberName, MemberCode, MemberPhone,MemberIDNumber,SourceMemberCode,MemberBankUserName,MemberLogPwd,CASE MemberType WHEN 1 THEN '常规会员' WHEN 2 THEN '衍生会员' WHEN 3 THEN '终极会员' WHEN 4 THEN '超级会员' END AS MemberTypeName  ");
+            strSql.Append(@"select ID, MemberBankName, MemberBankCode, MemberEmail,MemberStatus, MemberType, IsFinalMember, IsDerivativeMember, IsSpecialMember, IsReportMember, MemberName, MemberCode, MemberPhone,MemberIDNumber,SourceMemberCode,MemberBankUserName,MemberLogPwd,CASE MemberType WHEN 1 THEN '常规会员' WHEN 2 THEN '衍生会员' WHEN 3 THEN '终极会员' WHEN 4 THEN '超级会员' END AS MemberTypeName  ");
             strSql.Append("  from MemberInfo ");
             strSql.Append(" where MemberCode=@MemberCode");
             SqlParameter[] parameters = {
@@ -198,6 +198,7 @@ namespace FinancePro.DALData
                 model.MemberBankUserName = ds.Tables[0].Rows[0]["MemberBankUserName"].ToString();
                 model.MemberLogPwd = ds.Tables[0].Rows[0]["MemberLogPwd"].ToString();
                 model.MemberTypeName = ds.Tables[0].Rows[0]["MemberTypeName"].ToString();
+                model.MemberEmail = ds.Tables[0].Rows[0]["MemberEmail"].ToString();
                 return model;
             }
             else
@@ -418,7 +419,7 @@ namespace FinancePro.DALData
             strSql.Append(" MemberName = @MemberName , ");
             strSql.Append(" MemberPhone = @MemberPhone , ");
             strSql.Append(" MemberIDNumber = @MemberIDNumber , ");
-            strSql.Append(" MemberEmail = @MemberEmail , ");
+            strSql.Append(" MemberEmail = @MemberEmail ");
             strSql.Append(" where ID=@ID ");
             SqlParameter[] parameters = {
 			            new SqlParameter("@ID", model.ID) ,               
